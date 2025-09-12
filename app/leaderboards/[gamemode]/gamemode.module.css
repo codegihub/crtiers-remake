@@ -1,0 +1,472 @@
+.page {
+  min-height: 100vh;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans);
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem 2rem;
+}
+
+.logo h1 {
+  font-size: 2rem;
+  font-weight: 800;
+  margin: 0;
+}
+
+.navLinks {
+  display: flex;
+  gap: 2rem;
+}
+
+.navLink {
+  color: var(--foreground);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.navLink:hover {
+  color: var(--primary);
+}
+
+.main {
+  flex: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.loading, .error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.error h2 {
+  color: var(--foreground);
+  margin-bottom: 1rem;
+}
+
+.backLink {
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 500;
+  margin-top: 2rem;
+  transition: color 0.3s ease;
+}
+
+.backLink:hover {
+  color: var(--primary-hover);
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--border);
+  border-top: 3px solid var(--primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.breadcrumb {
+  margin-bottom: 2rem;
+}
+
+.breadcrumb a {
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.breadcrumb a:hover {
+  color: var(--primary-hover);
+}
+
+.leaderboardSection {
+  margin-bottom: 4rem;
+}
+
+.titleSection {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.gameModeIcon {
+  font-size: 3rem;
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: 900;
+  margin: 0;
+}
+
+.subtitle {
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
+}
+
+.filterSection {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 3rem;
+  justify-content: center;
+}
+
+.filterLabel {
+  font-weight: 600;
+  color: var(--foreground);
+  margin-right: 26rem;
+  font-size: 0.8rem;
+}
+
+.tierFilter {
+  padding: 0.25rem 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--card-bg);
+  color: var(--foreground);
+  font-weight: 500;
+  margin-right: 26rem;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+  font-size: 0.8rem;
+  min-width: 60px;
+}
+
+.tierFilter:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.tierFilter option {
+  background: var(--card-bg);
+  color: var(--foreground);
+}
+
+.leaderboardTable {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.tableHeader {
+  display: grid;
+  background: rgba(99, 102, 241, 0.1);
+  border-bottom: 1px solid var(--border);
+  padding: 1rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.6rem;
+  font-weight: 600;
+  color: var(--foreground);
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Default grid with tier column and filter */
+.leaderboardTable:not(.noTier) .tableHeader {
+  grid-template-columns: 80px 1fr 120px 80px 80px 120px;
+}
+
+/* Grid without tier column for overall mode */
+.leaderboardTable.noTier .tableHeader {
+  grid-template-columns: 80px 1fr 80px 120px;
+}
+
+.tableBody {
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.tableRow {
+  display: grid;
+  padding: 1rem;
+  border-bottom: 1px solid var(--border);
+  transition: background-color 0.2s ease;
+}
+
+.tableRow:hover {
+  background: rgba(99, 102, 241, 0.05);
+}
+
+.tableRow:last-child {
+  border-bottom: none;
+}
+
+/* Default grid with tier column and filter */
+.leaderboardTable:not(.noTier) .tableRow {
+  grid-template-columns: 80px 1fr 120px 80px 80px 120px;
+}
+
+/* Grid without tier column for overall mode */
+.leaderboardTable.noTier .tableRow {
+  grid-template-columns: 80px 1fr 80px 120px;
+}
+
+.rankColumn {
+  display: flex;
+  align-items: center;
+}
+
+.rank {
+  font-weight: 700;
+  margin-left: 0.6rem;
+  color: var(--text-muted);
+}
+
+.rank.topRank {
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-size: 1.1rem;
+}
+
+.playerColumn {
+  display: flex;
+  align-items: center;
+}
+
+.filterColumn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+}
+
+.playerInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.playerAvatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+}
+
+.playerName {
+  color: var(--foreground);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.playerName:hover {
+  color: var(--primary);
+}
+
+.tierColumn {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-left: 4px;
+}
+
+.tier {
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-left: 1rem;
+  text-align: center;
+  display: inline-block;
+}
+
+.regionColumn {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-left: 4px;
+}
+
+.region {
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-align: center;
+  margin-left: 1.3rem;
+  display: inline-block;
+}
+
+.scoreColumn {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.score {
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin-right: 0.5rem;
+  color: var(--foreground);
+}
+
+.footer {
+  background: var(--card-bg);
+  border-top: 1px solid var(--border);
+  padding: 2rem;
+  margin-top: auto;
+}
+
+.footerContent {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  text-align: center;
+}
+
+.footerContent p {
+  color: var(--text-muted);
+  margin: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .leaderboardTable:not(.noTier) .tableHeader,
+  .leaderboardTable:not(.noTier) .tableRow {
+    grid-template-columns: 60px 1fr 100px 70px 70px 100px;
+  }
+  
+  .leaderboardTable.noTier .tableHeader,
+  .leaderboardTable.noTier .tableRow {
+    grid-template-columns: 60px 1fr 60px 100px;
+  }
+  
+  .gameModeIcon {
+    font-size: 2.5rem;
+  }
+  
+  .title {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .nav {
+    padding: 1rem;
+  }
+  
+  .navLinks {
+    gap: 1rem;
+  }
+  
+  .main {
+    padding: 1rem;
+  }
+  
+  .titleSection {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.5rem;
+  }
+  
+  .title {
+    font-size: 1.8rem;
+  }
+  
+  .leaderboardTable:not(.noTier) .tableHeader,
+  .leaderboardTable:not(.noTier) .tableRow {
+    grid-template-columns: 50px 1fr 80px 60px 60px 80px;
+    padding: 0.75rem 0.5rem;
+  }
+  
+  .leaderboardTable.noTier .tableHeader,
+  .leaderboardTable.noTier .tableRow {
+    grid-template-columns: 50px 1fr 50px 80px;
+    padding: 0.75rem 0.5rem;
+  }
+  
+  .playerInfo {
+    gap: 0.5rem;
+  }
+  
+  .playerAvatar {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .tier, .region {
+    padding: 0.2rem 0.5rem;
+    font-size: 0.7rem;
+  }
+  
+  .footerContent {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .leaderboardTable:not(.noTier) .tableHeader,
+  .leaderboardTable:not(.noTier) .tableRow {
+    grid-template-columns: 40px 1fr 70px 50px 50px 70px;
+    font-size: 0.9rem;
+  }
+  
+  .leaderboardTable.noTier .tableHeader,
+  .leaderboardTable.noTier .tableRow {
+    grid-template-columns: 40px 1fr 60px 70px;
+    font-size: 0.9rem;
+  }
+  
+  /* Hide tier column on very small screens for non-overall modes */
+  .leaderboardTable:not(.noTier) .tierColumn {
+    display: none;
+  }
+  
+  .gameModeIcon {
+    font-size: 2rem;
+  }
+  
+  .title {
+    font-size: 1.5rem;
+  }
+  
+  .navLinks {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}

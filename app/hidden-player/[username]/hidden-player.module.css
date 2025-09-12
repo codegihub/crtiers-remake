@@ -1,0 +1,393 @@
+.page {
+  min-height: 100vh;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans);
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem 2rem;
+}
+
+.logo h1 {
+  font-size: 2rem;
+  font-weight: 800;
+  margin: 0;
+}
+
+.navLinks {
+  display: flex;
+  gap: 2rem;
+}
+
+.navLink {
+  color: var(--foreground);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.navLink:hover {
+  color: var(--primary);
+}
+
+.main {
+  flex: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.loading, .error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.error h2 {
+  color: var(--foreground);
+  margin-bottom: 1rem;
+}
+
+.backLink {
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 500;
+  margin-top: 2rem;
+  transition: color 0.3s ease;
+}
+
+.backLink:hover {
+  color: var(--primary-hover);
+}
+
+.noData {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  color: var(--text-muted);
+  font-style: italic;
+  text-align: center;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--border);
+  border-top: 3px solid var(--primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.breadcrumb {
+  margin-bottom: 2rem;
+}
+
+.breadcrumb a {
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.breadcrumb a:hover {
+  color: var(--primary-hover);
+}
+
+.playerSection {
+  margin-bottom: 4rem;
+}
+
+.playerHeader {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+.avatarContainer {
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  gap: 1rem;
+  min-width: 200px;
+}
+
+.playerAvatar {
+  width: 122px;
+  height: 256px;
+  border-radius: 12px;
+
+  border: 3px solid var(--primary);
+  box-shadow: 0 8px 32px rgba(99, 102, 241, 0.3);
+}
+
+.playerName {
+  text-align: center;
+}
+
+.playerName h1 {
+  font-size: 2rem;
+  font-weight: 800;
+  margin: 0 0 0.5rem 0;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.nameMcLink {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: color 0.3s ease;
+}
+
+.nameMcLink:hover {
+  color: var(--primary);
+}
+
+.statsContainer {
+  flex: 1;
+}
+
+.gameModeTabsContainer {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.gameModeTabs {
+  display: flex;
+  flex-wrap: wrap;
+  border-bottom: 1px solid var(--border);
+  background: rgba(99, 102, 241, 0.05);
+}
+
+.gameModeTab {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 1.5rem;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-bottom: 3px solid transparent;
+  font-weight: 500;
+}
+
+.gameModeTab:hover {
+  background: rgba(99, 102, 241, 0.1);
+  color: var(--foreground);
+}
+
+.gameModeTab.active {
+  background: rgba(99, 102, 241, 0.15);
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+}
+
+.tabIcon {
+  font-size: 1.2rem;
+}
+
+.tabName {
+  font-size: 0.9rem;
+}
+
+.statsContent {
+  padding: 2rem;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+}
+
+.statCard {
+  background: rgba(99, 102, 241, 0.05);
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  border-radius: 8px;
+  padding: 1.5rem;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.statCard:hover {
+  transform: translateY(-2px);
+  border-color: var(--primary);
+  box-shadow: 0 8px 25px rgba(99, 102, 241, 0.15);
+}
+
+.statCard h3 {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin: 0 0 1rem 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.statValue {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--foreground);
+}
+
+.tierValue {
+  display: flex;
+  justify-content: center;
+}
+
+.tier {
+  padding: 0.5rem 1rem;
+  border-radius: 25px;
+  font-size: 1.5rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.tierSPlus {
+  background: linear-gradient(135deg, #ff6b6b, #ffd93d);
+  color: #000;
+}
+
+.region {
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.footer {
+  background: var(--card-bg);
+  border-top: 1px solid var(--border);
+  padding: 2rem;
+  margin-top: auto;
+}
+
+.footerContent {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  text-align: center;
+}
+
+.footerContent p {
+  color: var(--text-muted);
+  margin: 0;
+}
+
+@media (max-width: 1024px) {
+  .playerHeader {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .avatarContainer {
+    margin-bottom: 2rem;
+  }
+  
+  .statsContainer {
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .nav {
+    padding: 1rem;
+  }
+  
+  .navLinks {
+    gap: 1rem;
+  }
+  
+  .main {
+    padding: 1rem;
+  }
+  
+  .gameModeTabs {
+    flex-direction: column;
+  }
+  
+  .gameModeTab {
+    justify-content: center;
+    border-bottom: none;
+    border-right: 3px solid transparent;
+  }
+  
+  .gameModeTab.active {
+    border-bottom: none;
+    border-right-color: var(--primary);
+  }
+  
+  .statsGrid {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+  }
+  
+  .statCard {
+    padding: 1rem;
+  }
+  
+  .statValue {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .playerName h1 {
+    font-size: 1.5rem;
+  }
+  
+  .playerAvatar {
+    width: 96px;
+    height: 96px;
+  }
+  
+  .statsContent {
+    padding: 1rem;
+  }
+  
+  .statsGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .navLinks {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
