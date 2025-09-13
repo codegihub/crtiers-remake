@@ -6,8 +6,7 @@ const nextConfig: NextConfig = {
   images: {
     unoptimized: true
   },
-  basePath: '/crtiers-backup',
-  assetPrefix: '/crtiers-backup/',
+  
 };
 
 export default nextConfig;
