@@ -193,7 +193,7 @@ export default function GameModeLeaderboard() {
                       />
                       <div className={styles.playerDetails}>
                         <a 
-                          href={`../player/${encodeURIComponent(player.minecraftName)}`}
+                          href={`../../player/${encodeURIComponent(player.minecraftName)}`}
                           className={styles.playerName}
                         >
                           {player.minecraftName}
