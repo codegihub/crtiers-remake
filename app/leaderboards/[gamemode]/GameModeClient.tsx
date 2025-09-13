@@ -125,7 +125,7 @@ export default function GameModeLeaderboard() {
           </div>
           <div className={styles.navLinks}>
             <a href="../" className={styles.navLink}>Home</a>
-            <a href="../leaderboards" className={styles.navLink}>Leaderboards</a>
+            <a href="./l" className={styles.navLink}>Leaderboards</a>
             <a href="../server" className={styles.navLink}>Server</a>
             <a href="../more" className={styles.navLink}>More</a>
           </div>
