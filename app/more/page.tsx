@@ -250,7 +250,7 @@ export default function More() {
                 Looking for something special? We have additional tier lists for exclusive game modes 
                 available to our community members.
               </p>
-              <a href="./hidden-tiers" className={styles.hiddenLink}>
+              <a href="../../hidden-tiers" className={styles.hiddenLink}>
                 🎯 Access Hidden Tier Lists
               </a>
             </div>

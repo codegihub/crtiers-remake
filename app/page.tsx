@@ -9,10 +9,10 @@ export default function Home() {
             <h1 className="gradient-text">CrTiers</h1>
           </div>
           <div className={styles.navLinks}>
-            <a href="./" className={styles.navLink}>Home</a>
-            <a href="./leaderboards" className={styles.navLink}>Leaderboards</a>
-            <a href="./server" className={styles.navLink}>Server</a>
-            <a href="./more" className={styles.navLink}>More</a>
+            <a href="../.." className={styles.navLink}>Home</a>
+            <a href="../../leaderboards" className={styles.navLink}>Leaderboards</a>
+            <a href="../../server" className={styles.navLink}>Server</a>
+            <a href="../../more" className={styles.navLink}>More</a>
           </div>
         </nav>
       </header>
@@ -26,8 +26,8 @@ export default function Home() {
             Professional Minecraft player rankings and tier system. Track your progress across multiple game modes.
           </p>
           <div className={styles.heroButtons}>
-            <a href="./leaderboards" className="btn-primary">View Rankings</a>
-            <a href="./server" className={styles.btnSecondary}>Join Server</a>
+            <a href="../../leaderboards" className="btn-primary">View Rankings</a>
+            <a href="../../server" className={styles.btnSecondary}>Join Server</a>
           </div>
         </section>
 
@@ -36,19 +36,19 @@ export default function Home() {
             <div className="card">
               <h3>🏆 Leaderboards</h3>
               <p>View comprehensive rankings across all game modes including Overall, Vanilla, UHC, Pot, and more.</p>
-              <a href="./leaderboards" className={styles.featureLink}>Explore Rankings →</a>
+              <a href="../../leaderboards" className={styles.featureLink}>Explore Rankings →</a>
             </div>
             
             <div className="card">
               <h3>🎮 Server</h3>
               <p>Connect to our Minecraft server and start climbing the ranks. IP: crystaltiers.club</p>
-              <a href="./server" className={styles.featureLink}>Server Info →</a>
+              <a href="../../server" className={styles.featureLink}>Server Info →</a>
             </div>
             
             <div className="card">
               <h3>📊 Tier System</h3>
               <p>Advanced tier-based ranking from F to S+ with region-based categorization and detailed statistics.</p>
-              <a href="./more" className={styles.featureLink}>Learn More →</a>
+              <a href="../../more" className={styles.featureLink}>Learn More →</a>
             </div>
           </div>
         </section>

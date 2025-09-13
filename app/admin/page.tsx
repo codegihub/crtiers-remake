@@ -94,7 +94,7 @@ export default function AdminDashboard() {
             Add, edit, and delete regular players. Manage their tiers across all game modes 
             including Vanilla, UHC, Pot, NethPot, SMP, Sword, Axe, and Mace.
           </p>
-          <a href="./admin/players" className={styles.actionButton}>
+          <a href="../../admin/players" className={styles.actionButton}>
             Manage Players
           </a>
         </div>
@@ -105,7 +105,7 @@ export default function AdminDashboard() {
             Manage the exclusive hidden tier list players. Control access to special game modes 
             including Bed PVP, Minecart, Creeper, and Spleef.
           </p>
-          <a href="./admin/hidden-players" className={styles.actionButton}>
+          <a href="../../admin/hidden-players" className={styles.actionButton}>
             Manage Hidden Players
           </a>
         </div>
@@ -116,7 +116,7 @@ export default function AdminDashboard() {
             Check how your changes appear on the live website. View leaderboards, 
             player profiles, and tier rankings in real-time.
           </p>
-          <a href="./" target="_blank" rel="noopener noreferrer" className={styles.actionButton}>
+          <a href="../.." target="_blank" rel="noopener noreferrer" className={styles.actionButton}>
             Open Website →
           </a>
         </div>

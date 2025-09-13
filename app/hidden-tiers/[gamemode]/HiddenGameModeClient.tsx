@@ -72,7 +72,7 @@ export default function HiddenGameModeLeaderboard() {
         <div className={styles.error}>
           <h2>Invalid Hidden Game Mode</h2>
           <p>The hidden game mode "{gamemode}" does not exist.</p>
-          <a href="../hidden-tiers" className={styles.backLink}>← Back to Hidden Tiers</a>
+          <a href="../../hidden-tiers" className={styles.backLink}>← Back to Hidden Tiers</a>
         </div>
       </div>
     );
@@ -95,7 +95,7 @@ export default function HiddenGameModeLeaderboard() {
         <div className={styles.error}>
           <h2>Error</h2>
           <p>{error}</p>
-          <a href="../hidden-tiers" className={styles.backLink}>← Back to Hidden Tiers</a>
+          <a href="../../hidden-tiers" className={styles.backLink}>← Back to Hidden Tiers</a>
         </div>
       </div>
     );
@@ -120,17 +120,17 @@ export default function HiddenGameModeLeaderboard() {
             <h1 className="gradient-text">CrTiers</h1>
           </div>
           <div className={styles.navLinks}>
-            <a href="../" className={styles.navLink}>Home</a>
-            <a href="../leaderboards" className={styles.navLink}>Leaderboards</a>
-            <a href="../server" className={styles.navLink}>Server</a>
-            <a href="../more" className={styles.navLink}>More</a>
+            <a href="../.." className={styles.navLink}>Home</a>
+            <a href="../../leaderboards" className={styles.navLink}>Leaderboards</a>
+            <a href="../../server" className={styles.navLink}>Server</a>
+            <a href="../../more" className={styles.navLink}>More</a>
           </div>
         </nav>
       </header>
 
       <main className={styles.main}>
         <div className={styles.breadcrumb}>
-          <a href="../hidden-tiers">← Back to Hidden Tiers</a>
+          <a href="../../hidden-tiers">← Back to Hidden Tiers</a>
         </div>
 
         <div className={styles.headerSection}>
@@ -190,7 +190,7 @@ export default function HiddenGameModeLeaderboard() {
                       />
                       <div className={styles.playerDetails}>
                         <a 
-                          href={`../hidden-player/${encodeURIComponent(player.minecraftName)}`}
+                          href={`../../hidden-player/${encodeURIComponent(player.minecraftName)}`}
                           className={styles.playerName}
                         >
                           🔒 {player.minecraftName}

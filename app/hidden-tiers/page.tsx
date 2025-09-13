@@ -89,10 +89,10 @@ export default function HiddenTiers() {
             <h1 className="gradient-text">CrTiers</h1>
           </div>
           <div className={styles.navLinks}>
-            <a href="./" className={styles.navLink}>Home</a>
-            <a href="./leaderboards" className={styles.navLink}>Leaderboards</a>
-            <a href="./server" className={styles.navLink}>Server</a>
-            <a href="./more" className={styles.navLink}>More</a>
+            <a href="../.." className={styles.navLink}>Home</a>
+            <a href="../../leaderboards" className={styles.navLink}>Leaderboards</a>
+            <a href="../../server" className={styles.navLink}>Server</a>
+            <a href="../../more" className={styles.navLink}>More</a>
           </div>
         </nav>
       </header>
@@ -123,7 +123,7 @@ export default function HiddenTiers() {
                 {searchResults.map((player) => (
                   <a
                     key={player.id}
-                    href={`./hidden-player/${encodeURIComponent(player.minecraftName)}`}
+                    href={`../../hidden-player/${encodeURIComponent(player.minecraftName)}`}
                     className={styles.searchResultItem}
                   >
                     <img 
@@ -157,7 +157,7 @@ export default function HiddenTiers() {
               return (
                 <a
                   key={gameMode}
-                  href={`./hidden-tiers/${gameMode}`}
+                  href={`../../hidden-tiers/${gameMode}`}
                   className={`${styles.gameModeCard} card`}
                 >
                   <div className={styles.cardHeader}>
