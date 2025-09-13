@@ -80,11 +80,7 @@ export default function AdminDashboard() {
           <div className={styles.statLabel}>Hidden Players</div>
         </div>
 
-        <div className={styles.statCard}>
-          <div className={styles.statIcon}>🏆</div>
-          <div className={styles.statValue}>{stats.totalRankedPlayers}</div>
-          <div className={styles.statLabel}>Ranked Players</div>
-        </div>
+        
       </div>
 
       <div className={styles.quickActions}>
