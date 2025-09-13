@@ -60,7 +60,7 @@ function AdminNavigation() {
     <nav className={styles.adminNav}>
       <div className={styles.navContent}>
         <div className={styles.navLeft}>
-          <h1 className={`${styles.adminTitle} gradient-text`}>CrTiers Admin</h1>
+          <h1 className={`${styles.adminTitle} gradient-text`}>CrystalTiers Admin</h1>
           <div className={styles.navLinks}>
             <a href="/admin" className={styles.navLink}>Dashboard</a>
             <a href="/admin/players" className={styles.navLink}>Players</a>

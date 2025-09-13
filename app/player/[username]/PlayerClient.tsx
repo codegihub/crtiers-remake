@@ -82,7 +82,7 @@ export default function PlayerClient({ username }: PlayerClientProps) {
         <header className={styles.header}>
           <nav className={styles.nav}>
             <div className={styles.logo}>
-              <h1 className="gradient-text">CrTiers</h1>
+              <h1 className="gradient-text">CrystalTiers</h1>
             </div>
             <div className={styles.navLinks}>
               <a href="../.." className={styles.navLink}>Home</a>
@@ -109,7 +109,7 @@ export default function PlayerClient({ username }: PlayerClientProps) {
       <header className={styles.header}>
         <nav className={styles.nav}>
           <div className={styles.logo}>
-            <h1 className="gradient-text">CrTiers</h1>
+            <h1 className="gradient-text">CrystalTiers</h1>
           </div>
           <div className={styles.navLinks}>
             <a href="../.." className={styles.navLink}>Home</a>
