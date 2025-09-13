@@ -134,7 +134,7 @@ export default function GameModeLeaderboard() {
 
       <main className={styles.main}>
         <div className={styles.breadcrumb}>
-          <a href="../..">← Back to Leaderboards</a>
+          <a href="./.">← Back to Leaderboards</a>
         </div>
 
         <div className={styles.headerSection}>
