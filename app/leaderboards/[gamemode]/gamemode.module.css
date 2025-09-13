@@ -1,0 +1,450 @@
+/* Gamemode Leaderboard Page */
+.page {
+  min-height: 100vh;
+  background: var(--background);
+  color: var(--foreground);
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  background: var(--card);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.nav {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 4rem;
+}
+
+.logo h1 {
+  margin: 0;
+  font-size: 1.75rem;
+  font-weight: 700;
+}
+
+.navLinks {
+  display: flex;
+  gap: 2rem;
+}
+
+.navLink {
+  text-decoration: none;
+  color: var(--foreground);
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.navLink:hover {
+  color: var(--primary);
+}
+
+.main {
+  flex: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  width: 100%;
+}
+
+.breadcrumb {
+  margin-bottom: 2rem;
+}
+
+.breadcrumb a {
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.breadcrumb a:hover {
+  color: var(--primary);
+}
+
+.headerSection {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  font-size: 3rem;
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+  color: var(--foreground);
+}
+
+.gameIcon {
+  font-size: 3.5rem;
+}
+
+.subtitle {
+  font-size: 1.2rem;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: var(--card);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+
+.filterSection {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.filterSection label {
+  font-weight: 500;
+  color: var(--foreground);
+}
+
+.tierFilter {
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--background-secondary);
+  color: var(--foreground);
+  font-size: 0.9rem;
+  min-width: 150px;
+}
+
+.stats {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.playerCount {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  background: var(--background-secondary);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+}
+
+.leaderboard {
+  margin-bottom: 3rem;
+}
+
+.playersList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.playerCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem;
+  background: var(--card);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  transition: all 0.2s;
+}
+
+.playerCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  border-color: var(--primary);
+}
+
+.rank {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--primary);
+  min-width: 60px;
+  text-align: center;
+}
+
+.playerInfo {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex: 1;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+}
+
+.playerDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.playerName {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--foreground);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.playerName:hover {
+  color: var(--primary);
+}
+
+.playerSubtext {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.playerStats {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.score {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.scoreValue {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--foreground);
+}
+
+.scoreLabel {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.tier {
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-align: center;
+  min-width: 60px;
+}
+
+.region {
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-align: center;
+  min-width: 50px;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: var(--text-muted);
+}
+
+.emptyState h3 {
+  margin: 0 0 1rem 0;
+  color: var(--foreground);
+}
+
+.emptyState p {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 50vh;
+  gap: 1rem;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid var(--border);
+  border-top: 4px solid var(--primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.error {
+  text-align: center;
+  padding: 3rem;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.error h2 {
+  color: var(--foreground);
+  margin-bottom: 1rem;
+}
+
+.error p {
+  color: var(--text-muted);
+  margin-bottom: 2rem;
+}
+
+.backLink {
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 500;
+  transition: opacity 0.2s;
+}
+
+.backLink:hover {
+  opacity: 0.8;
+}
+
+.footer {
+  background: var(--card);
+  border-top: 1px solid var(--border);
+  padding: 2rem 0;
+  margin-top: auto;
+}
+
+.footerContent {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.footerContent p {
+  margin: 0.5rem 0;
+}
+
+/* Animations */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Tier Colors */
+.tier.tierSPlus { background: linear-gradient(45deg, #ff6b6b, #feca57); color: white; }
+.tier.tierS { background: linear-gradient(45deg, #ff9ff3, #f368e0); color: white; }
+.tier.tierAPlus { background: linear-gradient(45deg, #a8e6cf, #7bed9f); color: white; }
+.tier.tierA { background: linear-gradient(45deg, #70a1ff, #5352ed); color: white; }
+.tier.tierBPlus { background: linear-gradient(45deg, #ffb8b8, #ff7675); color: white; }
+.tier.tierB { background: linear-gradient(45deg, #ffd93d, #ffb142); color: white; }
+.tier.tierCPlus { background: linear-gradient(45deg, #6c5ce7, #a29bfe); color: white; }
+.tier.tierC { background: linear-gradient(45deg, #fd79a8, #fdcb6e); color: white; }
+.tier.tierDPlus { background: linear-gradient(45deg, #00b894, #00cec9); color: white; }
+.tier.tierD { background: linear-gradient(45deg, #0984e3, #74b9ff); color: white; }
+.tier.tierEPlus { background: linear-gradient(45deg, #e17055, #fdcb6e); color: white; }
+.tier.tierE { background: linear-gradient(45deg, #636e72, #b2bec3); color: white; }
+.tier.tierFPlus { background: linear-gradient(45deg, #2d3436, #636e72); color: white; }
+.tier.tierF { background: linear-gradient(45deg, #000000, #2d3436); color: white; }
+
+/* Region Colors */
+.region.regionNA { background: linear-gradient(45deg, #74b9ff, #0984e3); color: white; }
+.region.regionEU { background: linear-gradient(45deg, #00b894, #00cec9); color: white; }
+.region.regionAS { background: linear-gradient(45deg, #fd79a8, #e84393); color: white; }
+.region.regionOCE { background: linear-gradient(45deg, #fdcb6e, #e17055); color: white; }
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .nav {
+    padding: 0 1rem;
+  }
+  
+  .navLinks {
+    gap: 1rem;
+  }
+  
+  .main {
+    padding: 1rem;
+  }
+  
+  .title {
+    flex-direction: column;
+    font-size: 2.5rem;
+  }
+  
+  .gameIcon {
+    font-size: 3rem;
+  }
+  
+  .controls {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+  
+  .filterSection {
+    justify-content: center;
+  }
+  
+  .stats {
+    justify-content: center;
+  }
+  
+  .playerCard {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+  
+  .playerInfo {
+    justify-content: center;
+  }
+  
+  .playerStats {
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: 2rem;
+  }
+  
+  .gameIcon {
+    font-size: 2.5rem;
+  }
+  
+  .playerCard {
+    padding: 1rem;
+  }
+  
+  .rank {
+    font-size: 1.2rem;
+    min-width: 40px;
+  }
+  
+  .scoreValue {
+    font-size: 1.2rem;
+  }
+  
+  .tier, .region {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+  }
+}
