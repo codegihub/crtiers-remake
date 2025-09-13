@@ -80,10 +80,10 @@ export default function Leaderboards() {
             <h1 className="gradient-text">CrTiers</h1>
           </div>
           <div className={styles.navLinks}>
-            <a href="./." className={styles.navLink}>Home</a>
+            <a href="../.." className={styles.navLink}>Home</a>
             <a href="#" className={styles.navLink}>Leaderboards</a>
-            <a href="././server" className={styles.navLink}>Server</a>
-            <a href="././more" className={styles.navLink}>More</a>
+            <a href="../../server" className={styles.navLink}>Server</a>
+            <a href="../../more" className={styles.navLink}>More</a>
           </div>
         </nav>
       </header>
@@ -203,7 +203,7 @@ function GameModeCard({ mode, topPlayer, onSeeMore }: {
       
       <div className={styles.topPlayer}>
         <div className={styles.playerAvatar}>
-          <a href={`./player/${encodeURIComponent(topPlayer.minecraftName)}`}>
+          <a href={`../../player/${encodeURIComponent(topPlayer.minecraftName)}`}>
             <img 
               src={`https://mc-heads.net/avatar/${topPlayer.minecraftName}/64`}
               alt={`${topPlayer.minecraftName} avatar`}
