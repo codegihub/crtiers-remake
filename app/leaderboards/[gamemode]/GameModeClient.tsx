@@ -76,7 +76,7 @@ export default function GameModeLeaderboard() {
         <div className={styles.error}>
           <h2>Invalid Game Mode</h2>
           <p>The game mode "{gamemode}" does not exist.</p>
-          <a href="../leaderboards" className={styles.backLink}>← Back to Leaderboards</a>
+          <a href="../../leaderboards" className={styles.backLink}>← Back to Leaderboards</a>
         </div>
       </div>
     );
@@ -99,7 +99,7 @@ export default function GameModeLeaderboard() {
         <div className={styles.error}>
           <h2>Error</h2>
           <p>{error}</p>
-          <a href="../leaderboards" className={styles.backLink}>← Back to Leaderboards</a>
+          <a href="../../leaderboards" className={styles.backLink}>← Back to Leaderboards</a>
         </div>
       </div>
     );
