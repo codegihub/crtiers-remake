@@ -46,31 +46,31 @@ export default function More() {
                     <div className={styles.tierList}>
                       <div className={`${styles.tierItem} tier-s-plus`}>
                         <span className={styles.tierLabel}>S+</span>
-                        <span className={styles.tierScore}>90-100</span>
+                        <span className={styles.tierScore}>95-100</span>
                       </div>
                       <div className={`${styles.tierItem} tier-s`}>
                         <span className={styles.tierLabel}>S</span>
-                        <span className={styles.tierScore}>85-89</span>
+                        <span className={styles.tierScore}>90-94</span>
                       </div>
                       <div className={`${styles.tierItem} tier-a-plus`}>
                         <span className={styles.tierLabel}>A+</span>
-                        <span className={styles.tierScore}>80-84</span>
+                        <span className={styles.tierScore}>85-89</span>
                       </div>
                       <div className={`${styles.tierItem} tier-a`}>
                         <span className={styles.tierLabel}>A</span>
-                        <span className={styles.tierScore}>75-79</span>
+                        <span className={styles.tierScore}>80-84</span>
                       </div>
                       <div className={`${styles.tierItem} tier-b-plus`}>
                         <span className={styles.tierLabel}>B+</span>
-                        <span className={styles.tierScore}>70-74</span>
+                        <span className={styles.tierScore}>75-79</span>
                       </div>
                       <div className={`${styles.tierItem} tier-b`}>
                         <span className={styles.tierLabel}>B</span>
-                        <span className={styles.tierScore}>65-69</span>
+                        <span className={styles.tierScore}>70-74</span>
                       </div>
                       <div className={`${styles.tierItem} tier-c-plus`}>
                         <span className={styles.tierLabel}>C+</span>
-                        <span className={styles.tierScore}>60-64</span>
+                        <span className={styles.tierScore}>65-69</span>
                       </div>
                       
                     </div>
@@ -81,31 +81,31 @@ export default function More() {
                     <div className={styles.tierList}>
                     <div className={`${styles.tierItem} tier-c`}>
                         <span className={styles.tierLabel}>C</span>
-                        <span className={styles.tierScore}>55-59</span>
+                        <span className={styles.tierScore}>60-64</span>
                       </div>
                       <div className={`${styles.tierItem} tier-d-plus`}>
                         <span className={styles.tierLabel}>D+</span>
-                        <span className={styles.tierScore}>50-54</span>
+                        <span className={styles.tierScore}>55-59</span>
                       </div>
                       <div className={`${styles.tierItem} tier-d`}>
                         <span className={styles.tierLabel}>D</span>
-                        <span className={styles.tierScore}>45-49</span>
+                        <span className={styles.tierScore}>50-54</span>
                       </div>
                       <div className={`${styles.tierItem} tier-e-plus`}>
                         <span className={styles.tierLabel}>E+</span>
-                        <span className={styles.tierScore}>40-44</span>
+                        <span className={styles.tierScore}>45-49</span>
                       </div>
                       <div className={`${styles.tierItem} tier-e`}>
                         <span className={styles.tierLabel}>E</span>
-                        <span className={styles.tierScore}>35-39</span>
+                        <span className={styles.tierScore}>40-44</span>
                       </div>
                       <div className={`${styles.tierItem} tier-f-plus`}>
                         <span className={styles.tierLabel}>F+</span>
-                        <span className={styles.tierScore}>10-34</span>
+                        <span className={styles.tierScore}>35-39</span>
                       </div>
                       <div className={`${styles.tierItem} tier-f`}>
                         <span className={styles.tierLabel}>F</span>
-                        <span className={styles.tierScore}>0-9</span>
+                        <span className={styles.tierScore}>0-35</span>
                       </div>
                       
                     </div>
