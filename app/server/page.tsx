@@ -22,7 +22,7 @@ export default function Server() {
       <header className={styles.header}>
         <nav className={styles.nav}>
           <div className={styles.logo}>
-            <a className="gradient-text">CrystalTiers</a>
+            <a href="../.." className="gradient-text">CrystalTiers</a>
           </div>
           <div className={styles.navLinks}>
             <a href="../.." className={styles.navLink}>Home</a>
