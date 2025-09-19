@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { getChangelogs, ChangelogEntry, updatePlayer, updateHiddenPlayer, deleteChangelog } from '../../../lib/firestore';
 import styles from '../players/players.module.css';
 
@@ -63,7 +63,7 @@ export default function AdminRevert() {
       }
 
       // Create update object with individual tier fields to avoid overwriting entire tiers object
-      const updateData: Record<string, any> = {};
+      const updateData: Record<string, number> = {};
       log.changes.forEach(change => {
         if (change.gameMode in currentPlayer.tiers) {
           updateData[`tiers.${change.gameMode}`] = change.previousScore;
