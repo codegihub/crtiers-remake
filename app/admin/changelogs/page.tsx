@@ -83,7 +83,7 @@ export default function AdminChangelogs() {
                       <div key={idx} className={styles.tierBadge}>
                         <span className={styles.tierIcon}>🎮</span>
                         <span className={styles.tierScore}>{c.gameMode}</span>
-                        <span className={styles.tierName}>{c.previousScore} → {c.newScore}</span>
+                        
                       </div>
                     ))}
                   </div>
