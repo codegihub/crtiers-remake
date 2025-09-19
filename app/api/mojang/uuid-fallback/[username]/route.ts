@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-// API route configuration
+// Route segment config - prevents static generation
+export const dynamic = 'force-dynamic';
 
 interface MojangResponse {
   id: string;
