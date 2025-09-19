@@ -65,6 +65,7 @@ function AdminNavigation() {
             <a href="/admin" className={styles.navLink}>Dashboard</a>
             <a href="/admin/players" className={styles.navLink}>Players</a>
             <a href="/admin/hidden-players" className={styles.navLink}>Hidden Players</a>
+            <a href="/admin/changelogs" className={styles.navLink}>Change Logs</a>
           </div>
         </div>
         
