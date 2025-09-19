@@ -24,9 +24,9 @@ type APIResponse = MojangResponse | PlayerDBResponse | MCAPIResponse;
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { username: string } }
+  { params }: { params: Promise<{ username: string }> }
 ) {
-  const { username } = params;
+  const { username } = await params;
 
   console.log(`[API FALLBACK] Fetching UUID for username: ${username}`);
 
