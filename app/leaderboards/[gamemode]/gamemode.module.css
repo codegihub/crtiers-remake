@@ -7,6 +7,11 @@
   flex-direction: column;
 }
 
+.tierOption {
+  background-color: var(--background);
+
+}
+
 .header {
   background: var(--card);
   border-bottom: 1px solid var(--border);
