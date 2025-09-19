@@ -6,9 +6,9 @@ export const runtime = 'nodejs';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { uuid: string } }
+  { params }: { params: Promise<{ uuid: string }> }
 ) {
-  const { uuid } = params;
+  const { uuid } = await params;
 
   console.log(`[API] Fetching username for UUID: ${uuid}`);
 
