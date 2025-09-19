@@ -101,7 +101,7 @@ export default function HiddenPlayersManagement() {
 
     try {
       if (editingPlayer.isNew) {
-        const { isNew, ...playerData } = editingPlayer;
+        const { isNew, id, ...playerData } = editingPlayer;
         const newId = await addHiddenPlayer(playerData);
         if (newId) {
           setSuccess('Hidden player added successfully!');

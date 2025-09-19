@@ -109,7 +109,7 @@ export default function PlayersManagement() {
 
     try {
       if (editingPlayer.isNew) {
-        const { isNew, ...playerData } = editingPlayer;
+        const { isNew, id, ...playerData } = editingPlayer;
         const newId = await addPlayer(playerData);
         if (newId) {
           setSuccess('Player added successfully!');
