@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { Timestamp } from 'firebase/firestore';
 import { getChangelogs, ChangelogEntry } from '../../../lib/firestore';
 import styles from '../players/players.module.css';
 
