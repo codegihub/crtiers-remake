@@ -1,9 +1,15 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Timestamp } from 'firebase/firestore';
 import { getChangelogs, ChangelogEntry } from '../../../lib/firestore';
 import styles from '../players/players.module.css';
+
+function hasToDate(value: unknown): value is { toDate: () => Date } {
+  return typeof value === 'object'
+    && value !== null
+    && 'toDate' in (value as Record<string, unknown>)
+    && typeof (value as { toDate: unknown }).toDate === 'function';
+}
 
 export default function AdminChangelogs() {
   const [logs, setLogs] = useState<ChangelogEntry[]>([]);
@@ -57,7 +63,10 @@ export default function AdminChangelogs() {
                     />
                     <div>
                       <div className={styles.playerName}>{log.minecraftName}</div>
-                      <div className={styles.displayName}>{new Date((log.createdAt as any)?.toDate?.() || Date.now()).toLocaleString()}</div>
+                      <div className={styles.displayName}>{
+                        (hasToDate(log.createdAt) ? log.createdAt.toDate() : new Date())
+                          .toLocaleString()
+                      }</div>
                     </div>
                   </div>
                 </div>
