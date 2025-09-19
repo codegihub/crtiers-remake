@@ -1,63 +1,42 @@
-// Client-side auth utilities now call server routes; no secrets on client
 'use client';
 
-import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 interface AuthContextType {
   isAuthenticated: boolean;
-  loading: boolean;
-  login: (password: string) => Promise<boolean>;
-  logout: () => Promise<void>;
+  login: (password: string) => boolean;
+  logout: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+const ADMIN_PASSWORD = 'admin123'; // In production, this would be properly secured
+
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [loading, setLoading] = useState(true);
 
-  const checkAuth = async () => {
-    try {
-      const res = await fetch('/api/admin/me', { cache: 'no-store' });
-      setIsAuthenticated(res.ok);
-    } catch {
-      setIsAuthenticated(false);
-    } finally {
-      setLoading(false);
+  const login = (password: string): boolean => {
+    if (password === ADMIN_PASSWORD) {
+      setIsAuthenticated(true);
+      localStorage.setItem('admin_authenticated', 'true');
+      return true;
     }
+    return false;
   };
 
-  useEffect(() => {
-    checkAuth();
+  const logout = () => {
+    setIsAuthenticated(false);
+    localStorage.removeItem('admin_authenticated');
+  };
+
+  // Check for existing authentication on provider initialization
+  React.useEffect(() => {
+    const isAuth = localStorage.getItem('admin_authenticated') === 'true';
+    setIsAuthenticated(isAuth);
   }, []);
 
-  const login = async (password: string): Promise<boolean> => {
-    try {
-      const res = await fetch('/api/admin/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ password })
-      });
-      if (res.ok) {
-        setIsAuthenticated(true);
-        return true;
-      }
-      return false;
-    } catch {
-      return false;
-    }
-  };
-
-  const logout = async () => {
-    try {
-      await fetch('/api/admin/logout', { method: 'POST' });
-    } finally {
-      setIsAuthenticated(false);
-    }
-  };
-
   return (
-    <AuthContext.Provider value={{ isAuthenticated, loading, login, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
