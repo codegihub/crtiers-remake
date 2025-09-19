@@ -581,3 +581,14 @@ export async function getChangelogs(limitCount: number = 100): Promise<Changelog
     return [];
   }
 }
+
+export async function deleteChangelog(changelogId: string): Promise<boolean> {
+  try {
+    const changelogRef = doc(db, 'changelogs', changelogId);
+    await deleteDoc(changelogRef);
+    return true;
+  } catch (error) {
+    console.error('Error deleting changelog:', error);
+    return false;
+  }
+}
