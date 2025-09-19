@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { getAllPlayers, getAllHiddenPlayers } from '../../lib/firestore';
+import { getAllPlayers, getAllHiddenPlayers, syncAllPlayersUuids } from '../../lib/firestore';
 import styles from './admin.module.css';
 
 export default function AdminDashboard() {
@@ -12,6 +12,8 @@ export default function AdminDashboard() {
     totalRankedPlayers: 0,
   });
   const [loading, setLoading] = useState(true);
+  const [syncLoading, setSyncLoading] = useState(false);
+  const [syncResults, setSyncResults] = useState<any>(null);
 
   useEffect(() => {
     const fetchStats = async () => {
@@ -42,6 +44,20 @@ export default function AdminDashboard() {
 
     fetchStats();
   }, []);
+
+  const handleSyncUuids = async () => {
+    setSyncLoading(true);
+    setSyncResults(null);
+    try {
+      const results = await syncAllPlayersUuids();
+      setSyncResults(results);
+    } catch (error) {
+      console.error('Sync failed:', error);
+      alert('Sync failed. Check console for details.');
+    } finally {
+      setSyncLoading(false);
+    }
+  };
 
   if (loading) {
     return (
@@ -93,6 +109,25 @@ export default function AdminDashboard() {
             Open Changelogs
           </a>
         </div>
+
+        
+
+        <div className={styles.actionCard}>
+          <h3>🆔 Sync Player UUIDs</h3>
+          <p>
+            Update all player UUIDs and usernames using Mojang API. Fetches UUIDs for new players and updates usernames for existing ones.
+          </p>
+          <button 
+            onClick={handleSyncUuids} 
+            className={styles.actionButton}
+            disabled={syncLoading}
+            style={{ background: syncLoading ? '#666' : undefined }}
+          >
+            {syncLoading ? 'Syncing...' : 'Sync All UUIDs'}
+          </button>
+        </div>
+
+        
         <div className={styles.actionCard}>
           <h3>Manage Regular Players</h3>
           <p>
@@ -115,17 +150,74 @@ export default function AdminDashboard() {
           </a>
         </div>
 
-        <div className={styles.actionCard}>
-          <h3>View Live Website</h3>
-          <p>
-            Check how your changes appear on the live website. View leaderboards, 
-            player profiles, and tier rankings in real-time.
-          </p>
-          <a href="../.." target="_blank" rel="noopener noreferrer" className={styles.actionButton}>
-            Open Website →
-          </a>
-        </div>
+        
       </div>
+
+      {syncResults && (
+        <div className={styles.syncResults}>
+          <h2>UUID Sync Results</h2>
+          
+          {/* Only show regular players section if there are changes */}
+          {syncResults.regularPlayers.updated > 0 && (
+            <div className={styles.syncSection}>
+              <h3>Regular Players</h3>
+              <p>Updated {syncResults.regularPlayers.updated} of {syncResults.regularPlayers.total} players</p>
+              <div className={styles.syncDetails}>
+                {syncResults.regularPlayers.results
+                  .filter((result: any) => !result.changes.includes('No changes needed'))
+                  .map((result: any, index: number) => (
+                    <div key={index} className={styles.syncResult}>
+                      <strong>{result.player}:</strong>
+                      <ul>
+                        {result.changes.map((change: string, changeIndex: number) => (
+                          <li key={changeIndex}>{change}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+              </div>
+            </div>
+          )}
+
+          {/* Only show hidden players section if there are changes */}
+          {syncResults.hiddenPlayers.updated > 0 && (
+            <div className={styles.syncSection}>
+              <h3>Hidden Players</h3>
+              <p>Updated {syncResults.hiddenPlayers.updated} of {syncResults.hiddenPlayers.total} players</p>
+              <div className={styles.syncDetails}>
+                {syncResults.hiddenPlayers.results
+                  .filter((result: any) => !result.changes.includes('No changes needed'))
+                  .map((result: any, index: number) => (
+                    <div key={index} className={styles.syncResult}>
+                      <strong>{result.player}:</strong>
+                      <ul>
+                        {result.changes.map((change: string, changeIndex: number) => (
+                          <li key={changeIndex}>{change}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+              </div>
+            </div>
+          )}
+
+          {/* Show message if no changes were made */}
+          {syncResults.regularPlayers.updated === 0 && syncResults.hiddenPlayers.updated === 0 && (
+            <div className={styles.syncSection}>
+              <p style={{ textAlign: 'center', color: 'var(--text-muted)', fontStyle: 'italic' }}>
+                No changes were needed. All player UUIDs and usernames are up to date!
+              </p>
+            </div>
+          )}
+
+          <button 
+            onClick={() => setSyncResults(null)} 
+            className={styles.closeButton}
+          >
+            Close Results
+          </button>
+        </div>
+      )}
     </div>
   );
 }

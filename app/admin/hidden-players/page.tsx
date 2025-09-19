@@ -12,7 +12,9 @@ import {
   getTierColorClass,
   getRegionColorClass,
   normalizeRegion,
-  addChangelog
+  addChangelog,
+  getUuidFromUsername,
+  syncHiddenPlayerUuid
 } from '../../../lib/firestore';
 import styles from '../players/players.module.css';
 
@@ -102,9 +104,17 @@ export default function HiddenPlayersManagement() {
     try {
       if (editingPlayer.isNew) {
         const { isNew, id, ...playerData } = editingPlayer;
-        const newId = await addHiddenPlayer(playerData);
+        
+        // Fetch UUID for new hidden player
+        const uuid = await getUuidFromUsername(playerData.minecraftName);
+        const playerWithUuid = {
+          ...playerData,
+          uuid: uuid || null
+        };
+        
+        const newId = await addHiddenPlayer(playerWithUuid);
         if (newId) {
-          setSuccess('Hidden player added successfully!');
+          setSuccess('Hidden player added successfully!' + (uuid ? ' UUID fetched.' : ' (UUID not found)'));
           fetchPlayers();
           setShowAddForm(false);
         }
@@ -112,6 +122,10 @@ export default function HiddenPlayersManagement() {
         const { id, ...playerData } = editingPlayer;
         const updated = await updateHiddenPlayer(id, playerData);
         if (updated) {
+          // Sync UUID for the updated hidden player
+          const fullPlayer = { id, ...playerData } as HiddenPlayer;
+          const syncResult = await syncHiddenPlayerUuid(fullPlayer);
+          
           // Write changelog if any tier values changed
           if (originalPlayer) {
             const changes: { gameMode: string; previousScore: number; newScore: number }[] = [];
@@ -132,7 +146,13 @@ export default function HiddenPlayersManagement() {
               });
             }
           }
-          setSuccess('Hidden player updated successfully!');
+
+          let successMessage = 'Hidden player updated successfully!';
+          if (syncResult.updated) {
+            successMessage += ` UUID sync: ${syncResult.changes.join(', ')}`;
+          }
+
+          setSuccess(successMessage);
           fetchPlayers();
           setShowEditModal(false);
         }

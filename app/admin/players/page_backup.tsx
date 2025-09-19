@@ -11,7 +11,10 @@ import {
   getTierName,
   getTierColorClass,
   getRegionColorClass,
-  normalizeRegion
+  normalizeRegion,
+  addChangelog,
+  getUuidFromUsername,
+  syncPlayerUuid
 } from '../../../lib/firestore';
 import styles from './players.module.css';
 
@@ -48,6 +51,7 @@ export default function PlayersManagement() {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [editingPlayer, setEditingPlayer] = useState<EditingPlayer | null>(null);
+  const [originalPlayer, setOriginalPlayer] = useState<Player | null>(null);
   const [errors, setErrors] = useState<string[]>([]);
   const [success, setSuccess] = useState('');
   const [showAddForm, setShowAddForm] = useState(false);
@@ -78,6 +82,7 @@ export default function PlayersManagement() {
 
   const handleEdit = (player: Player) => {
     setEditingPlayer({ ...player });
+    setOriginalPlayer({ ...player });
     setErrors([]);
     setShowEditModal(true);
   };
@@ -106,10 +111,18 @@ export default function PlayersManagement() {
 
     try {
       if (editingPlayer.isNew) {
-        const { isNew, ...playerData } = editingPlayer;
-        const newId = await addPlayer(playerData);
+        const { isNew, id, ...playerData } = editingPlayer;
+        
+        // Fetch UUID for new player
+        const uuid = await getUuidFromUsername(playerData.minecraftName);
+        const playerWithUuid = {
+          ...playerData,
+          uuid: uuid || null
+        };
+        
+        const newId = await addPlayer(playerWithUuid);
         if (newId) {
-          setSuccess('Player added successfully!');
+          setSuccess('Player added successfully!' + (uuid ? ' UUID fetched.' : ' (UUID not found)'));
           fetchPlayers();
           setShowAddForm(false);
         }
@@ -117,13 +130,44 @@ export default function PlayersManagement() {
         const { id, ...playerData } = editingPlayer;
         const updated = await updatePlayer(id, playerData);
         if (updated) {
-          setSuccess('Player updated successfully!');
+          // Sync UUID for the updated player
+          const fullPlayer = { id, ...playerData } as Player;
+          const syncResult = await syncPlayerUuid(fullPlayer);
+          
+          // Write changelog if any tier values changed
+          if (originalPlayer) {
+            const changes: { gameMode: string; previousScore: number; newScore: number }[] = [];
+            Object.keys(editingPlayer.tiers).forEach((key) => {
+              const k = key as keyof typeof editingPlayer.tiers;
+              const prevVal = originalPlayer!.tiers[k] || 0;
+              const newVal = editingPlayer.tiers[k] || 0;
+              if (prevVal !== newVal) {
+                changes.push({ gameMode: key, previousScore: prevVal, newScore: newVal });
+              }
+            });
+            if (changes.length > 0) {
+              await addChangelog({
+                playerId: editingPlayer.id,
+                minecraftName: editingPlayer.minecraftName,
+                isHiddenPlayer: false,
+                changes,
+              });
+            }
+          }
+
+          let successMessage = 'Player updated successfully!';
+          if (syncResult.updated) {
+            successMessage += ` UUID sync: ${syncResult.changes.join(', ')}`;
+          }
+
+          setSuccess(successMessage);
           fetchPlayers();
           setShowEditModal(false);
         }
       }
       
       setEditingPlayer(null);
+      setOriginalPlayer(null);
       setErrors([]);
       
       // Clear success message after 3 seconds
@@ -168,17 +212,28 @@ export default function PlayersManagement() {
     setErrors([]);
   };
 
+  const calculateOverallScore = (tiers: Record<string, number>) => {
+    const { overall, ...otherTiers } = tiers;
+    const sum = Object.values(otherTiers).reduce((sum: number, score: number) => sum + (score || 0), 0);
+    return Math.min(sum, 808);
+  };
+
   const updateEditingPlayer = (field: string, value: string | number) => {
     if (!editingPlayer) return;
     
     if (field.startsWith('tiers.')) {
       const tierField = field.replace('tiers.', '');
+      const updatedTiers = {
+        ...editingPlayer.tiers,
+        [tierField]: parseInt(String(value)) || 0
+      };
+      
+      // Auto-calculate overall score
+      updatedTiers.overall = calculateOverallScore(updatedTiers);
+      
       setEditingPlayer({
         ...editingPlayer,
-        tiers: {
-          ...editingPlayer.tiers,
-          [tierField]: parseInt(String(value)) || 0
-        }
+        tiers: updatedTiers
       });
     } else {
       setEditingPlayer({
@@ -237,6 +292,7 @@ export default function PlayersManagement() {
         </div>
       </div>
 
+      {/* Add Player Modal */}
       {(editingPlayer && showAddForm) && (
         <div className={styles.modal}>
           <div className={styles.modalContent}>
@@ -254,6 +310,104 @@ export default function PlayersManagement() {
             )}
 
             <div className={styles.form}>
+              <div className={styles.formGroup}>
+                <label>Minecraft Name</label>
+                <input
+                  type="text"
+                  value={editingPlayer.minecraftName}
+                  onChange={(e) => updateEditingPlayer('minecraftName', e.target.value)}
+                  className={styles.input}
+                />
+              </div>
+
+              
+
+              <div className={styles.formGroup}>
+                <label>Region</label>
+                <select
+                  value={editingPlayer.region}
+                  onChange={(e) => updateEditingPlayer('region', e.target.value)}
+                  className={styles.select}
+                >
+                  <option value="NA">NA</option>
+                  <option value="EU">EU</option>
+                  <option value="AS">AS</option>
+                  <option value="OCE">OCE</option>
+                </select>
+              </div>
+
+              <div className={styles.tiersSection}>
+                <h3>Game Mode Tiers</h3>
+                <div className={styles.tiersGrid}>
+                  {gameModes.map(mode => (
+                    <div key={mode.id} className={styles.tierGroup}>
+                      <label>{mode.icon} {mode.name}</label>
+                      {mode.id === 'overall' ? (
+                        <div className={styles.overallScore}>
+                          <span className={styles.autoCalculated}>{editingPlayer.tiers.overall}</span>
+                          <small className={styles.autoLabel}>Auto-calculated</small>
+                        </div>
+                      ) : (
+                        <input
+                          type="number"
+                          min="0"
+                          max="101"
+                          value={editingPlayer.tiers[mode.id as keyof typeof editingPlayer.tiers]}
+                          onChange={(e) => updateEditingPlayer(`tiers.${mode.id}`, e.target.value)}
+                          className={styles.tierInput}
+                        />
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className={styles.modalActions}>
+                <button onClick={handleCancel} className={styles.cancelButton}>
+                  Cancel
+                </button>
+                <button onClick={handleSave} className={styles.saveButton}>
+                  Add Player
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Edit Player Modal */}
+      {(editingPlayer && showEditModal) && (
+        <div className={styles.modal}>
+          <div className={styles.modalContent}>
+            <div className={styles.modalHeader}>
+              <h2>Edit Player - {editingPlayer.minecraftName}</h2>
+              <button onClick={handleCancel} className={styles.closeButton}>×</button>
+            </div>
+            
+            {errors.length > 0 && (
+              <div className={styles.errorList}>
+                {errors.map((error, index) => (
+                  <div key={index} className={styles.error}>{error}</div>
+                ))}
+              </div>
+            )}
+
+            <div className={styles.form}>
+              <div className={styles.playerPreview}>
+                <img 
+                  src={`https://mc-heads.net/avatar/${editingPlayer.minecraftName}/64`}
+                  alt={editingPlayer.minecraftName}
+                  className={styles.previewAvatar}
+                  onError={(e) => {
+                    e.currentTarget.src = `https://mc-heads.net/avatar/steve/64`;
+                  }}
+                />
+                <div className={styles.previewInfo}>
+                  <h3>{editingPlayer.minecraftName}</h3>
+                  <p>{editingPlayer.name}</p>
+                </div>
+              </div>
+
               <div className={styles.formGroup}>
                 <label>Minecraft Name</label>
                 <input
@@ -288,20 +442,41 @@ export default function PlayersManagement() {
                 </select>
               </div>
 
-              <div className={styles.tiersGrid}>
-                {gameModes.map(mode => (
-                  <div key={mode.id} className={styles.tierGroup}>
-                    <label>{mode.icon} {mode.name}</label>
-                    <input
-                      type="number"
-                      min="0"
-                      max={mode.id === 'overall' ? 10000 : 100}
-                      value={editingPlayer.tiers[mode.id as keyof typeof editingPlayer.tiers]}
-                      onChange={(e) => updateEditingPlayer(`tiers.${mode.id}`, e.target.value)}
-                      className={styles.tierInput}
-                    />
-                  </div>
-                ))}
+              <div className={styles.tiersSection}>
+                <h3>Game Mode Tiers</h3>
+                <div className={styles.tiersGrid}>
+                  {gameModes.map(mode => {
+                    const currentScore = editingPlayer.tiers[mode.id as keyof typeof editingPlayer.tiers];
+                    const currentTier = getTierName(currentScore, mode.id === 'overall');
+                    return (
+                      <div key={mode.id} className={styles.tierGroup}>
+                        <label>{mode.icon} {mode.name}</label>
+                        {mode.id === 'overall' ? (
+                          <div className={styles.overallScore}>
+                            <span className={styles.autoCalculated}>{currentScore}</span>
+                            <small className={styles.autoLabel}>Auto-calculated</small>
+                          </div>
+                        ) : (
+                          <>
+                            <input
+                              type="number"
+                              min="0"
+                              max="101"
+                              value={currentScore}
+                              onChange={(e) => updateEditingPlayer(`tiers.${mode.id}`, e.target.value)}
+                              className={styles.tierInput}
+                            />
+                            {currentScore > 0 && (
+                              <span className={`${styles.currentTier} ${getTierColorClass(currentScore, mode.id === 'overall')}`}>
+                                {currentTier}
+                              </span>
+                            )}
+                          </>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
 
               <div className={styles.modalActions}>
@@ -309,9 +484,53 @@ export default function PlayersManagement() {
                   Cancel
                 </button>
                 <button onClick={handleSave} className={styles.saveButton}>
-                  Add Player
+                  Save Changes
                 </button>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {playerToDelete && (
+        <div className={styles.modal}>
+          <div className={styles.confirmModal}>
+            <div className={styles.confirmHeader}>
+              <h2>Delete Player</h2>
+            </div>
+            
+            <div className={styles.confirmContent}>
+              <div className={styles.deletePlayerInfo}>
+                <img 
+                  src={`https://mc-heads.net/avatar/${playerToDelete.minecraftName}/64`}
+                  alt={playerToDelete.minecraftName}
+                  className={styles.deleteAvatar}
+                  onError={(e) => {
+                    e.currentTarget.src = `https://mc-heads.net/avatar/steve/64`;
+                  }}
+                />
+                <div>
+                  <h3>{playerToDelete.minecraftName}</h3>
+                  <p>{playerToDelete.name}</p>
+                </div>
+              </div>
+              
+              <p className={styles.confirmText}>
+                Are you sure you would like to delete this player from the tierlist?
+              </p>
+              <p className={styles.warningText}>
+                This action cannot be undone.
+              </p>
+            </div>
+            
+            <div className={styles.confirmActions}>
+              <button onClick={handleDeleteCancel} className={styles.cancelButton}>
+                Cancel
+              </button>
+              <button onClick={handleDeleteConfirm} className={styles.deleteConfirmButton}>
+                Delete Player
+              </button>
             </div>
           </div>
         </div>
@@ -328,129 +547,53 @@ export default function PlayersManagement() {
         <div className={styles.tableBody}>
           {filteredPlayers.map(player => (
             <div key={player.id} className={styles.tableRow}>
-              {editingPlayer?.id === player.id && !showAddForm ? (
-                <>
-                  <div className={styles.playerCol}>
-                    <div className={styles.playerInfo}>
-                      <img 
-                        src={`https://mc-heads.net/avatar/${player.minecraftName}/32`}
-                        alt={player.minecraftName}
-                        className={styles.avatar}
-                        onError={(e) => {
-                          e.currentTarget.src = `https://mc-heads.net/avatar/steve/32`;
-                        }}
-                      />
-                      <div>
-                        <input
-                          type="text"
-                          value={editingPlayer.minecraftName}
-                          onChange={(e) => updateEditingPlayer('minecraftName', e.target.value)}
-                          className={styles.inlineInput}
-                        />
-                        <input
-                          type="text"
-                          value={editingPlayer.name}
-                          onChange={(e) => updateEditingPlayer('name', e.target.value)}
-                          className={styles.inlineInputSmall}
-                        />
+              <div className={styles.playerCol}>
+                <div className={styles.playerInfo}>
+                  <img 
+                    src={`https://mc-heads.net/avatar/${player.minecraftName}/32`}
+                    alt={player.minecraftName}
+                    className={styles.avatar}
+                    onError={(e) => {
+                      e.currentTarget.src = `https://mc-heads.net/avatar/steve/32`;
+                    }}
+                  />
+                  <div>
+                    <div className={styles.playerName}>{player.minecraftName}</div>
+                    <div className={styles.displayName}>{player.name}</div>
+                  </div>
+                </div>
+              </div>
+              
+              <div className={styles.regionCol}>
+                <span className={`${styles.regionBadge} ${getRegionColorClass(player.region)}`}>
+                  {normalizeRegion(player.region)}
+                </span>
+              </div>
+              
+              <div className={styles.tiersCol}>
+                <div className={styles.tiersGrid}>
+                  {gameModes.slice(0, 5).map(mode => {
+                    const score = player.tiers[mode.id as keyof typeof player.tiers];
+                    const tier = getTierName(score, mode.id === 'overall');
+                    return (
+                      <div key={mode.id} className={styles.tierBadge}>
+                        <span className={styles.tierIcon}>{mode.icon}</span>
+                        <span className={styles.tierScore}>{score}</span>
+                        {score > 0 && mode.id !== 'overall' && (
+                          <span className={`${styles.tierName} ${getTierColorClass(score, mode.id === 'overall')}`}>
+                            {tier}
+                          </span>
+                        )}
                       </div>
-                    </div>
-                  </div>
-                  
-                  <div className={styles.regionCol}>
-                    <select
-                      value={editingPlayer.region}
-                      onChange={(e) => updateEditingPlayer('region', e.target.value)}
-                      className={styles.regionSelect}
-                    >
-                      <option value="NA">NA</option>
-                      <option value="EU">EU</option>
-                      <option value="AS">AS</option>
-                      <option value="OCE">OCE</option>
-                    </select>
-                  </div>
-                  
-                  <div className={styles.tiersCol}>
-                    <div className={styles.tiersEditGrid}>
-                      {gameModes.slice(0, 5).map(mode => (
-                        <div key={mode.id} className={styles.tierEdit}>
-                          <span className={styles.tierLabel}>{mode.icon}</span>
-                          <input
-                            type="number"
-                            min="0"
-                            max={mode.id === 'overall' ? 10000 : 100}
-                            value={editingPlayer.tiers[mode.id as keyof typeof editingPlayer.tiers]}
-                            onChange={(e) => updateEditingPlayer(`tiers.${mode.id}`, e.target.value)}
-                            className={styles.tierEditInput}
-                          />
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                  
-                  <div className={styles.actionsCol}>
-                    {errors.length > 0 && (
-                      <div className={styles.inlineErrors}>
-                        {errors.map((error, index) => (
-                          <div key={index} className={styles.error}>{error}</div>
-                        ))}
-                      </div>
-                    )}
-                    <button onClick={handleSave} className={styles.saveBtn}>Save</button>
-                    <button onClick={handleCancel} className={styles.cancelBtn}>Cancel</button>
-                  </div>
-                </>
-              ) : (
-                <>
-                  <div className={styles.playerCol}>
-                    <div className={styles.playerInfo}>
-                      <img 
-                        src={`https://mc-heads.net/avatar/${player.minecraftName}/32`}
-                        alt={player.minecraftName}
-                        className={styles.avatar}
-                        onError={(e) => {
-                          e.currentTarget.src = `https://mc-heads.net/avatar/steve/32`;
-                        }}
-                      />
-                      <div>
-                        <div className={styles.playerName}>{player.minecraftName}</div>
-                        <div className={styles.displayName}>{player.name}</div>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className={styles.regionCol}>
-                    <span className={`${styles.regionBadge} ${getRegionColorClass(player.region)}`}>
-                      {normalizeRegion(player.region)}
-                    </span>
-                  </div>
-                  
-                  <div className={styles.tiersCol}>
-                    <div className={styles.tiersGrid}>
-                      {gameModes.slice(0, 5).map(mode => {
-                        const score = player.tiers[mode.id as keyof typeof player.tiers];
-                        const tier = getTierName(score, mode.id === 'overall');
-                        return (
-                          <div key={mode.id} className={styles.tierBadge}>
-                            <span className={styles.tierIcon}>{mode.icon}</span>
-                            <span className={styles.tierScore}>{score}</span>
-                            {score > 0 && mode.id !== 'overall' && (
-                              <span className={`${styles.tierName} ${getTierColorClass(score, mode.id === 'overall')}`}>
-                                {tier}
-                              </span>
-                            )}
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-                  
-                  <div className={styles.actionsCol}>
-                    <button onClick={() => handleEdit(player)} className={styles.editBtn}>Edit</button>
-                    <button onClick={() => handleDeleteClick(player)} className={styles.deleteBtn}>Delete</button>
-                  </div>
-                </>
-              )}
+                    );
+                  })}
+                </div>
+              </div>
+              
+              <div className={styles.actionsCol}>
+                <button onClick={() => handleEdit(player)} className={styles.editBtn}>Edit</button>
+                <button onClick={() => handleDeleteClick(player)} className={styles.deleteBtn}>Delete</button>
+              </div>
             </div>
           ))}
         </div>

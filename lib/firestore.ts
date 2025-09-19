@@ -19,6 +19,7 @@ export interface Player {
   minecraftName: string;
   name: string;
   region: string;
+  uuid?: string | null;
   tiers: {
     axe: number;
     mace: number;
@@ -37,6 +38,7 @@ export interface HiddenPlayer {
   minecraftName: string;
   name: string;
   region: string;
+  uuid?: string | null;
   tiers: {
     bed: number;
     cart: number;
@@ -549,6 +551,200 @@ export function validatePlayerData(playerData: Partial<Player | HiddenPlayer>): 
   }
   
   return errors;
+}
+
+// MOJANG API HELPERS
+export async function getUuidFromUsername(username: string): Promise<string | null> {
+  try {
+    // Try main API first
+    let response = await fetch(`/api/mojang/uuid/${encodeURIComponent(username)}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    // If main API fails, try fallback
+    if (!response.ok && response.status === 500) {
+      console.log(`Main API failed for ${username}, trying fallback...`);
+      response = await fetch(`/api/mojang/uuid-fallback/${encodeURIComponent(username)}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+    }
+
+    if (!response.ok) {
+      if (response.status === 404) {
+        console.log(`Username ${username} not found`);
+        return null;
+      }
+      throw new Error(`HTTP ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data.id || null;
+  } catch (error) {
+    console.error(`Error fetching UUID for ${username}:`, error);
+    return null;
+  }
+}
+
+export async function getUsernameFromUuid(uuid: string): Promise<string | null> {
+  try {
+    const response = await fetch(`/api/mojang/username/${encodeURIComponent(uuid)}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      if (response.status === 404) {
+        console.log(`UUID ${uuid} not found`);
+        return null;
+      }
+      throw new Error(`HTTP ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data.name || null;
+  } catch (error) {
+    console.error(`Error fetching username for UUID ${uuid}:`, error);
+    return null;
+  }
+}
+
+// PLAYER UUID SYNC FUNCTIONS
+export async function syncPlayerUuid(player: Player): Promise<{ updated: boolean; changes: string[] }> {
+  const changes: string[] = [];
+  let updated = false;
+
+  try {
+    if (!player.uuid) {
+      // Player doesn't have UUID, try to fetch it
+      const uuid = await getUuidFromUsername(player.minecraftName);
+      if (uuid) {
+        await updatePlayer(player.id, { uuid });
+        changes.push(`Added UUID: ${uuid}`);
+        updated = true;
+      } else {
+        changes.push('UUID fetch failed - username may not exist');
+      }
+    } else {
+      // Player has UUID, check if username changed
+      const currentUsername = await getUsernameFromUuid(player.uuid);
+      if (currentUsername && currentUsername !== player.minecraftName) {
+        await updatePlayer(player.id, { minecraftName: currentUsername });
+        changes.push(`Username updated: ${player.minecraftName} → ${currentUsername}`);
+        updated = true;
+      } else if (!currentUsername) {
+        changes.push('Username fetch failed - UUID may be invalid');
+      } else {
+        changes.push('No changes needed');
+      }
+    }
+  } catch (error) {
+    console.error(`Error syncing player ${player.minecraftName}:`, error);
+    changes.push(`Sync failed: ${error}`);
+  }
+
+  return { updated, changes };
+}
+
+export async function syncHiddenPlayerUuid(player: HiddenPlayer): Promise<{ updated: boolean; changes: string[] }> {
+  const changes: string[] = [];
+  let updated = false;
+
+  try {
+    if (!player.uuid) {
+      // Player doesn't have UUID, try to fetch it
+      const uuid = await getUuidFromUsername(player.minecraftName);
+      if (uuid) {
+        await updateHiddenPlayer(player.id, { uuid });
+        changes.push(`Added UUID: ${uuid}`);
+        updated = true;
+      } else {
+        changes.push('UUID fetch failed - username may not exist');
+      }
+    } else {
+      // Player has UUID, check if username changed
+      const currentUsername = await getUsernameFromUuid(player.uuid);
+      if (currentUsername && currentUsername !== player.minecraftName) {
+        await updateHiddenPlayer(player.id, { minecraftName: currentUsername });
+        changes.push(`Username updated: ${player.minecraftName} → ${currentUsername}`);
+        updated = true;
+      } else if (!currentUsername) {
+        changes.push('Username fetch failed - UUID may be invalid');
+      } else {
+        changes.push('No changes needed');
+      }
+    }
+  } catch (error) {
+    console.error(`Error syncing hidden player ${player.minecraftName}:`, error);
+    changes.push(`Sync failed: ${error}`);
+  }
+
+  return { updated, changes };
+}
+
+export async function syncAllPlayersUuids(): Promise<{ 
+  regularPlayers: { total: number; updated: number; results: Array<{ player: string; changes: string[] }> };
+  hiddenPlayers: { total: number; updated: number; results: Array<{ player: string; changes: string[] }> };
+}> {
+  console.log('Starting UUID sync for all players...');
+  
+  const results = {
+    regularPlayers: { total: 0, updated: 0, results: [] as Array<{ player: string; changes: string[] }> },
+    hiddenPlayers: { total: 0, updated: 0, results: [] as Array<{ player: string; changes: string[] }> }
+  };
+
+  try {
+    // Sync regular players
+    const regularPlayers = await getAllPlayers();
+    results.regularPlayers.total = regularPlayers.length;
+    
+    for (const player of regularPlayers) {
+      const syncResult = await syncPlayerUuid(player);
+      results.regularPlayers.results.push({
+        player: player.minecraftName,
+        changes: syncResult.changes
+      });
+      
+      if (syncResult.updated) {
+        results.regularPlayers.updated++;
+      }
+      
+      // Rate limiting: wait 100ms between requests to respect Mojang API limits
+      await new Promise(resolve => setTimeout(resolve, 100));
+    }
+
+    // Sync hidden players
+    const hiddenPlayers = await getAllHiddenPlayers();
+    results.hiddenPlayers.total = hiddenPlayers.length;
+    
+    for (const player of hiddenPlayers) {
+      const syncResult = await syncHiddenPlayerUuid(player);
+      results.hiddenPlayers.results.push({
+        player: player.minecraftName,
+        changes: syncResult.changes
+      });
+      
+      if (syncResult.updated) {
+        results.hiddenPlayers.updated++;
+      }
+      
+      // Rate limiting: wait 100ms between requests
+      await new Promise(resolve => setTimeout(resolve, 100));
+    }
+
+  } catch (error) {
+    console.error('Error during UUID sync:', error);
+  }
+
+  console.log('UUID sync completed:', results);
+  return results;
 }
 
 // CHANGELOG HELPERS

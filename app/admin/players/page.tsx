@@ -12,7 +12,9 @@ import {
   getTierColorClass,
   getRegionColorClass,
   normalizeRegion,
-  addChangelog
+  addChangelog,
+  getUuidFromUsername,
+  syncPlayerUuid
 } from '../../../lib/firestore';
 import styles from './players.module.css';
 
@@ -110,9 +112,17 @@ export default function PlayersManagement() {
     try {
       if (editingPlayer.isNew) {
         const { isNew, id, ...playerData } = editingPlayer;
-        const newId = await addPlayer(playerData);
+        
+        // Fetch UUID for new player
+        const uuid = await getUuidFromUsername(playerData.minecraftName);
+        const playerWithUuid = {
+          ...playerData,
+          uuid: uuid || null
+        };
+        
+        const newId = await addPlayer(playerWithUuid);
         if (newId) {
-          setSuccess('Player added successfully!');
+          setSuccess('Player added successfully!' + (uuid ? ' UUID fetched.' : ' (UUID not found)'));
           fetchPlayers();
           setShowAddForm(false);
         }
@@ -120,6 +130,10 @@ export default function PlayersManagement() {
         const { id, ...playerData } = editingPlayer;
         const updated = await updatePlayer(id, playerData);
         if (updated) {
+          // Sync UUID for the updated player
+          const fullPlayer = { id, ...playerData } as Player;
+          const syncResult = await syncPlayerUuid(fullPlayer);
+          
           // Write changelog if any tier values changed
           if (originalPlayer) {
             const changes: { gameMode: string; previousScore: number; newScore: number }[] = [];
@@ -140,7 +154,13 @@ export default function PlayersManagement() {
               });
             }
           }
-          setSuccess('Player updated successfully!');
+
+          let successMessage = 'Player updated successfully!';
+          if (syncResult.updated) {
+            successMessage += ` UUID sync: ${syncResult.changes.join(', ')}`;
+          }
+
+          setSuccess(successMessage);
           fetchPlayers();
           setShowEditModal(false);
         }
