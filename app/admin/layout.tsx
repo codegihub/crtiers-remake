@@ -9,9 +9,9 @@ function AdminLoginForm() {
   const [error, setError] = useState('');
   const { login } = useAuth();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (login(password)) {
+    if (await login(password)) {
       setError('');
     } else {
       setError('Invalid password');
@@ -83,14 +83,14 @@ function AdminNavigation() {
 }
 
 function AdminLayoutContent({ children }: { children: React.ReactNode }) {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, loading } = useAuth();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  if (!mounted) {
+  if (!mounted || loading) {
     return (
       <div className={styles.adminPage}>
         <div className={styles.loading}>
