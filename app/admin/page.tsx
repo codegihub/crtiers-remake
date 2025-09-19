@@ -4,6 +4,24 @@ import { useState, useEffect } from 'react';
 import { getAllPlayers, getAllHiddenPlayers, syncAllPlayersUuids } from '../../lib/firestore';
 import styles from './admin.module.css';
 
+interface SyncResult {
+  player: string;
+  changes: string[];
+}
+
+interface SyncResults {
+  regularPlayers: {
+    total: number;
+    updated: number;
+    results: SyncResult[];
+  };
+  hiddenPlayers: {
+    total: number;
+    updated: number;
+    results: SyncResult[];
+  };
+}
+
 export default function AdminDashboard() {
   const [stats, setStats] = useState({
     totalPlayers: 0,
@@ -13,7 +31,7 @@ export default function AdminDashboard() {
   });
   const [loading, setLoading] = useState(true);
   const [syncLoading, setSyncLoading] = useState(false);
-  const [syncResults, setSyncResults] = useState<any>(null);
+  const [syncResults, setSyncResults] = useState<SyncResults | null>(null);
 
   useEffect(() => {
     const fetchStats = async () => {
@@ -164,8 +182,8 @@ export default function AdminDashboard() {
               <p>Updated {syncResults.regularPlayers.updated} of {syncResults.regularPlayers.total} players</p>
               <div className={styles.syncDetails}>
                 {syncResults.regularPlayers.results
-                  .filter((result: any) => !result.changes.includes('No changes needed'))
-                  .map((result: any, index: number) => (
+                  .filter((result: SyncResult) => !result.changes.includes('No changes needed'))
+                  .map((result: SyncResult, index: number) => (
                     <div key={index} className={styles.syncResult}>
                       <strong>{result.player}:</strong>
                       <ul>
@@ -186,8 +204,8 @@ export default function AdminDashboard() {
               <p>Updated {syncResults.hiddenPlayers.updated} of {syncResults.hiddenPlayers.total} players</p>
               <div className={styles.syncDetails}>
                 {syncResults.hiddenPlayers.results
-                  .filter((result: any) => !result.changes.includes('No changes needed'))
-                  .map((result: any, index: number) => (
+                  .filter((result: SyncResult) => !result.changes.includes('No changes needed'))
+                  .map((result: SyncResult, index: number) => (
                     <div key={index} className={styles.syncResult}>
                       <strong>{result.player}:</strong>
                       <ul>

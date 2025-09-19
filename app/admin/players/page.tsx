@@ -111,7 +111,7 @@ export default function PlayersManagement() {
 
     try {
       if (editingPlayer.isNew) {
-        const { isNew, id, ...playerData } = editingPlayer;
+        const { isNew: _, id: __, ...playerData } = editingPlayer;
         
         // Fetch UUID for new player
         const uuid = await getUuidFromUsername(playerData.minecraftName);
@@ -213,7 +213,7 @@ export default function PlayersManagement() {
   };
 
   const calculateOverallScore = (tiers: Record<string, number>) => {
-    const { overall, ...otherTiers } = tiers;
+    const { overall: _, ...otherTiers } = tiers;
     const sum = Object.values(otherTiers).reduce((sum: number, score: number) => sum + (score || 0), 0);
     return Math.min(sum, 808);
   };

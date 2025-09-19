@@ -4,6 +4,24 @@ import { NextRequest, NextResponse } from 'next/server';
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 
+interface MojangResponse {
+  id: string;
+}
+
+interface PlayerDBResponse {
+  data?: {
+    player?: {
+      raw_id: string;
+    };
+  };
+}
+
+interface MCAPIResponse {
+  uuid: string;
+}
+
+type APIResponse = MojangResponse | PlayerDBResponse | MCAPIResponse;
+
 export async function GET(
   request: NextRequest,
   { params }: { params: { username: string } }
@@ -18,17 +36,17 @@ export async function GET(
       {
         name: 'Mojang Official',
         url: `https://api.mojang.com/users/profiles/minecraft/${username}`,
-        parseResponse: (data: any) => data.id
+        parseResponse: (data: APIResponse) => (data as MojangResponse).id
       },
       {
         name: 'PlayerDB',
         url: `https://playerdb.co/api/player/minecraft/${username}`,
-        parseResponse: (data: any) => data.data?.player?.raw_id
+        parseResponse: (data: APIResponse) => (data as PlayerDBResponse).data?.player?.raw_id
       },
       {
         name: 'MC-API',
         url: `https://mc-api.net/v3/uuid/${username}`,
-        parseResponse: (data: any) => data.uuid
+        parseResponse: (data: APIResponse) => (data as MCAPIResponse).uuid
       }
     ];
 
