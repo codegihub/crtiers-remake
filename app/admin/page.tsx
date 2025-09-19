@@ -85,6 +85,15 @@ export default function AdminDashboard() {
 
       <div className={styles.quickActions}>
         <div className={styles.actionCard}>
+          <h3>View Changelogs</h3>
+          <p>
+            See a history of edits: who changed what, when, and the before/after scores.
+          </p>
+          <a href="../../admin/changelogs" className={styles.actionButton}>
+            Open Changelogs
+          </a>
+        </div>
+        <div className={styles.actionCard}>
           <h3>Manage Regular Players</h3>
           <p>
             Add, edit, and delete regular players. Manage their tiers across all game modes 

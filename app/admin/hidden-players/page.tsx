@@ -11,7 +11,8 @@ import {
   getTierName,
   getTierColorClass,
   getRegionColorClass,
-  normalizeRegion
+  normalizeRegion,
+  addChangelog
 } from '../../../lib/firestore';
 import styles from '../players/players.module.css';
 
@@ -40,6 +41,7 @@ export default function HiddenPlayersManagement() {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [editingPlayer, setEditingPlayer] = useState<EditingPlayer | null>(null);
+  const [originalPlayer, setOriginalPlayer] = useState<HiddenPlayer | null>(null);
   const [errors, setErrors] = useState<string[]>([]);
   const [success, setSuccess] = useState('');
   const [showAddForm, setShowAddForm] = useState(false);
@@ -70,6 +72,7 @@ export default function HiddenPlayersManagement() {
 
   const handleEdit = (player: HiddenPlayer) => {
     setEditingPlayer({ ...player });
+    setOriginalPlayer({ ...player });
     setErrors([]);
     setShowEditModal(true);
   };
@@ -109,6 +112,26 @@ export default function HiddenPlayersManagement() {
         const { id, ...playerData } = editingPlayer;
         const updated = await updateHiddenPlayer(id, playerData);
         if (updated) {
+          // Write changelog if any tier values changed
+          if (originalPlayer) {
+            const changes: { gameMode: string; previousScore: number; newScore: number }[] = [];
+            Object.keys(editingPlayer.tiers).forEach((key) => {
+              const k = key as keyof typeof editingPlayer.tiers;
+              const prevVal = originalPlayer!.tiers[k] || 0;
+              const newVal = editingPlayer.tiers[k] || 0;
+              if (prevVal !== newVal) {
+                changes.push({ gameMode: key, previousScore: prevVal, newScore: newVal });
+              }
+            });
+            if (changes.length > 0) {
+              await addChangelog({
+                playerId: editingPlayer.id,
+                minecraftName: editingPlayer.minecraftName,
+                isHiddenPlayer: true,
+                changes,
+              });
+            }
+          }
           setSuccess('Hidden player updated successfully!');
           fetchPlayers();
           setShowEditModal(false);
@@ -116,6 +139,7 @@ export default function HiddenPlayersManagement() {
       }
       
       setEditingPlayer(null);
+      setOriginalPlayer(null);
       setErrors([]);
       
       // Clear success message after 3 seconds

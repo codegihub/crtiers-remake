@@ -8,7 +8,9 @@ import {
   limit,
   addDoc,
   updateDoc,
-  deleteDoc
+  deleteDoc,
+  serverTimestamp,
+  Timestamp
 } from 'firebase/firestore';
 import { db } from './firebase';
 
@@ -42,6 +44,22 @@ export interface HiddenPlayer {
     spleef: number;
     overall: number;
   };
+}
+
+// CHANGELOGS
+export interface TierChangeEntry {
+  gameMode: string;
+  previousScore: number;
+  newScore: number;
+}
+
+export interface ChangelogEntry {
+  id?: string;
+  playerId: string;
+  minecraftName: string;
+  isHiddenPlayer: boolean;
+  changes: TierChangeEntry[];
+  createdAt: Timestamp | null;
 }
 
 export interface GameModeLeaderboard {
@@ -531,4 +549,35 @@ export function validatePlayerData(playerData: Partial<Player | HiddenPlayer>): 
   }
   
   return errors;
+}
+
+// CHANGELOG HELPERS
+export async function addChangelog(entry: Omit<ChangelogEntry, 'id' | 'createdAt'>): Promise<string | null> {
+  try {
+    const changelogsRef = collection(db, 'changelogs');
+    const docRef = await addDoc(changelogsRef, {
+      ...entry,
+      createdAt: serverTimestamp(),
+    });
+    return docRef.id;
+  } catch (error) {
+    console.error('Error adding changelog:', error);
+    return null;
+  }
+}
+
+export async function getChangelogs(limitCount: number = 100): Promise<ChangelogEntry[]> {
+  try {
+    const changelogsRef = collection(db, 'changelogs');
+    const q = query(
+      changelogsRef,
+      orderBy('createdAt', 'desc'),
+      limit(limitCount)
+    );
+    const snapshot = await getDocs(q);
+    return snapshot.docs.map(d => ({ id: d.id, ...d.data() }) as ChangelogEntry);
+  } catch (error) {
+    console.error('Error fetching changelogs:', error);
+    return [];
+  }
 }
