@@ -95,7 +95,7 @@ export async function generateMetadata({ params }: { params: Promise<{ username:
         card: 'summary',
         title: `${player.minecraftName} - CrTiers`,
         description: `${player.minecraftName} - ${rankDescription}. Professional Minecraft player rankings and tier system.`,
-        images: [`https://mc-heads.net/body/${player.minecraftName}/64`],
+        images: [`https://mc-heads.net/avatar/${player.minecraftName}/64`],
       },
     };
   } catch (error) {
