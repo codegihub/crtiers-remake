@@ -1,5 +1,6 @@
 import PlayerClient from './PlayerClient';
-import { getAllPlayers } from '../../../lib/firestore';
+import { getAllPlayers, getPlayerByUsername } from '../../../lib/firestore';
+import { Metadata } from 'next';
 
 // Generate static params for all players from Firebase
 export async function generateStaticParams(): Promise<{ username: string }[]> {
@@ -40,11 +41,82 @@ export async function generateStaticParams(): Promise<{ username: string }[]> {
       'robb1978',
       'thecheesymouse',
       'venm8in',
-      'wingfallfan',
-      'ruBolf_'
+      'wingfallfan'
     ];
     
     return fallbackPlayers.map(username => ({ username }));
+  }
+}
+
+// Generate metadata for Open Graph and social media previews
+export async function generateMetadata({ params }: { params: Promise<{ username: string }> }): Promise<Metadata> {
+  const { username } = await params;
+  const decodedUsername = decodeURIComponent(username);
+  
+  try {
+    const player = await getPlayerByUsername(decodedUsername);
+    
+    if (!player) {
+      return {
+        title: `Player ${decodedUsername} - CrTiers`,
+        description: 'Professional Minecraft player rankings and tier system',
+      };
+    }
+    
+    // Get the overall tier score for the description
+    const overallScore = player.tiers.overall || 0;
+    const tierDescription = overallScore > 0 ? `Tier ${Math.floor(overallScore / 10)}` : 'Unranked';
+    
+    return {
+      title: `${player.minecraftName} - CrTiers`,
+      description: `${player.minecraftName} - ${tierDescription} player from ${player.region}. Professional Minecraft player rankings and tier system.`,
+      
+      // Open Graph meta tags
+      openGraph: {
+        title: `${player.minecraftName} - CrTiers`,
+        description: `${player.minecraftName} - ${tierDescription} player from ${player.region}. Professional Minecraft player rankings and tier system.`,
+        type: 'profile',
+        url: `https://crystaltiers.com/player/${encodeURIComponent(decodedUsername)}`,
+        siteName: 'CrTiers',
+        images: [
+          {
+            url: `https://mc-heads.net/body/${player.minecraftName}/128`,
+            width: 128,
+            height: 128,
+            alt: `${player.minecraftName} Minecraft avatar`,
+          },
+          {
+            url: `https://mc-heads.net/head/${player.minecraftName}/128`,
+            width: 128,
+            height: 128,
+            alt: `${player.minecraftName} Minecraft skin head`,
+          }
+        ],
+        locale: 'en_US',
+      },
+      
+      // Twitter Card meta tags
+      twitter: {
+        card: 'summary',
+        title: `${player.minecraftName} - CrTiers`,
+        description: `${player.minecraftName} - ${tierDescription} player from ${player.region}. Professional Minecraft player rankings and tier system.`,
+        images: [`https://mc-heads.net/body/${player.minecraftName}/128`],
+      },
+    };
+  } catch (error) {
+    console.error('Error generating metadata for player:', error);
+    
+    // Fallback metadata
+    return {
+      title: `Player ${decodedUsername} - CrTiers`,
+      description: 'Professional Minecraft player rankings and tier system',
+      openGraph: {
+        title: `Player ${decodedUsername} - CrTiers`,
+        description: 'Professional Minecraft player rankings and tier system',
+        type: 'website',
+        siteName: 'CrTiers',
+      },
+    };
   }
 }
 
