@@ -77,13 +77,13 @@ export async function generateMetadata({ params }: { params: Promise<{ username:
         title: `${player.minecraftName} - CrTiers`,
         description: `${player.minecraftName} - ${rankDescription}. Minecraft player rankings and tier system.`,
         type: 'profile',
-        url: `https://crystaltiers.com/player/${encodeURIComponent(decodedUsername)}`,
+        url: `https://crystaltiers.com/player/${encodeURIComponent(decodedUsername)}/`,
         siteName: 'CrTiers',
         images: [
           {
-            url: `https://mc-heads.net/body/${player.minecraftName}/128`,
-            width: 70,
-            height: 100,
+            url: `https://mc-heads.net/body/${player.minecraftName}/64`,
+            width: 64,
+            height: 64,
             alt: `${player.minecraftName} Minecraft avatar`,
           }
         ],
