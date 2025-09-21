@@ -1,5 +1,5 @@
 import PlayerClient from './PlayerClient';
-import { getAllPlayers, getPlayerByUsername, getPlayerRegionalRank } from '../../../lib/firestore';
+import { getAllPlayers, getPlayerByUsername, getPlayerRank } from '../../../lib/firestore';
 import { Metadata } from 'next';
 
 // Generate static params for all players from Firebase
@@ -63,10 +63,10 @@ export async function generateMetadata({ params }: { params: Promise<{ username:
       };
     }
     
-    // Get the overall tier score and regional rank for the description
+    // Get the overall tier score and global rank for the description
     const overallScore = player.tiers.overall || 0;
-    const regionalRank = await getPlayerRegionalRank('overall', overallScore, player.region);
-    const rankDescription = overallScore > 0 ? `#${regionalRank} in ${player.region}` : 'Unranked';
+    const globalRank = await getPlayerRank('overall', overallScore);
+    const rankDescription = overallScore > 0 ? `#${globalRank} globally` : 'Unranked';
     
     return {
       title: `${player.minecraftName} - CrTiers`,
@@ -75,7 +75,7 @@ export async function generateMetadata({ params }: { params: Promise<{ username:
       // Open Graph meta tags
       openGraph: {
         title: `${player.minecraftName} - CrTiers`,
-        description: `${player.minecraftName} - ${rankDescription}. Minecraft player rankings and tier system.`,
+        description: `${player.minecraftName} - ${rankDescription}. Professional Minecraft player rankings and tier system.`,
         type: 'profile',
         url: `https://crystaltiers.com/player/${encodeURIComponent(decodedUsername)}`,
         siteName: 'CrTiers',
@@ -94,7 +94,7 @@ export async function generateMetadata({ params }: { params: Promise<{ username:
       twitter: {
         card: 'summary',
         title: `${player.minecraftName} - CrTiers`,
-        description: `${player.minecraftName} - ${rankDescription}. Minecraft player rankings and tier system.`,
+        description: `${player.minecraftName} - ${rankDescription}. Professional Minecraft player rankings and tier system.`,
         images: [`https://mc-heads.net/body/${player.minecraftName}/64`],
       },
     };
