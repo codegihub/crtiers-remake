@@ -2,6 +2,8 @@ import PlayerClient from './PlayerClient';
 import { getAllPlayers, getPlayerByUsername, getPlayerRank } from '../../../lib/firestore';
 import { Metadata } from 'next';
 
+export const dynamicParams = true;
+
 // Generate static params for all players from Firebase
 export async function generateStaticParams(): Promise<{ username: string }[]> {
   try {
