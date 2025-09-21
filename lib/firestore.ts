@@ -254,6 +254,24 @@ export async function getPlayerRank(gameMode: string, playerScore: number): Prom
   }
 }
 
+// Helper function to calculate regional rank from leaderboard data
+export async function getPlayerRegionalRank(gameMode: string, playerScore: number, region: string): Promise<number> {
+  try {
+    const playersRef = collection(db, 'players');
+    const q = query(
+      playersRef,
+      where('region', '==', region.toUpperCase()),
+      where(`tiers.${gameMode}`, '>', playerScore)
+    );
+    
+    const querySnapshot = await getDocs(q);
+    return querySnapshot.size + 1; // +1 because this player's rank is one more than players above them
+  } catch (error) {
+    console.error('Error calculating regional rank:', error);
+    return 1;
+  }
+}
+
 // Get all game mode top players for the leaderboards page
 export async function getAllGameModeTopPlayers(): Promise<{ [gameMode: string]: Player | null }> {
   const gameModes = ['overall', 'vanilla', 'uhc', 'pot', 'nethop', 'smp', 'sword', 'axe', 'mace'];
