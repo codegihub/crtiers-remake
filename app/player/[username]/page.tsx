@@ -75,15 +75,15 @@ export async function generateMetadata({ params }: { params: Promise<{ username:
       // Open Graph meta tags
       openGraph: {
         title: `${player.minecraftName} - CrTiers`,
-        description: `${player.minecraftName} - ${rankDescription}. Professional Minecraft player rankings and tier system.`,
+        description: `${player.minecraftName} - ${rankDescription}. Minecraft player rankings and tier system.`,
         type: 'profile',
         url: `https://crystaltiers.com/player/${encodeURIComponent(decodedUsername)}`,
         siteName: 'CrTiers',
         images: [
           {
-            url: `https://mc-heads.net/body/${player.minecraftName}/128`,
-            width: 128,
-            height: 128,
+            url: `https://mc-heads.net/body/${player.minecraftName}/64`,
+            width: 64,
+            height: 64,
             alt: `${player.minecraftName} Minecraft avatar`,
           }
         ],
@@ -94,8 +94,8 @@ export async function generateMetadata({ params }: { params: Promise<{ username:
       twitter: {
         card: 'summary',
         title: `${player.minecraftName} - CrTiers`,
-        description: `${player.minecraftName} - ${rankDescription}. Professional Minecraft player rankings and tier system.`,
-        images: [`https://mc-heads.net/body/${player.minecraftName}/128`],
+        description: `${player.minecraftName} - ${rankDescription}. Minecraft player rankings and tier system.`,
+        images: [`https://mc-heads.net/body/${player.minecraftName}/64`],
       },
     };
   } catch (error) {
@@ -104,10 +104,10 @@ export async function generateMetadata({ params }: { params: Promise<{ username:
     // Fallback metadata
     return {
       title: `Player ${decodedUsername} - CrTiers`,
-      description: 'Professional Minecraft player rankings and tier system',
+      description: 'Minecraft player rankings and tier system',
       openGraph: {
         title: `Player ${decodedUsername} - CrTiers`,
-        description: 'Professional Minecraft player rankings and tier system',
+        description: 'Minecraft player rankings and tier system',
         type: 'website',
         siteName: 'CrTiers',
       },
