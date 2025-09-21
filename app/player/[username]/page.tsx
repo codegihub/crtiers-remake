@@ -70,20 +70,20 @@ export async function generateMetadata({ params }: { params: Promise<{ username:
     
     return {
       title: `${player.minecraftName} - CrTiers`,
-      description: `${player.minecraftName} - ${rankDescription}. Professional Minecraft player rankings and tier system.`,
+      description: `${player.minecraftName} - ${rankDescription}. Minecraft player rankings and tier system.`,
       
       // Open Graph meta tags
       openGraph: {
         title: `${player.minecraftName} - CrTiers`,
-        description: `${player.minecraftName} - ${rankDescription}. Professional Minecraft player rankings and tier system.`,
+        description: `${player.minecraftName} - ${rankDescription}. Minecraft player rankings and tier system.`,
         type: 'profile',
         url: `https://crystaltiers.com/player/${encodeURIComponent(decodedUsername)}`,
         siteName: 'CrTiers',
         images: [
           {
-            url: `https://mc-heads.net/body/${player.minecraftName}/64`,
-            width: 64,
-            height: 64,
+            url: `https://mc-heads.net/body/${player.minecraftName}/80`,
+            width: 60,
+            height: 80,
             alt: `${player.minecraftName} Minecraft avatar`,
           }
         ],
