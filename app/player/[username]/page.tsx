@@ -81,9 +81,9 @@ export async function generateMetadata({ params }: { params: Promise<{ username:
         siteName: 'CrTiers',
         images: [
           {
-            url: `https://mc-heads.net/body/${player.minecraftName}/80`,
-            width: 60,
-            height: 80,
+            url: `https://mc-heads.net/body/${player.minecraftName}/128`,
+            width: 70,
+            height: 100,
             alt: `${player.minecraftName} Minecraft avatar`,
           }
         ],
