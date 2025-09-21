@@ -1,5 +1,7 @@
 import PlayerClient from './PlayerClient';
 
+export const dynamicParams = true;
+
 // Generate static params for all players
 export async function generateStaticParams(): Promise<{ username: string }[]> {
   // Use a hardcoded list of players for static generation
