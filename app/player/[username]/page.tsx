@@ -41,8 +41,7 @@ export async function generateStaticParams(): Promise<{ username: string }[]> {
       'robb1978',
       'thecheesymouse',
       'venm8in',
-      'wingfallfan',
-      'p2wer'
+      'wingfallfan'
     ];
     
     return fallbackPlayers.map(username => ({ username }));
