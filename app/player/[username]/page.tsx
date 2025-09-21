@@ -1,5 +1,5 @@
 import PlayerClient from './PlayerClient';
-import { getAllPlayers, getPlayerByUsername } from '../../../lib/firestore';
+import { getAllPlayers, getPlayerByUsername, getPlayerRegionalRank } from '../../../lib/firestore';
 import { Metadata } from 'next';
 
 // Generate static params for all players from Firebase
@@ -63,18 +63,19 @@ export async function generateMetadata({ params }: { params: Promise<{ username:
       };
     }
     
-    // Get the overall tier score for the description
+    // Get the overall tier score and regional rank for the description
     const overallScore = player.tiers.overall || 0;
-    const tierDescription = overallScore > 0 ? `Tier ${Math.floor(overallScore / 10)}` : 'Unranked';
+    const regionalRank = await getPlayerRegionalRank('overall', overallScore, player.region);
+    const rankDescription = overallScore > 0 ? `#${regionalRank} in ${player.region}` : 'Unranked';
     
     return {
       title: `${player.minecraftName} - CrTiers`,
-      description: `${player.minecraftName} - ${tierDescription} player from ${player.region}. Professional Minecraft player rankings and tier system.`,
+      description: `${player.minecraftName} - ${rankDescription}. Professional Minecraft player rankings and tier system.`,
       
       // Open Graph meta tags
       openGraph: {
         title: `${player.minecraftName} - CrTiers`,
-        description: `${player.minecraftName} - ${tierDescription} player from ${player.region}. Professional Minecraft player rankings and tier system.`,
+        description: `${player.minecraftName} - ${rankDescription}. Professional Minecraft player rankings and tier system.`,
         type: 'profile',
         url: `https://crystaltiers.com/player/${encodeURIComponent(decodedUsername)}`,
         siteName: 'CrTiers',
@@ -84,12 +85,6 @@ export async function generateMetadata({ params }: { params: Promise<{ username:
             width: 128,
             height: 128,
             alt: `${player.minecraftName} Minecraft avatar`,
-          },
-          {
-            url: `https://mc-heads.net/head/${player.minecraftName}/128`,
-            width: 128,
-            height: 128,
-            alt: `${player.minecraftName} Minecraft skin head`,
           }
         ],
         locale: 'en_US',
@@ -99,7 +94,7 @@ export async function generateMetadata({ params }: { params: Promise<{ username:
       twitter: {
         card: 'summary',
         title: `${player.minecraftName} - CrTiers`,
-        description: `${player.minecraftName} - ${tierDescription} player from ${player.region}. Professional Minecraft player rankings and tier system.`,
+        description: `${player.minecraftName} - ${rankDescription}. Professional Minecraft player rankings and tier system.`,
         images: [`https://mc-heads.net/body/${player.minecraftName}/128`],
       },
     };
