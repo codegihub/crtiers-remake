@@ -156,9 +156,9 @@ export default function HiddenGameModeLeaderboard() {
               onChange={(e) => setSelectedTier(e.target.value)}
               className={styles.tierFilter}
             >
-              <option value="all">All Tiers</option>
+              <option value="all" className={styles.tierOption}>All Tiers</option>
               {availableTiers.map(tier => (
-                <option key={tier} value={tier}>{tier}</option>
+                <option key={tier} value={tier} className={styles.tierOption}>{tier}</option>
               ))}
             </select>
           </div>
