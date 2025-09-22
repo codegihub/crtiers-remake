@@ -2,9 +2,10 @@ import PlayerClient from './PlayerClient';
 import { getAllPlayers, getPlayerByUsername, getPlayerRank } from '../../../lib/firestore';
 import { Metadata } from 'next';
 
+// Enable dynamic rendering for all players
 export const dynamicParams = true;
 
-// Generate static params for all players from Firebase
+// Generate static params for some players (optional - for performance)
 export async function generateStaticParams(): Promise<{ username: string }[]> {
   try {
     // Fetch all players from Firebase during build time
@@ -64,20 +65,18 @@ export async function generateMetadata({ params }: { params: Promise<{ username:
         description: 'Professional Minecraft player rankings and tier system',
       };
     }
-    
-    // Get the overall tier score and global rank for the description
+
     const overallScore = player.tiers.overall || 0;
     const globalRank = await getPlayerRank('overall', overallScore);
     const rankDescription = overallScore > 0 ? `#${globalRank} globally` : 'Unranked';
     
     return {
       title: `${player.minecraftName} - CrTiers`,
-      description: `${player.minecraftName} - ${rankDescription}. Minecraft player rankings and tier system.`,
-      
-      // Open Graph meta tags
+      description: `${player.minecraftName} - ${rankDescription}. Professional Minecraft player rankings and tier system.`,
+
       openGraph: {
         title: `${player.minecraftName} - CrTiers`,
-        description: `${player.minecraftName} - ${rankDescription}. Minecraft player rankings and tier system.`,
+        description: `${player.minecraftName} - ${rankDescription}. Professional Minecraft player rankings and tier system.`,
         type: 'profile',
         url: `https://crystaltiers.com/player/${encodeURIComponent(decodedUsername)}/`,
         siteName: 'CrTiers',
@@ -85,14 +84,13 @@ export async function generateMetadata({ params }: { params: Promise<{ username:
           {
             url: `https://mc-heads.net/avatar/${player.minecraftName}/64`,
             width: 64,
-            height: 64,
+            height: 84,
             alt: `${player.minecraftName} Minecraft avatar`,
           }
         ],
         locale: 'en_US',
       },
       
-      // Twitter Card meta tags
       twitter: {
         card: 'summary',
         title: `${player.minecraftName} - CrTiers`,
@@ -102,8 +100,7 @@ export async function generateMetadata({ params }: { params: Promise<{ username:
     };
   } catch (error) {
     console.error('Error generating metadata for player:', error);
-    
-    // Fallback metadata
+
     return {
       title: `Player ${decodedUsername} - CrTiers`,
       description: 'Minecraft player rankings and tier system',
