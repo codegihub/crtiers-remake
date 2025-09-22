@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { getPlayerByUsername, Player, getTierName, getPlayerRank, getTierColorClass, getRegionColorClass, normalizeRegion } from '../../../lib/firestore';
+import { getPlayerByUsername, Player, getTierName, getPlayerRank, getTierColorClass, getRegionColorClass, normalizeRegion, searchPlayers } from '../../../lib/firestore';
 import styles from './player.module.css';
 import MobileNav from '../../components/MobileNav';
 
@@ -27,6 +27,9 @@ export default function PlayerClient({ username }: PlayerClientProps) {
   const [playerRank, setPlayerRank] = useState<number>(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [searchResults, setSearchResults] = useState<Player[]>([]);
+  const [searchLoading, setSearchLoading] = useState(false);
 
   useEffect(() => {
     const fetchPlayer = async () => {
@@ -65,6 +68,33 @@ export default function PlayerClient({ username }: PlayerClientProps) {
       fetchRank();
     }
   }, [player, activeTab]);
+
+  const handleSearch = async (term: string) => {
+    setSearchTerm(term);
+    
+    if (term.length < 2) {
+      setSearchResults([]);
+      return;
+    }
+
+    setSearchLoading(true);
+    try {
+      const results = await searchPlayers(term);
+      setSearchResults(results.slice(0, 10)); // Limit to 10 results
+    } catch (error) {
+      console.error('Error searching players:', error);
+      setSearchResults([]);
+    } finally {
+      setSearchLoading(false);
+    }
+  };
+
+  const handleFormSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchTerm.trim()) {
+      window.location.href = `../../player/${encodeURIComponent(searchTerm.trim())}`;
+    }
+  };
 
   if (loading) {
     return (
@@ -153,6 +183,49 @@ export default function PlayerClient({ username }: PlayerClientProps) {
             </div>
 
             <div className={styles.statsContainer}>
+              <div className={styles.searchContainer}>
+                <form onSubmit={handleFormSearch} className={styles.searchForm}>
+                  <input
+                    type="text"
+                    placeholder="Search players..."
+                    value={searchTerm}
+                    onChange={(e) => handleSearch(e.target.value)}
+                    className={styles.searchInput}
+                  />
+                  <button type="submit" className={styles.searchButton}>
+                    🔍 Search
+                  </button>
+                </form>
+                {searchLoading && <div className={styles.searchSpinner}></div>}
+                
+                {searchResults.length > 0 && (
+                  <div className={styles.searchResults}>
+                    {searchResults.map((searchPlayer) => (
+                      <a
+                        key={searchPlayer.id}
+                        href={`../../player/${encodeURIComponent(searchPlayer.minecraftName)}`}
+                        className={styles.searchResultItem}
+                      >
+                        <img 
+                          src={`https://mc-heads.net/avatar/${searchPlayer.minecraftName}/64`}
+                          alt={`${searchPlayer.minecraftName} avatar`}
+                          className={styles.searchResultAvatar}
+                          onError={(e) => {
+                            e.currentTarget.src = `https://mc-heads.net/avatar/steve/64`;
+                          }}
+                        />
+                        <div className={styles.searchResultInfo}>
+                          <span className={styles.searchResultName}>{searchPlayer.minecraftName}</span>
+                          <span className={`${styles.searchResultRegion} ${getRegionColorClass(searchPlayer.region)}`}>
+                            {normalizeRegion(searchPlayer.region)}
+                          </span>
+                        </div>
+                      </a>
+                    ))}
+                  </div>
+                )}
+              </div>
+              
               <div className={styles.gameModeTabsContainer}>
                 <div className={styles.gameModeTabs}>
                   {gameModes.map((mode) => (
