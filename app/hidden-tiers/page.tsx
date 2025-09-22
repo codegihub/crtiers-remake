@@ -71,6 +71,13 @@ export default function HiddenTiers() {
     }
   };
 
+  const handleFormSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchTerm.trim()) {
+      window.location.href = `../../hidden-player/${encodeURIComponent(searchTerm.trim())}`;
+    }
+  };
+
   if (loading) {
     return (
       <div className={styles.page}>
@@ -111,13 +118,18 @@ export default function HiddenTiers() {
 
         <section className={styles.searchSection}>
           <div className={styles.searchContainer}>
-            <input
-              type="text"
-              placeholder="Search hidden players..."
-              value={searchTerm}
-              onChange={(e) => handleSearch(e.target.value)}
-              className={styles.searchInput}
-            />
+            <form onSubmit={handleFormSearch} className={styles.searchForm}>
+              <input
+                type="text"
+                placeholder="Search hidden players..."
+                value={searchTerm}
+                onChange={(e) => handleSearch(e.target.value)}
+                className={styles.searchInput}
+              />
+              <button type="submit" className={styles.searchButton}>
+                🔍 Search
+              </button>
+            </form>
             {searchLoading && <div className={styles.searchSpinner}></div>}
             
             {searchResults.length > 0 && (
