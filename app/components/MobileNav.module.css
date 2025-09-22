@@ -24,14 +24,17 @@
 
 .line1 {
   display: none;
+  transition: all 0.3s ease;
 }
 
 .line2 {
   display: none;
+  transition: all 0.3s ease;
 }
 
 .line3 {
   display: none;
+  transition: all 0.3s ease;
 }
 
 /* Overlay */
@@ -157,4 +160,5 @@
     padding: 1.5rem 1rem;
   }
 }
+
 
