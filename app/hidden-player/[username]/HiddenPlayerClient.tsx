@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { getHiddenPlayerByUsername, getHiddenPlayerRank, HiddenPlayer, getTierName, getTierColorClass, getRegionColorClass, normalizeRegion } from '../../../lib/firestore';
 import styles from './hidden-player.module.css';
+import MobileNav from '../../components/MobileNav';
 
 const gameModes = [
   { id: 'overall', name: 'Overall', icon: '🏆' },
@@ -86,6 +87,7 @@ export default function HiddenPlayerClient({ username }: HiddenPlayerClientProps
               <a href="../../server" className={styles.navLink}>Server</a>
               <a href="../../more" className={styles.navLink}>More</a>
             </div>
+            <MobileNav />
           </nav>
         </header>
         <div className={styles.error}>
@@ -113,6 +115,7 @@ export default function HiddenPlayerClient({ username }: HiddenPlayerClientProps
             <a href="../../server" className={styles.navLink}>Server</a>
             <a href="../../more" className={styles.navLink}>More</a>
           </div>
+          <MobileNav />
         </nav>
       </header>
 
