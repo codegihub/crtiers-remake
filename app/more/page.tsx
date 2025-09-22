@@ -1,6 +1,7 @@
 'use client';
 
 import styles from './more.module.css';
+import MobileNav from '../components/MobileNav';
 
 export default function More() {
   return (
@@ -16,6 +17,7 @@ export default function More() {
             <a href="../../server" className={styles.navLink}>Server</a>
             <a href="../../more" className={styles.navLink}>More</a>
           </div>
+          <MobileNav />
         </nav>
       </header>
 
