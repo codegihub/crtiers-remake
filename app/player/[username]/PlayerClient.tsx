@@ -250,16 +250,7 @@ export default function PlayerClient({ username }: PlayerClientProps) {
                         <div className={styles.statValue}>#{playerRank}</div>
                       </div>
 
-                      {activeTab !== 'overall' && (
-                        <div className={styles.statCard}>
-                          <h3>Tier</h3>
-                          <div className={`${styles.statValue} ${styles.tierValue}`}>
-                            <span className={`${styles.tier} ${getTierColorClass(currentTierScore, activeTab === 'overall')}`}>
-                              {currentTierName}
-                            </span>
-                          </div>
-                        </div>
-                      )}
+                      
 
                       <div className={styles.statCard}>
                         <h3>Region</h3>
@@ -274,6 +265,17 @@ export default function PlayerClient({ username }: PlayerClientProps) {
                         <h3>Score</h3>
                         <div className={styles.statValue}>{currentTierScore}</div>
                       </div>
+
+                      {activeTab !== 'overall' && (
+                        <div className={styles.statCard}>
+                          <h3>Tier</h3>
+                          <div className={`${styles.statValue} ${styles.tierValue}`}>
+                            <span className={`${styles.tier} ${getTierColorClass(currentTierScore, activeTab === 'overall')}`}>
+                              {currentTierName}
+                            </span>
+                          </div>
+                        </div>
+                      )}
 
                       {activeTab !== 'overall' && (
                         <div className={styles.statCard}>
