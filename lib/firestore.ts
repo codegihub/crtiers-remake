@@ -192,13 +192,18 @@ export async function searchPlayers(searchTerm: string): Promise<Player[]> {
 export function getTierName(tierNumber: number, isOverall: boolean = false): string {
   if (isOverall) {
     // overall tier system
-    if (tierNumber >= 450) return 'SS';
-    if (tierNumber >= 350) return 'S+';
-    if (tierNumber >= 300) return 'S';
-    if (tierNumber >= 200) return 'A';
-    if (tierNumber >= 140) return 'B';
-    if (tierNumber >= 120) return 'C';
-    if (tierNumber >= 100) return 'D';
+    if (tierNumber >= 700) return 'SS';
+    if (tierNumber >= 600) return 'S+';
+    if (tierNumber >= 550) return 'S';
+    if (tierNumber >= 500) return 'A+';
+    if (tierNumber >= 450) return 'A';
+    if (tierNumber >= 400) return 'B+';
+    if (tierNumber >= 350) return 'B';
+    if (tierNumber >= 300) return 'C+';
+    if (tierNumber >= 250) return 'C';
+    if (tierNumber >= 200) return 'D+';
+    if (tierNumber >= 150) return 'D';
+    if (tierNumber >= 100) return 'F+';
     return 'F';
   } else {
     // gamemode tier system (0-101 scale)
