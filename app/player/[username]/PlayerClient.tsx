@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { getPlayerByUsername, Player, getTierName, getPlayerRank, getTierColorClass, getRegionColorClass, normalizeRegion } from '../../../lib/firestore';
 import styles from './player.module.css';
+import MobileNav from '../../components/MobileNav';
 
 const gameModes = [
   { id: 'overall', name: 'Overall', icon: '🏆' },
@@ -90,6 +91,7 @@ export default function PlayerClient({ username }: PlayerClientProps) {
               <a href="../../server" className={styles.navLink}>Server</a>
               <a href="../../more" className={styles.navLink}>More</a>
             </div>
+            <MobileNav />
           </nav>
         </header>
         <div className={styles.error}>
@@ -117,6 +119,7 @@ export default function PlayerClient({ username }: PlayerClientProps) {
             <a href="../../server" className={styles.navLink}>Server</a>
             <a href="../../more" className={styles.navLink}>More</a>
           </div>
+          <MobileNav />
         </nav>
       </header>
 
@@ -174,23 +177,6 @@ export default function PlayerClient({ username }: PlayerClientProps) {
                         <div className={styles.statValue}>#{playerRank}</div>
                       </div>
 
-
-                      <div className={styles.statCard}>
-                        <h3>Score</h3>
-                        <div className={styles.statValue}>{currentTierScore}</div>
-                      </div>
-                      
-                      
-
-                      <div className={styles.statCard}>
-                        <h3>Region</h3>
-                        <div className={styles.statValue}>
-                          <span className={`${styles.region} ${getRegionColorClass(player.region)}`}>
-                            {normalizeRegion(player.region)}
-                          </span>
-                        </div>
-                      </div>
-
                       {activeTab !== 'overall' && (
                         <div className={styles.statCard}>
                           <h3>Tier</h3>
@@ -202,11 +188,25 @@ export default function PlayerClient({ username }: PlayerClientProps) {
                         </div>
                       )}
 
+                      <div className={styles.statCard}>
+                        <h3>Region</h3>
+                        <div className={styles.statValue}>
+                          <span className={`${styles.region} ${getRegionColorClass(player.region)}`}>
+                            {normalizeRegion(player.region)}
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className={styles.statCard}>
+                        <h3>Score</h3>
+                        <div className={styles.statValue}>{currentTierScore}</div>
+                      </div>
+
                       {activeTab !== 'overall' && (
                         <div className={styles.statCard}>
                           <h3>Next Tier</h3>
                           <div className={styles.statValue}>
-                            {currentTierScore >= 100 ? 'MAX' : currentTierScore < 30 ? 'F+' :getTierName(Math.min(currentTierScore + 5, 100), false)}
+                            {currentTierScore >= 100 ? 'MAX' : getTierName(Math.min(currentTierScore + 5, 100), false)}
                           </div>
                         </div>
                       )}
