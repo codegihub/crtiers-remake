@@ -67,7 +67,7 @@ export interface GameModeLeaderboard {
   players: Player[];
 }
 
-// Get top player for a specific game mode
+//top player
 export async function getTopPlayerForGameMode(gameMode: string): Promise<Player | null> {
   try {
     const playersRef = collection(db, 'players');
@@ -94,7 +94,7 @@ export async function getTopPlayerForGameMode(gameMode: string): Promise<Player 
   }
 }
 
-// Get leaderboard for a specific game mode
+// gamemode leaderboard
 export async function getLeaderboard(gameMode: string, limitCount: number = 50): Promise<Player[]> {
   try {
     const playersRef = collection(db, 'players');
@@ -116,22 +116,22 @@ export async function getLeaderboard(gameMode: string, limitCount: number = 50):
   }
 }
 
-// Get player by username (searches both minecraftName and name fields, case-insensitive)
+// search name and mc name
 export async function getPlayerByUsername(username: string): Promise<Player | null> {
   try {
     const playersRef = collection(db, 'players');
     
-    // Try exact match first
+    // try exact match first
     let q = query(playersRef, where('minecraftName', '==', username));
     let querySnapshot = await getDocs(q);
     
-    // If not found, try name field
+    // ff not found try name field
     if (querySnapshot.empty) {
       q = query(playersRef, where('name', '==', username));
       querySnapshot = await getDocs(q);
     }
     
-    // If still not found, try case-insensitive search
+    // if still not found  try case-insensitive search
     if (querySnapshot.empty) {
       const allPlayersQuery = await getDocs(playersRef);
       const allPlayers = allPlayersQuery.docs.map(doc => ({
@@ -139,7 +139,7 @@ export async function getPlayerByUsername(username: string): Promise<Player | nu
         ...doc.data()
       } as Player));
       
-      // Find player with case-insensitive match
+      //find player with case-insensitive match
       const foundPlayer = allPlayers.find(player => 
         player.minecraftName.toLowerCase() === username.toLowerCase() ||
         player.name.toLowerCase() === username.toLowerCase()
@@ -165,14 +165,12 @@ export async function getPlayerByUsername(username: string): Promise<Player | nu
   }
 }
 
-// Search players by username (partial match)
+// search players by username
 export async function searchPlayers(searchTerm: string): Promise<Player[]> {
   try {
     const playersRef = collection(db, 'players');
     
-    // Firestore doesn't support case-insensitive queries or partial matches natively
-    // This is a simple implementation that gets all players and filters client-side
-    // For production, consider using Algolia or similar search service
+
     const querySnapshot = await getDocs(playersRef);
     
     const players = querySnapshot.docs.map(doc => ({
@@ -194,12 +192,13 @@ export async function searchPlayers(searchTerm: string): Promise<Player[]> {
 export function getTierName(tierNumber: number, isOverall: boolean = false): string {
   if (isOverall) {
     // Overall tier system (keep the old system for overall)
-    if (tierNumber >= 2000) return 'S+';
-    if (tierNumber >= 1800) return 'S';
-    if (tierNumber >= 1600) return 'A';
-    if (tierNumber >= 1400) return 'B';
-    if (tierNumber >= 1200) return 'C';
-    if (tierNumber >= 1000) return 'D';
+    if (tierNumber >= 450) return 'SS';
+    if (tierNumber >= 350) return 'S+';
+    if (tierNumber >= 300) return 'S';
+    if (tierNumber >= 200) return 'A';
+    if (tierNumber >= 140) return 'B';
+    if (tierNumber >= 120) return 'C';
+    if (tierNumber >= 100) return 'D';
     return 'F';
   } else {
     // Gamemode tier system (0-100 scale)
