@@ -177,14 +177,16 @@ export default function HiddenTiers() {
                   <div className={styles.topPlayerSection}>
                     {topPlayer ? (
                       <div className={styles.topPlayer}>
-                        <img 
-                          src={`https://mc-heads.net/avatar/${topPlayer.minecraftName}/64`}
-                          alt={`${topPlayer.minecraftName} body`}
-                          className={styles.topPlayerAvatar}
-                          onError={(e) => {
-                            e.currentTarget.src = `https://mc-heads.net/body/steve/32`;
-                          }}
-                        />
+                        <a href={`../../hidden-player/${encodeURIComponent(topPlayer.minecraftName)}`}>
+                          <img 
+                            src={`https://mc-heads.net/avatar/${topPlayer.minecraftName}/64`}
+                            alt={`${topPlayer.minecraftName} avatar`}
+                            className={styles.topPlayerAvatar}
+                            onError={(e) => {
+                              e.currentTarget.src = `https://mc-heads.net/avatar/steve/64`;
+                            }}
+                          />
+                        </a>
                         <div className={styles.topPlayerInfo}>
                           <span className={styles.topPlayerName}>{topPlayer.minecraftName}</span>
                           <div className={styles.topPlayerStats}>
