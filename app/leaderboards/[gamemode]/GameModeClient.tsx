@@ -1,245 +1,455 @@
-'use client';
+/* Gamemode Leaderboard Page */
+.page {
+  min-height: 100vh;
+  background: var(--background);
+  color: var(--foreground);
+  display: flex;
+  flex-direction: column;
+}
 
-import { useState, useEffect } from 'react';
-import { useParams } from 'next/navigation';
-import { getAllPlayers, Player, getTierName, getTierColorClass, getRegionColorClass, normalizeRegion } from '../../../lib/firestore';
-import styles from './gamemode.module.css';
+.tierOption {
+  background-color: var(--background);
 
-const gameModeIcons: { [key: string]: string } = {
-  overall: '🏆',
-  vanilla: '🎇',
-  uhc: '💖',
-  pot: '🧪',
-  nethop: '🔮',
-  smp: '🧿',
-  sword: '⚔️',
-  axe: '🪓',
-  mace: '🔨',
-};
+}
 
-export default function GameModeLeaderboard() {
-  const params = useParams();
-  const gamemode = params.gamemode as string;
-  const [players, setPlayers] = useState<Player[]>([]);
-  const [filteredPlayers, setFilteredPlayers] = useState<Player[]>([]);
-  const [selectedTier, setSelectedTier] = useState<string>('all');
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+.header {
+  background: var(--card);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
 
-  useEffect(() => {
-    const fetchPlayers = async () => {
-      try {
-        setLoading(true);
-        const data = await getAllPlayers();
-        
-        // Filter players who have a score in this gamemode
-        const playersWithScore = data.filter(player => 
-          player.tiers[gamemode as keyof typeof player.tiers] > 0
-        );
-        
-        // Sort by the gamemode score (descending)
-        const sortedPlayers = playersWithScore.sort((a, b) => 
-          b.tiers[gamemode as keyof typeof b.tiers] - a.tiers[gamemode as keyof typeof a.tiers]
-        );
-        
-        setPlayers(sortedPlayers);
-        setFilteredPlayers(sortedPlayers);
-      } catch (err) {
-        console.error('Error fetching players:', err);
-        setError('Failed to load leaderboard data');
-      } finally {
-        setLoading(false);
-      }
-    };
+.nav {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 4rem;
+}
 
-    if (gamemode) {
-      fetchPlayers();
-    }
-  }, [gamemode]);
+.logo h1 {
+  margin: 0;
+  font-size: 1.75rem;
+  font-weight: 700;
+}
 
-  useEffect(() => {
-    if (selectedTier === 'all') {
-      setFilteredPlayers(players);
-    } else {
-      const filtered = players.filter(player => {
-        const score = player.tiers[gamemode as keyof typeof player.tiers];
-        const tier = getTierName(score, gamemode === 'overall');
-        return tier === selectedTier;
-      });
-      setFilteredPlayers(filtered);
-    }
-  }, [selectedTier, players, gamemode]);
+.navLinks {
+  display: flex;
+  gap: 2rem;
+}
 
-  if (!gamemode || !gameModeIcons[gamemode]) {
-    return (
-      <div className={styles.page}>
-        <div className={styles.error}>
-          <h2>Invalid Game Mode</h2>
-          <p>The game mode "{gamemode}" does not exist.</p>
-          <a href="../../leaderboards" className={styles.backLink}>← Back to Leaderboards</a>
-        </div>
-      </div>
-    );
+.navLink {
+  text-decoration: none;
+  color: var(--foreground);
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.navLink:hover {
+  color: var(--primary);
+}
+
+.main {
+  flex: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  width: 100%;
+}
+
+.breadcrumb {
+  margin-bottom: 2rem;
+}
+
+.breadcrumb a {
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.breadcrumb a:hover {
+  color: var(--primary);
+}
+
+.headerSection {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  font-size: 3rem;
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+  color: var(--foreground);
+}
+
+.gameIcon {
+  font-size: 3.5rem;
+}
+
+.subtitle {
+  font-size: 1.2rem;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: var(--card);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+
+.filterSection {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.filterSection label {
+  font-weight: 500;
+  color: var(--foreground);
+}
+
+.tierFilter {
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--background-secondary);
+  color: var(--foreground);
+  font-size: 0.9rem;
+  min-width: 150px;
+}
+
+.stats {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.playerCount {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  background: var(--background-secondary);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+}
+
+.leaderboard {
+  margin-bottom: 3rem;
+}
+
+.playersList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.playerCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem;
+  background: var(--card);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  transition: all 0.2s;
+}
+
+.playerCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  border-color: var(--primary);
+}
+
+.rank {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--primary);
+  min-width: 60px;
+  text-align: center;
+}
+
+.playerInfo {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex: 1;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+}
+
+.playerDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.playerName {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--foreground);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.playerName:hover {
+  color: var(--primary);
+}
+
+.playerSubtext {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.playerStats {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.score {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.scoreValue {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--foreground);
+}
+
+.scoreLabel {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.tier {
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-align: center;
+  min-width: 60px;
+}
+
+.region {
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-align: center;
+  min-width: 50px;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: var(--text-muted);
+}
+
+.emptyState h3 {
+  margin: 0 0 1rem 0;
+  color: var(--foreground);
+}
+
+.emptyState p {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 50vh;
+  gap: 1rem;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid var(--border);
+  border-top: 4px solid var(--primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.error {
+  text-align: center;
+  padding: 3rem;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.error h2 {
+  color: var(--foreground);
+  margin-bottom: 1rem;
+}
+
+.error p {
+  color: var(--text-muted);
+  margin-bottom: 2rem;
+}
+
+.backLink {
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 500;
+  transition: opacity 0.2s;
+}
+
+.backLink:hover {
+  opacity: 0.8;
+}
+
+.footer {
+  background: var(--card);
+  border-top: 1px solid var(--border);
+  padding: 2rem 0;
+  margin-top: auto;
+}
+
+.footerContent {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.footerContent p {
+  margin: 0.5rem 0;
+}
+
+/* Animations */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Tier Colors */
+.tier.tierSPlus { background: linear-gradient(45deg, #ff6b6b, #feca57); color: white; }
+.tier.tierS { background: linear-gradient(45deg, #ff9ff3, #f368e0); color: white; }
+.tier.tierAPlus { background: linear-gradient(45deg, #a8e6cf, #7bed9f); color: white; }
+.tier.tierA { background: linear-gradient(45deg, #70a1ff, #5352ed); color: white; }
+.tier.tierBPlus { background: linear-gradient(45deg, #ffb8b8, #ff7675); color: white; }
+.tier.tierB { background: linear-gradient(45deg, #ffd93d, #ffb142); color: white; }
+.tier.tierCPlus { background: linear-gradient(45deg, #6c5ce7, #a29bfe); color: white; }
+.tier.tierC { background: linear-gradient(45deg, #fd79a8, #fdcb6e); color: white; }
+.tier.tierDPlus { background: linear-gradient(45deg, #00b894, #00cec9); color: white; }
+.tier.tierD { background: linear-gradient(45deg, #0984e3, #74b9ff); color: white; }
+.tier.tierEPlus { background: linear-gradient(45deg, #e17055, #fdcb6e); color: white; }
+.tier.tierE { background: linear-gradient(45deg, #636e72, #b2bec3); color: white; }
+.tier.tierFPlus { background: linear-gradient(45deg, #2d3436, #636e72); color: white; }
+.tier.tierF { background: linear-gradient(45deg, #000000, #2d3436); color: white; }
+
+/* Region Colors */
+.region.regionNA { background: linear-gradient(45deg, #74b9ff, #0984e3); color: white; }
+.region.regionEU { background: linear-gradient(45deg, #00b894, #00cec9); color: white; }
+.region.regionAS { background: linear-gradient(45deg, #fd79a8, #e84393); color: white; }
+.region.regionOCE { background: linear-gradient(45deg, #fdcb6e, #e17055); color: white; }
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .nav {
+    padding: 0 1rem;
   }
-
-  if (loading) {
-    return (
-      <div className={styles.page}>
-        <div className={styles.loading}>
-          <div className={styles.spinner}></div>
-          <p>Loading leaderboard...</p>
-        </div>
-      </div>
-    );
+  
+  .navLinks {
+    gap: 1rem;
   }
-
-  if (error) {
-    return (
-      <div className={styles.page}>
-        <div className={styles.error}>
-          <h2>Error</h2>
-          <p>{error}</p>
-          <a href="../../leaderboards" className={styles.backLink}>← Back to Leaderboards</a>
-        </div>
-      </div>
-    );
+  
+  .main {
+    padding: 1rem;
   }
+  
+  .title {
+    flex-direction: column;
+    font-size: 2.5rem;
+  }
+  
+  .gameIcon {
+    font-size: 3rem;
+  }
+  
+  .controls {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+  
+  .filterSection {
+    justify-content: center;
+  }
+  
+  .stats {
+    justify-content: center;
+  }
+  
+  .playerCard {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+  
+  .playerInfo {
+    justify-content: center;
+  }
+  
+  .playerStats {
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+}
 
-  const gameModeName = gamemode.charAt(0).toUpperCase() + gamemode.slice(1);
-  const gameModeIcon = gameModeIcons[gamemode];
-
-  // Get unique tiers for filter
-  const tierOrder = ['SS', 'S+', 'S', 'A+', 'A', 'B+', 'B', 'C+', 'C', 'D+', 'D', 'E+', 'E', 'F+', 'F'];
-  const availableTiers = Array.from(new Set(
-    players.map(player => {
-      const score = player.tiers[gamemode as keyof typeof player.tiers];
-      return getTierName(score, gamemode === 'overall');
-    })
-  )).sort((a, b) => tierOrder.indexOf(a) - tierOrder.indexOf(b));
-
-  return (
-    <div className={styles.page}>
-      <header className={styles.header}>
-        <nav className={styles.nav}>
-          <div className={styles.logo}>
-            <h1 className="gradient-text">CrystalTiers</h1>
-          </div>
-          <div className={styles.navLinks}>
-            <a href="../.." className={styles.navLink}>Home</a>
-            <a href="../../leaderboards" className={styles.navLink}>Leaderboards</a>
-            <a href="../../server" className={styles.navLink}>Server</a>
-            <a href="../../more" className={styles.navLink}>More</a>
-          </div>
-        </nav>
-      </header>
-
-      <main className={styles.main}>
-        <div className={styles.breadcrumb}>
-          <a href="../../leaderboards">← Back to Leaderboards</a>
-        </div>
-
-        <div className={styles.headerSection}>
-          <h1 className={styles.title}>
-            <span className={styles.gameIcon}>{gameModeIcon}</span>
-            {gameModeName} Leaderboard
-          </h1>
-          <p className={styles.subtitle}>
-            Top players in {gameModeName} ranked by their tier points
-          </p>
-        </div>
-
-        <div className={styles.controls}>
-          <div className={styles.filterSection}>
-            <label htmlFor="tier-filter">Filter by Tier:</label>
-            <select 
-              id="tier-filter"
-              value={selectedTier} 
-              onChange={(e) => setSelectedTier(e.target.value)}
-              className={styles.tierFilter}
-            >
-              <option value="all" className={styles.tierOption}>All Tiers</option>
-              {availableTiers.map(tier => (
-                <option key={tier} value={tier} className={styles.tierOption}>{tier}</option>
-              ))}
-            </select>
-          </div>
-          
-          <div className={styles.stats}>
-            <span className={styles.playerCount}>
-              {filteredPlayers.length} players
-            </span>
-          </div>
-        </div>
-
-        <div className={styles.leaderboard}>
-          {filteredPlayers.length > 0 ? (
-            <div className={styles.playersList}>
-              {filteredPlayers.map((player, index) => {
-                const score = player.tiers[gamemode as keyof typeof player.tiers];
-                const tier = getTierName(score, gamemode === 'overall');
-                const rank = index + 1;
-                
-                return (
-                  <div key={player.id} className={styles.playerCard}>
-                    <div className={styles.rank}>#{rank}</div>
-                    
-                    <div className={styles.playerInfo}>
-                      <img 
-                        src={`https://mc-heads.net/avatar/${player.minecraftName}/32`}
-                        alt={player.minecraftName}
-                        className={styles.avatar}
-                        onError={(e) => {
-                          e.currentTarget.src = `https://mc-heads.net/avatar/steve/32`;
-                        }}
-                      />
-                      <div className={styles.playerDetails}>
-                        <a 
-                          href={`../../player/${encodeURIComponent(player.minecraftName)}`}
-                          className={styles.playerName}
-                        >
-                          {player.minecraftName}
-                        </a>
-                        <div className={styles.playerSubtext}>
-                          {player.name}
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className={styles.playerStats}>
-                      <div className={styles.score}>
-                        <span className={styles.scoreValue}>{score}</span>
-                        <span className={styles.scoreLabel}>points</span>
-                      </div>
-                      
-                      {gamemode !== 'overall' && (
-                        <div className={`${styles.tier} ${getTierColorClass(score, gamemode === 'overall')}`}>
-                          {tier}
-                        </div>
-                      )}
-                      
-                      <div className={`${styles.region} ${getRegionColorClass(player.region)}`}>
-                        {normalizeRegion(player.region)}
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          ) : (
-            <div className={styles.emptyState}>
-              <h3>No players found</h3>
-              <p>No players have scores in {gameModeName} for the selected filter.</p>
-            </div>
-          )}
-        </div>
-      </main>
-
-      <footer className={styles.footer}>
-        <div className={styles.footerContent}>
-          <p>&copy; 2024 CrTiers. All rights reserved.</p>
-          <p>Server IP: <span className="gradient-text">crystaltiers.club</span></p>
-        </div>
-      </footer>
-    </div>
-  );
+@media (max-width: 480px) {
+  .title {
+    font-size: 2rem;
+  }
+  
+  .gameIcon {
+    font-size: 2.5rem;
+  }
+  
+  .playerCard {
+    padding: 1rem;
+  }
+  
+  .rank {
+    font-size: 1.2rem;
+    min-width: 40px;
+  }
+  
+  .scoreValue {
+    font-size: 1.2rem;
+  }
+  
+  .tier, .region {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+  }
 }
