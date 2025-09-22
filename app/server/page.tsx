@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import styles from './server.module.css';
+import MobileNav from '../components/MobileNav';
 
 export default function Server() {
   const [copied, setCopied] = useState(false);
@@ -30,6 +31,7 @@ export default function Server() {
             <a href="../../server" className={styles.navLink}>Server</a>
             <a href="../../more" className={styles.navLink}>More</a>
           </div>
+          <MobileNav />
         </nav>
       </header>
 
