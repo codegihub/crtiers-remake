@@ -19,7 +19,6 @@ const gameModes = [
 ];
 
 export default function Leaderboards() {
-  const [searchQuery, setSearchQuery] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState<Player[]>([]);
   const [topPlayers, setTopPlayers] = useState<{ [gameMode: string]: Player | null }>({});
@@ -85,12 +84,6 @@ export default function Leaderboards() {
     }
   };
 
-  const handleFormSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (searchQuery.trim()) {
-      router.push(`../../player/${encodeURIComponent(searchQuery.trim())}`);
-    }
-  };
 
   const handleSeeMore = (gameMode: string) => {
     router.push(`/leaderboards/${gameMode}`);
@@ -121,19 +114,6 @@ export default function Leaderboards() {
           <p className={styles.subtitle}>Search for players or browse rankings by game mode</p>
           
           <div className={styles.searchContainer}>
-            <form onSubmit={handleFormSearch} className={styles.searchForm}>
-              <input
-                type="text"
-                placeholder="Search for a player..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className={styles.searchInput}
-              />
-              <button type="submit" className={styles.searchButton}>
-                🔍 Search
-              </button>
-            </form>
-            
             <input
               type="text"
               placeholder="Search players..."
