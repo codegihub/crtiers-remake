@@ -84,6 +84,13 @@ export default function Leaderboards() {
     }
   };
 
+  const handleFormSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchTerm.trim()) {
+      router.push(`../../player/${encodeURIComponent(searchTerm.trim())}`);
+    }
+  };
+
 
   const handleSeeMore = (gameMode: string) => {
     router.push(`/leaderboards/${gameMode}`);
@@ -114,13 +121,18 @@ export default function Leaderboards() {
           <p className={styles.subtitle}>Search for players or browse rankings by game mode</p>
           
           <div className={styles.searchContainer}>
-            <input
-              type="text"
-              placeholder="Search players..."
-              value={searchTerm}
-              onChange={(e) => handleSearch(e.target.value)}
-              className={styles.searchInput}
-            />
+            <form onSubmit={handleFormSearch} className={styles.searchForm}>
+              <input
+                type="text"
+                placeholder="Search players..."
+                value={searchTerm}
+                onChange={(e) => handleSearch(e.target.value)}
+                className={styles.searchInput}
+              />
+              <button type="submit" className={styles.searchButton}>
+                🔍 Search
+              </button>
+            </form>
             {searchLoading && <div className={styles.searchSpinner}></div>}
             
             {searchResults.length > 0 && (
