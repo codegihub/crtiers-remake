@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { getAllGameModeTopPlayers, Player, getTierName, getTierColorClass, getRegionColorClass, normalizeRegion } from '../../lib/firestore';
+import { getAllGameModeTopPlayers, Player, getTierName, getTierColorClass, getRegionColorClass, normalizeRegion, searchPlayers } from '../../lib/firestore';
 import styles from './leaderboards.module.css';
 import MobileNav from '../components/MobileNav';
 
@@ -20,8 +20,11 @@ const gameModes = [
 
 export default function Leaderboards() {
   const [searchQuery, setSearchQuery] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [searchResults, setSearchResults] = useState<Player[]>([]);
   const [topPlayers, setTopPlayers] = useState<{ [gameMode: string]: Player | null }>({});
   const [loading, setLoading] = useState(true);
+  const [searchLoading, setSearchLoading] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -62,7 +65,27 @@ export default function Leaderboards() {
     fetchTopPlayers();
   }, []);
 
-  const handleSearch = (e: React.FormEvent) => {
+  const handleSearch = async (term: string) => {
+    setSearchTerm(term);
+    
+    if (term.length < 2) {
+      setSearchResults([]);
+      return;
+    }
+
+    setSearchLoading(true);
+    try {
+      const results = await searchPlayers(term);
+      setSearchResults(results.slice(0, 10)); // Limit to 10 results
+    } catch (error) {
+      console.error('Error searching players:', error);
+      setSearchResults([]);
+    } finally {
+      setSearchLoading(false);
+    }
+  };
+
+  const handleFormSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
       router.push(`../../player/${encodeURIComponent(searchQuery.trim())}`);
@@ -97,18 +120,56 @@ export default function Leaderboards() {
           </h1>
           <p className={styles.subtitle}>Search for players or browse rankings by game mode</p>
           
-          <form onSubmit={handleSearch} className={styles.searchForm}>
+          <div className={styles.searchContainer}>
+            <form onSubmit={handleFormSearch} className={styles.searchForm}>
+              <input
+                type="text"
+                placeholder="Search for a player..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className={styles.searchInput}
+              />
+              <button type="submit" className={styles.searchButton}>
+                🔍 Search
+              </button>
+            </form>
+            
             <input
               type="text"
-              placeholder="Search for a player..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search players..."
+              value={searchTerm}
+              onChange={(e) => handleSearch(e.target.value)}
               className={styles.searchInput}
             />
-            <button type="submit" className={styles.searchButton}>
-              🔍 Search
-            </button>
-          </form>
+            {searchLoading && <div className={styles.searchSpinner}></div>}
+            
+            {searchResults.length > 0 && (
+              <div className={styles.searchResults}>
+                {searchResults.map((player) => (
+                  <a
+                    key={player.id}
+                    href={`../../player/${encodeURIComponent(player.minecraftName)}`}
+                    className={styles.searchResultItem}
+                  >
+                    <img 
+                      src={`https://mc-heads.net/avatar/${player.minecraftName}/64`}
+                      alt={`${player.minecraftName} avatar`}
+                      className={styles.searchResultAvatar}
+                      onError={(e) => {
+                        e.currentTarget.src = `https://mc-heads.net/avatar/steve/64`;
+                      }}
+                    />
+                    <div className={styles.searchResultInfo}>
+                      <span className={styles.searchResultName}>{player.minecraftName}</span>
+                      <span className={`${styles.searchResultRegion} ${getRegionColorClass(player.region)}`}>
+                        {normalizeRegion(player.region)}
+                      </span>
+                    </div>
+                  </a>
+                ))}
+              </div>
+            )}
+          </div>
         </section>
 
         <section className={styles.gameModes}>
