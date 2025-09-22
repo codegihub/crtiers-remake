@@ -195,7 +195,7 @@
   }
   
   .navLinks {
-    gap: 1rem;
+    display: none;
   }
   
   .heroTitle {
@@ -239,10 +239,5 @@
   .heroButtons button {
     width: 100%;
     max-width: 250px;
-  }
-  
-  .navLinks {
-    flex-direction: column;
-    gap: 0.5rem;
   }
 }
