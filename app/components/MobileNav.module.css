@@ -23,15 +23,16 @@
 }
 
 .line1 {
-  transform: rotate(45deg) translate(6px, 6px);
+  transform: rotate(45deg) translate(5px, 5px);
 }
 
 .line2 {
   opacity: 0;
+  transform: scaleX(0);
 }
 
 .line3 {
-  transform: rotate(-45deg) translate(6px, -6px);
+  transform: rotate(-45deg) translate(7px, -6px);
 }
 
 /* Overlay */
