@@ -52,7 +52,7 @@ export async function generateMetadata({ params }: { params: Promise<{ username:
     if (!player) {
       return {
         title: `🔒 Hidden Player ${decodedUsername} - CrTiers`,
-        description: 'Exclusive hidden player rankings and tier system',
+        description: 'Exclusive subtiers player rankings and tier system',
       };
     }
 
@@ -62,11 +62,11 @@ export async function generateMetadata({ params }: { params: Promise<{ username:
     
     return {
       title: `🔒 ${player.minecraftName} - CrTiers Hidden`,
-      description: `🔒 ${player.minecraftName} - ${rankDescription}. Exclusive hidden player rankings and tier system.`,
+      description: `🔒 ${player.minecraftName} - ${rankDescription}. Exclusive subtiers player rankings and tier system.`,
 
       openGraph: {
         title: `🔒 ${player.minecraftName} - CrTiers Hidden`,
-        description: `🔒 ${player.minecraftName} - ${rankDescription}. Exclusive hidden player rankings and tier system.`,
+        description: ` ${player.minecraftName} - ${rankDescription}. Exclusive subtiers player rankings and tier system.`,
         type: 'profile',
         url: `https://crystaltiers.com/hidden-player/${encodeURIComponent(decodedUsername)}/`,
         siteName: 'CrTiers',
@@ -84,7 +84,7 @@ export async function generateMetadata({ params }: { params: Promise<{ username:
       twitter: {
         card: 'summary',
         title: `🔒 ${player.minecraftName} - CrTiers Hidden`,
-        description: `🔒 ${player.minecraftName} - ${rankDescription}. Exclusive hidden player rankings and tier system.`,
+        description: ` ${player.minecraftName} - ${rankDescription}. Exclusive subtiers player rankings and tier system.`,
         images: [`https://mc-heads.net/avatar/${player.minecraftName}/64`],
       },
     };
@@ -93,10 +93,10 @@ export async function generateMetadata({ params }: { params: Promise<{ username:
 
     return {
       title: `🔒 Hidden Player ${decodedUsername} - CrTiers`,
-      description: 'Exclusive hidden player rankings and tier system',
+      description: 'Exclusive subtiers player rankings and tier system',
       openGraph: {
         title: `🔒 Hidden Player ${decodedUsername} - CrTiers`,
-        description: 'Exclusive hidden player rankings and tier system',
+        description: 'Exclusive subtiers player rankings and tier system',
         type: 'website',
         siteName: 'CrTiers',
       },
