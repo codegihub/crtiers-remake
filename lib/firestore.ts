@@ -191,7 +191,7 @@ export async function searchPlayers(searchTerm: string): Promise<Player[]> {
 // Helper function to convert tier number to tier name
 export function getTierName(tierNumber: number, isOverall: boolean = false): string {
   if (isOverall) {
-    // Overall tier system (keep the old system for overall)
+    // overall tier system
     if (tierNumber >= 450) return 'SS';
     if (tierNumber >= 350) return 'S+';
     if (tierNumber >= 300) return 'S';
@@ -201,7 +201,8 @@ export function getTierName(tierNumber: number, isOverall: boolean = false): str
     if (tierNumber >= 100) return 'D';
     return 'F';
   } else {
-    // Gamemode tier system (0-100 scale)
+    // gamemode tier system (0-101 scale)
+    if (tierNumber >= 101) return 'SS';
     if (tierNumber >= 95) return 'S+';
     if (tierNumber >= 90) return 'S';
     if (tierNumber >= 85) return 'A+';
@@ -231,7 +232,7 @@ export function getRegionColorClass(region: string): string {
   return `region${upperRegion}`;
 }
 
-// Helper function to normalize region display
+// region display
 export function normalizeRegion(region: string): string {
   return region.toUpperCase();
 }
