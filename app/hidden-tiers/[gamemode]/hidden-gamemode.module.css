@@ -534,7 +534,7 @@
   }
   
   .navLinks {
-    gap: 1rem;
+    display: none;
   }
   
   .main {
