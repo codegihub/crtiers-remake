@@ -246,16 +246,7 @@ export default function HiddenPlayerClient({ username }: HiddenPlayerClientProps
                         <div className={styles.statValue}>#{playerRank}</div>
                       </div>
 
-                      {activeTab !== 'overall' && (
-                        <div className={styles.statCard}>
-                          <h3>Tier</h3>
-                          <div className={`${styles.statValue} ${styles.tierValue}`}>
-                            <span className={`${styles.tier} ${getTierColorClass(currentTierScore, activeTab === 'overall')}`}>
-                              {currentTierName}
-                            </span>
-                          </div>
-                        </div>
-                      )}
+                      
 
                       <div className={styles.statCard}>
                         <h3>Region</h3>
@@ -273,9 +264,20 @@ export default function HiddenPlayerClient({ username }: HiddenPlayerClientProps
 
                       {activeTab !== 'overall' && (
                         <div className={styles.statCard}>
+                          <h3>Tier</h3>
+                          <div className={`${styles.statValue} ${styles.tierValue}`}>
+                            <span className={`${styles.tier} ${getTierColorClass(currentTierScore, activeTab === 'overall')}`}>
+                              {currentTierName}
+                            </span>
+                          </div>
+                        </div>
+                      )}
+
+                      {activeTab !== 'overall' && (
+                        <div className={styles.statCard}>
                           <h3>Next Tier</h3>
                           <div className={styles.statValue}>
-                            {currentTierScore >= 100 ? 'MAX' : getTierName(Math.min(currentTierScore + 5, 100), false)}
+                            {currentTierScore >= 100 ? 'MAX' : currentTierScore < 30 ? 'F+' : getTierName(Math.min(currentTierScore + 5, 100), false)}
                           </div>
                         </div>
                       )}
