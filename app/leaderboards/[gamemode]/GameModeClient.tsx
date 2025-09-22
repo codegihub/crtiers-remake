@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import { getAllPlayers, Player, getTierName, getTierColorClass, getRegionColorClass, normalizeRegion } from '../../../lib/firestore';
 import styles from './gamemode.module.css';
+import MobileNav from '../../components/MobileNav';
 
 const gameModeIcons: { [key: string]: string } = {
   overall: '🏆',
@@ -130,6 +131,7 @@ export default function GameModeLeaderboard() {
             <a href="../../server" className={styles.navLink}>Server</a>
             <a href="../../more" className={styles.navLink}>More</a>
           </div>
+          <MobileNav />
         </nav>
       </header>
 
