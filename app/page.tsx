@@ -1,4 +1,5 @@
 import styles from "./page.module.css";
+import MobileNav from "./components/MobileNav";
 
 export default function Home() {
   return (
@@ -14,6 +15,7 @@ export default function Home() {
             <a href="../../server" className={styles.navLink}>Server</a>
             <a href="../../more" className={styles.navLink}>More</a>
           </div>
+          <MobileNav />
         </nav>
       </header>
 
