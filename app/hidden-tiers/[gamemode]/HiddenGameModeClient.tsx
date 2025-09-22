@@ -105,12 +105,13 @@ export default function HiddenGameModeLeaderboard() {
   const gameModeIcon = gameModeIcons[gamemode];
 
   // Get unique tiers for filter
+  const tierOrder = ['SS', 'S+', 'S', 'A+', 'A', 'B+', 'B', 'C+', 'C', 'D+', 'D', 'E+', 'E', 'F+', 'F'];
   const availableTiers = Array.from(new Set(
     players.map(player => {
       const score = player.tiers[gamemode as keyof typeof player.tiers];
       return getTierName(score, gamemode === 'overall');
     })
-  )).sort();
+  )).sort((a, b) => tierOrder.indexOf(a) - tierOrder.indexOf(b));
 
   return (
     <div className={styles.page}>
