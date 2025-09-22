@@ -108,7 +108,7 @@
   position: relative;
   width: 100%;
   max-width: 540px;
-  margin-top: -60px;
+  margin-top: -70px;
   margin-left: 10px;
 }
 
@@ -229,7 +229,7 @@
 
 .gameModeSection {
   margin-bottom: 4rem;
-  margin-top: -20px;
+  margin-top: -40px;
 }
 
 .gameModeSection h2 {
