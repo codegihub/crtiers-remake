@@ -206,7 +206,7 @@ export default function PlayerClient({ username }: PlayerClientProps) {
                         <div className={styles.statCard}>
                           <h3>Next Tier</h3>
                           <div className={styles.statValue}>
-                            {currentTierScore >= 100 ? 'MAX' : getTierName(Math.min(currentTierScore + 5, 100), false)}
+                            {currentTierScore >= 100 ? 'MAX' : currentTierscore < 30 ? 'F+' :getTierName(Math.min(currentTierScore + 5, 100), false)}
                           </div>
                         </div>
                       )}
