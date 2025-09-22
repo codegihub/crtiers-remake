@@ -23,16 +23,15 @@
 }
 
 .line1 {
-  transform: rotate(45deg) translate(5px, 5px);
+  display: none;
 }
 
 .line2 {
-  opacity: 0;
-  transform: scaleX(0);
+  display: none;
 }
 
 .line3 {
-  transform: rotate(-45deg) translate(7px, -6px);
+  display: none;
 }
 
 /* Overlay */
@@ -158,3 +157,4 @@
     padding: 1.5rem 1rem;
   }
 }
+
