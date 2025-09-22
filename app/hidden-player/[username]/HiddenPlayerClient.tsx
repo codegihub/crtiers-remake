@@ -199,7 +199,7 @@ export default function HiddenPlayerClient({ username }: HiddenPlayerClientProps
                         <div className={styles.statCard}>
                           <h3>Next Tier</h3>
                           <div className={styles.statValue}>
-                            {currentTierScore >= 100 ? 'MAX' : getTierName(Math.min(currentTierScore + 5, 100), false)}
+                            {currentTierScore >= 100 ? 'MAX' : currentTierScore < 30 ? 'F+' :getTierName(Math.min(currentTierScore + 5, 101), false)}
                           </div>
                         </div>
                       )}
