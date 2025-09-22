@@ -10,7 +10,7 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-const ADMIN_PASSWORD = 'hideaway123'; // In production, this would be properly secured
+const ADMIN_PASSWORD = 'hideaway123'; //this would be properly secured
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -29,7 +29,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     localStorage.removeItem('admin_authenticated');
   };
 
-  // Check for existing authentication on provider initialization
+  
   React.useEffect(() => {
     const isAuth = localStorage.getItem('admin_authenticated') === 'true';
     setIsAuthenticated(isAuth);
