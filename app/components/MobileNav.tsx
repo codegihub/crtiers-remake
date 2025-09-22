@@ -7,6 +7,7 @@ export default function MobileNav() {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleSidebar = () => {
+    console.log('Toggling sidebar, current state:', isOpen);
     setIsOpen(!isOpen);
   };
 
@@ -36,7 +37,21 @@ export default function MobileNav() {
       )}
 
       {/* Sidebar */}
-      <div className={`${styles.sidebar} ${isOpen ? styles.sidebarOpen : ''}`}>
+      <div 
+        className={`${styles.sidebar} ${isOpen ? styles.sidebarOpen : ''}`}
+        style={{
+          position: 'fixed',
+          top: 0,
+          right: isOpen ? '0' : '-300px',
+          width: '300px',
+          height: '100vh',
+          background: '#1a1a1a',
+          borderLeft: '1px solid #333',
+          zIndex: 1000,
+          transition: 'right 0.3s ease',
+          overflowY: 'auto'
+        }}
+      >
         <div className={styles.sidebarContent}>
           <div className={styles.sidebarHeader}>
             <h2 className="gradient-text">CrystalTiers</h2>
