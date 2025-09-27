@@ -108,7 +108,7 @@ export default function AdminDashboard() {
           <h3>Manage Hidden Players</h3>
           <p>
             Manage the exclusive hidden tier list players. Control access to special game modes 
-            including Bed PVP, Minecart, Creeper, and Spleef.
+            including Bed PVP, Minecart, and Creeper.
           </p>
           <a href="../../admin/hidden-players" className={styles.actionButton}>
             Manage Hidden Players
