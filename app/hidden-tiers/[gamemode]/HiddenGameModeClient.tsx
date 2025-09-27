@@ -11,7 +11,6 @@ const gameModeIcons: { [key: string]: string } = {
   bed: '🛏️',
   cart: '🛒',
   creeper: '💥',
-  spleef: '🧹',
 };
 
 export default function HiddenGameModeLeaderboard() {
