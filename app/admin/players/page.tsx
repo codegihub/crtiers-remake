@@ -33,7 +33,7 @@ const gameModes = [
   { id: 'vanilla', name: 'Vanilla', icon: '🎇' },
   { id: 'uhc', name: 'UHC', icon: '💖' },
   { id: 'pot', name: 'Pot', icon: '🧪' },
-  { id: 'nethop', name: 'NethPot', icon: '🔮' },
+  { id: 'nethop', name: 'NethOP', icon: '🔮' },
   { id: 'smp', name: 'SMP', icon: '🧿' },
   { id: 'sword', name: 'Sword', icon: '⚔️' },
   { id: 'axe', name: 'Axe', icon: '🪓' },
