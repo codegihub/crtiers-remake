@@ -20,7 +20,6 @@ const defaultTiers = {
   bed: 0,
   cart: 0,
   creeper: 0,
-  spleef: 0,
   overall: 0,
 };
 
@@ -29,7 +28,6 @@ const gameModes = [
   { id: 'bed', name: 'Bed PVP', icon: '🛏️' },
   { id: 'cart', name: 'Minecart', icon: '🛒' },
   { id: 'creeper', name: 'Creeper', icon: '💥' },
-  { id: 'spleef', name: 'Spleef', icon: '🧹' },
 ];
 
 interface EditingPlayer extends HiddenPlayer {
