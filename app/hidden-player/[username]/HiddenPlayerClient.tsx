@@ -10,7 +10,6 @@ const gameModes = [
   { id: 'bed', name: 'Bed PVP', icon: '🛏️' },
   { id: 'cart', name: 'Minecart', icon: '🛒' },
   { id: 'creeper', name: 'Creeper', icon: '💥' },
-  { id: 'spleef', name: 'Spleef', icon: '🧹' },
 ];
 
 interface HiddenPlayerClientProps {
