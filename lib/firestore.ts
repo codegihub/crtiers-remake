@@ -41,7 +41,6 @@ export interface HiddenPlayer {
     bed: number;
     cart: number;
     creeper: number;
-    spleef: number;
     overall: number;
   };
 }
