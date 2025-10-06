@@ -12,7 +12,7 @@ const gameModes = [
   { id: 'uhc', name: 'UHC', icon: '💖' },
   { id: 'pot', name: 'Pot', icon: '🧪' },
   { id: 'nethop', name: 'NethOP', icon: '🔮' },
-  { id: 'smp', name: 'Dia SMP', icon: '🧿' },
+  { id: 'smp', name: 'Diamond SMP', icon: '🧿' },
   { id: 'sword', name: 'Sword', icon: '⚔️' },
   { id: 'axe', name: 'Axe', icon: '🪓' },
   { id: 'mace', name: 'Mace', icon: '🔨' },
