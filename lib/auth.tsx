@@ -18,7 +18,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const login = (password: string): boolean => {
     if (password === ADMIN_PASSWORD) {
       setIsAuthenticated(true);
-      localStorage.setItem('admin_authenticated', 'true');
+      localStorage.setItem('admin_autheenticated', 'true');
       return true;
     }
     return false;
@@ -26,12 +26,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const logout = () => {
     setIsAuthenticated(false);
-    localStorage.removeItem('admin_authenticated');
+    localStorage.removeItem('admin_autheenticated');
   };
 
   
   React.useEffect(() => {
-    const isAuth = localStorage.getItem('admin_authenticated') === 'true';
+    const isAuth = localStorage.getItem('admin_autheenticated') === 'true';
     setIsAuthenticated(isAuth);
   }, []);
 
