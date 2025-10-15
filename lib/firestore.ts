@@ -191,43 +191,37 @@ export async function searchPlayers(searchTerm: string): Promise<Player[]> {
 export function getTierName(tierNumber: number, isOverall: boolean = false): string {
   if (isOverall) {
     // overall tier system
-    if (tierNumber >= 700) return 'SS';
-    if (tierNumber >= 600) return 'S+';
-    if (tierNumber >= 550) return 'S';
-    if (tierNumber >= 500) return 'A+';
-    if (tierNumber >= 450) return 'A';
-    if (tierNumber >= 400) return 'B+';
-    if (tierNumber >= 350) return 'B';
-    if (tierNumber >= 300) return 'C+';
-    if (tierNumber >= 250) return 'C';
-    if (tierNumber >= 200) return 'D+';
-    if (tierNumber >= 150) return 'D';
-    if (tierNumber >= 100) return 'F+';
-    return 'F';
+    if (tierNumber >= 400) return 'HT1';
+    if (tierNumber >= 350) return 'LT1';
+    if (tierNumber >= 300) return 'HT2';
+    if (tierNumber >= 280) return 'LT2';
+    if (tierNumber >= 240) return 'HT3';
+    if (tierNumber >= 200) return 'LT3';
+    if (tierNumber >= 150) return 'HT4';
+    if (tierNumber >= 80) return 'LT4';
+    if (tierNumber >= 25) return 'HT5';
+    if (tierNumber >= 10) return 'LT5';
+    return 'LT5';
   } else {
     // gamemode tier system (0-101 scale)
-    if (tierNumber >= 101) return 'SS';
-    if (tierNumber >= 95) return 'S+';
-    if (tierNumber >= 90) return 'S';
-    if (tierNumber >= 85) return 'A+';
-    if (tierNumber >= 80) return 'A';
-    if (tierNumber >= 75) return 'B+';
-    if (tierNumber >= 70) return 'B';
-    if (tierNumber >= 65) return 'C+';
-    if (tierNumber >= 60) return 'C';
-    if (tierNumber >= 55) return 'D+';
-    if (tierNumber >= 50) return 'D';
-    if (tierNumber >= 45) return 'E+';
-    if (tierNumber >= 40) return 'E';
-    if (tierNumber >= 35) return 'F+';
-    return 'F';
+    if (tierNumber = 60) return 'HT1';
+    if (tierNumber = 45) return 'LT1';
+    if (tierNumber = 30) return 'HT2';
+    if (tierNumber = 20) return 'LT2';
+    if (tierNumber = 10) return 'HT3';
+    if (tierNumber = 6) return 'LT3';
+    if (tierNumber = 4) return 'HT4';
+    if (tierNumber = 3) return 'LT4';
+    if (tierNumber = 2) return 'HT5';
+    if (tierNumber = 1) return 'LT5';
+    return 'Unranked';
   }
 }
 
 // Helper function to get tier color class
 export function getTierColorClass(tierNumber: number, isOverall: boolean = false): string {
   const tier = getTierName(tierNumber, isOverall);
-  return `tier${tier.replace('+', 'Plus')}`;
+  return `tier${tier.replace('L', 'H')}`;
 }
 
 // Helper function to get region color class

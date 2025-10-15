@@ -81,21 +81,11 @@ html {
 }
 
 /* Tier Colors */
-.tierF { background: linear-gradient(135deg, #8b5a5a, #a86464); color: white; }
-.tierFPlus { background: linear-gradient(135deg, #a86464, #c57070); color: white; }
-.tierE { background: #ff9800; color: white; }
-.tierEPlus { background: #ff9800; color: white; }
-.tierD { background: #2195f3; color: white; }
-.tierDPlus { background: #2195f3; color: white; }
-.tierC { background: #9f59ce; color: white; }
-.tierCPlus { background: #9f59ce; color: white; }
-.tierB { background: #e5ee65; color: black; }
-.tierBPlus { background: #e5ee65; color: black; }
-.tierA { background: #4caf50; color: white; }
-.tierAPlus { background: #4caf50; color: white; }
-.tierS { background: #ff5252; color: white; }
-.tierSPlus { background: #ff5252; color: white; }
-.tierSS { background: #b90047; color: white; }
+.tierHT5 { background: linear-gradient(135deg, #5f5f5f, #575555); color: white; }
+.tierHT4 { background: #318a4f; color: white; }
+.tierHT3 { background: #2195f3; color: white; }
+.tierHT2 { background: #d3e01b; color: white; }
+.tierHT1 { background: #cf2eb4; color: black; }
 
 /* Region Colors */
 .regionNA { 

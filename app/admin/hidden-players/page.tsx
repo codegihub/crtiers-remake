@@ -329,7 +329,7 @@ export default function HiddenPlayersManagement() {
                         <input
                           type="number"
                           min="0"
-                          max="101"
+                          max="60"
                           value={editingPlayer.tiers[mode.id as keyof typeof editingPlayer.tiers]}
                           onChange={(e) => updateEditingPlayer(`tiers.${mode.id}`, e.target.value)}
                           className={styles.tierInput}
