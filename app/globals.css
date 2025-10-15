@@ -84,8 +84,8 @@ html {
 .tierHT5 { background: linear-gradient(135deg, #5f5f5f, #575555); color: white; }
 .tierHT4 { background: #318a4f; color: white; }
 .tierHT3 { background: #2195f3; color: white; }
-.tierHT2 { background: #d3e01b; color: white; }
-.tierHT1 { background: #cf2eb4; color: black; }
+.tierHT2 { background: #ddbe0c; color: white; }
+.tierHT1 { background: #861a74; color: black; }
 
 /* Region Colors */
 .regionNA { 
