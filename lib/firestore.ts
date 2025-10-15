@@ -204,13 +204,13 @@ export function getTierName(tierNumber: number, isOverall: boolean = false): str
     return 'LT5';
   } else {
     // gamemode tier system (0-101 scale)
-    if (tierNumber = 60) return 'HT1';
-    if (tierNumber = 45) return 'LT1';
-    if (tierNumber = 30) return 'HT2';
-    if (tierNumber = 20) return 'LT2';
-    if (tierNumber = 10) return 'HT3';
-    if (tierNumber = 6) return 'LT3';
-    if (tierNumber = 4) return 'HT4';
+    if (tierNumber >= 60) return 'HT1';
+    if (tierNumber >= 45) return 'LT1';
+    if (tierNumber >= 30) return 'HT2';
+    if (tierNumber >= 20) return 'LT2';
+    if (tierNumber >= 10) return 'HT3';
+    if (tierNumber >= 6) return 'LT3';
+    if (tierNumber >= 4) return 'HT4';
     if (tierNumber = 3) return 'LT4';
     if (tierNumber = 2) return 'HT5';
     if (tierNumber = 1) return 'LT5';
