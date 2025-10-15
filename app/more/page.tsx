@@ -47,33 +47,26 @@ export default function More() {
                     <h4>Standard Game Modes</h4>
                     <div className={styles.tierList}>
                       <div className={`${styles.tierItem} tier-s-plus`}>
-                        <span className={styles.tierLabel}>S+</span>
-                        <span className={styles.tierScore}>95-100</span>
+                        <span className={styles.tierLabel}>HT1</span>
+                        <span className={styles.tierScore}>60</span>
                       </div>
                       <div className={`${styles.tierItem} tier-s`}>
-                        <span className={styles.tierLabel}>S</span>
-                        <span className={styles.tierScore}>90-94</span>
+                        <span className={styles.tierLabel}>LT1</span>
+                        <span className={styles.tierScore}>45</span>
                       </div>
                       <div className={`${styles.tierItem} tier-a-plus`}>
-                        <span className={styles.tierLabel}>A+</span>
-                        <span className={styles.tierScore}>85-89</span>
+                        <span className={styles.tierLabel}>HT2</span>
+                        <span className={styles.tierScore}>30</span>
                       </div>
                       <div className={`${styles.tierItem} tier-a`}>
-                        <span className={styles.tierLabel}>A</span>
-                        <span className={styles.tierScore}>80-84</span>
+                        <span className={styles.tierLabel}>LT2</span>
+                        <span className={styles.tierScore}>20</span>
                       </div>
                       <div className={`${styles.tierItem} tier-b-plus`}>
-                        <span className={styles.tierLabel}>B+</span>
-                        <span className={styles.tierScore}>75-79</span>
+                        <span className={styles.tierLabel}>HT3</span>
+                        <span className={styles.tierScore}>10</span>
                       </div>
-                      <div className={`${styles.tierItem} tier-b`}>
-                        <span className={styles.tierLabel}>B</span>
-                        <span className={styles.tierScore}>70-74</span>
-                      </div>
-                      <div className={`${styles.tierItem} tier-c-plus`}>
-                        <span className={styles.tierLabel}>C+</span>
-                        <span className={styles.tierScore}>65-69</span>
-                      </div>
+                      
                       
                     </div>
                   </div>
@@ -81,34 +74,28 @@ export default function More() {
                   <div className={styles.tierGroup}>
                     <h4>Standard Game Modes</h4>
                     <div className={styles.tierList}>
-                    <div className={`${styles.tierItem} tier-c`}>
-                        <span className={styles.tierLabel}>C</span>
-                        <span className={styles.tierScore}>60-64</span>
+                      
+                      <div className={`${styles.tierItem} tier-b`}>
+                        <span className={styles.tierLabel}>LT3</span>
+                        <span className={styles.tierScore}>6</span>
+                      </div>
+                      <div className={`${styles.tierItem} tier-c-plus`}>
+                        <span className={styles.tierLabel}>HT4</span>
+                        <span className={styles.tierScore}>4</span>
+                      </div>
+                      <div className={`${styles.tierItem} tier-c`}>
+                        <span className={styles.tierLabel}>LT4</span>
+                        <span className={styles.tierScore}>3</span>
                       </div>
                       <div className={`${styles.tierItem} tier-d-plus`}>
-                        <span className={styles.tierLabel}>D+</span>
-                        <span className={styles.tierScore}>55-59</span>
+                        <span className={styles.tierLabel}>HT5</span>
+                        <span className={styles.tierScore}>2</span>
                       </div>
                       <div className={`${styles.tierItem} tier-d`}>
-                        <span className={styles.tierLabel}>D</span>
-                        <span className={styles.tierScore}>50-54</span>
+                        <span className={styles.tierLabel}>LT5</span>
+                        <span className={styles.tierScore}>1</span>
                       </div>
-                      <div className={`${styles.tierItem} tier-e-plus`}>
-                        <span className={styles.tierLabel}>E+</span>
-                        <span className={styles.tierScore}>45-49</span>
-                      </div>
-                      <div className={`${styles.tierItem} tier-e`}>
-                        <span className={styles.tierLabel}>E</span>
-                        <span className={styles.tierScore}>40-44</span>
-                      </div>
-                      <div className={`${styles.tierItem} tier-f-plus`}>
-                        <span className={styles.tierLabel}>F+</span>
-                        <span className={styles.tierScore}>35-39</span>
-                      </div>
-                      <div className={`${styles.tierItem} tier-f`}>
-                        <span className={styles.tierLabel}>F</span>
-                        <span className={styles.tierScore}>0-35</span>
-                      </div>
+                      
                       
                     </div>
                   </div>
