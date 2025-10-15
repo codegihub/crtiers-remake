@@ -211,9 +211,9 @@ export function getTierName(tierNumber: number, isOverall: boolean = false): str
     if (tierNumber >= 10) return 'HT3';
     if (tierNumber >= 6) return 'LT3';
     if (tierNumber >= 4) return 'HT4';
-    if (tierNumber = 3) return 'LT4';
-    if (tierNumber = 2) return 'HT5';
-    if (tierNumber = 1) return 'LT5';
+    if (tierNumber >= 3) return 'LT4';
+    if (tierNumber >= 2) return 'HT5';
+    if (tierNumber >= 1) return 'LT5';
     return 'Unranked';
   }
 }
