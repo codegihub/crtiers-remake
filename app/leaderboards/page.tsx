@@ -278,7 +278,10 @@ function GameModeCard({ mode, topPlayer, onSeeMore }: {
             <span className={`${styles.region} ${getRegionColorClass(topPlayer.region)}`}>
               {normalizeRegion(topPlayer.region)}
             </span>
-            <span className={styles.score}>{tierScore}</span>
+            {mode.id == 'overall' && (
+              <span className={styles.score}>{tierScore}</span>
+            )}
+            
           </div>
         </div>
       </div>
