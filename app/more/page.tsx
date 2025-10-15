@@ -183,7 +183,7 @@ export default function More() {
               <div className={styles.gameModeCard}>
                 <div className={styles.gameModeIcon}>🎇</div>
                 <h3>Vanilla</h3>
-                <p>Classic Minecraft PvP with no modifications - pure skill-based combat.</p>
+                <p>Explosive End Crystals and Anchors.</p>
               </div>
               
               <div className={styles.gameModeCard}>
@@ -201,7 +201,7 @@ export default function More() {
               <div className={styles.gameModeCard}>
                 <div className={styles.gameModeIcon}>🔮</div>
                 <h3>NethPot</h3>
-                <p>Our signature gamemode combining Nether combat with potion mechanics.</p>
+                <p>Our signature gamemode combining Netherite combat with potion mechanics.</p>
               </div>
               
               <div className={styles.gameModeCard}>
