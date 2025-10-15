@@ -106,10 +106,10 @@ export default function HiddenTiers() {
       <main className={styles.main}>
         <section className={styles.heroSection}>
           <h1 className={styles.title}>
-            🔒 Hidden <span className="gradient-text">Tier Lists</span>
+            🔒 Sub <span className="gradient-text">Tier Lists</span>
           </h1>
           <p className={styles.subtitle}>
-            Exclusive rankings for special game modes. Discover hidden challenges and compete in unique arenas.
+            Exclusive rankings for special game modes. Discover sub tiers challenges and compete in unique arenas.
           </p>
         </section>
 
@@ -118,7 +118,7 @@ export default function HiddenTiers() {
             <form onSubmit={handleFormSearch} className={styles.searchForm}>
               <input
                 type="text"
-                placeholder="Search hidden players..."
+                placeholder="Search players..."
                 value={searchTerm}
                 onChange={(e) => handleSearch(e.target.value)}
                 className={styles.searchInput}
@@ -159,7 +159,7 @@ export default function HiddenTiers() {
         </section>
 
         <section className={styles.gameModeSection}>
-          <h2>Hidden Game Modes</h2>
+          <h2>Sub tiers Game Modes</h2>
           <div className={styles.gameModeGrid}>
             {Object.keys(gameModeNames).map((gameMode) => {
               const topPlayer = topPlayers[gameMode];

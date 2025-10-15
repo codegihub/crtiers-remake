@@ -70,9 +70,9 @@ export default function HiddenGameModeLeaderboard() {
     return (
       <div className={styles.page}>
         <div className={styles.error}>
-          <h2>Invalid Hidden Game Mode</h2>
-          <p>The hidden game mode "{gamemode}" does not exist.</p>
-          <a href="../../hidden-tiers" className={styles.backLink}>← Back to Hidden Tiers</a>
+          <h2>Invalid Sub Game Mode</h2>
+          <p>The sub game mode "{gamemode}" does not exist.</p>
+          <a href="../../hidden-tiers" className={styles.backLink}>← Back to Sub Tiers</a>
         </div>
       </div>
     );
@@ -83,7 +83,7 @@ export default function HiddenGameModeLeaderboard() {
       <div className={styles.page}>
         <div className={styles.loading}>
           <div className={styles.spinner}></div>
-          <p>Loading hidden leaderboard...</p>
+          <p>Loading sub tiers leaderboard...</p>
         </div>
       </div>
     );
@@ -95,7 +95,7 @@ export default function HiddenGameModeLeaderboard() {
         <div className={styles.error}>
           <h2>Error</h2>
           <p>{error}</p>
-          <a href="../../hidden-tiers" className={styles.backLink}>← Back to Hidden Tiers</a>
+          <a href="../../hidden-tiers" className={styles.backLink}>← Back to Sub Tiers</a>
         </div>
       </div>
     );
@@ -132,17 +132,17 @@ export default function HiddenGameModeLeaderboard() {
 
       <main className={styles.main}>
         <div className={styles.breadcrumb}>
-          <a href="../../hidden-tiers">← Back to Hidden Tiers</a>
+          <a href="../../hidden-tiers">← Back to Sub Tiers</a>
         </div>
 
         <div className={styles.headerSection}>
           <h1 className={styles.title}>
             <span className={styles.lockIcon}>🔒</span>
             <span className={styles.gameIcon}>{gameModeIcon}</span>
-            Hidden {gameModeName} Leaderboard
+            Sub Tiers {gameModeName} Leaderboard
           </h1>
           <p className={styles.subtitle}>
-            Exclusive hidden tier rankings for {gameModeName} - Top secret players only
+            Exclusive sub tiers rankings for {gameModeName} - Top players only
           </p>
         </div>
 
@@ -226,8 +226,8 @@ export default function HiddenGameModeLeaderboard() {
           ) : (
             <div className={styles.emptyState}>
               <span className={styles.emptyIcon}>🔒</span>
-              <h3>No hidden players found</h3>
-              <p>No hidden players have scores in {gameModeName} for the selected filter.</p>
+              <h3>No sub players found</h3>
+              <p>No sub players have scores in {gameModeName} for the selected filter.</p>
             </div>
           )}
         </div>

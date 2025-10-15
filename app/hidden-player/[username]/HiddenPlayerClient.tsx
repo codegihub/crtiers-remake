@@ -96,7 +96,7 @@ export default function HiddenPlayerClient({ username }: HiddenPlayerClientProps
       <div className={styles.page}>
         <div className={styles.loading}>
           <div className={styles.spinner}></div>
-          <p>Loading hidden player data...</p>
+          <p>Loading sub player data...</p>
         </div>
       </div>
     );
@@ -120,8 +120,8 @@ export default function HiddenPlayerClient({ username }: HiddenPlayerClientProps
           </nav>
         </header>
         <div className={styles.error}>
-          <h2>Hidden Player Not Found</h2>
-          <p>The hidden player "{username}" could not be found in our database.</p>
+          <h2>Sub Player Not Found</h2>
+          <p>The sub player "{username}" could not be found in our database.</p>
           <a href="../../hidden-tiers" className={styles.backLink}>← Back to Hidden Tiers</a>
         </div>
       </div>
@@ -150,7 +150,7 @@ export default function HiddenPlayerClient({ username }: HiddenPlayerClientProps
 
       <main className={styles.main}>
         <div className={styles.breadcrumb}>
-          <a href="../../hidden-tiers">← Back to Hidden Tiers</a>
+          <a href="../../hidden-tiers">← Back to Sub Tiers</a>
         </div>
 
         <section className={styles.playerSection}>
@@ -272,14 +272,7 @@ export default function HiddenPlayerClient({ username }: HiddenPlayerClientProps
                         </div>
                       )}
 
-                      {activeTab !== 'overall' && (
-                        <div className={styles.statCard}>
-                          <h3>Next Tier</h3>
-                          <div className={styles.statValue}>
-                            {currentTierScore >= 100 ? 'MAX' : currentTierScore < 30 ? 'F+' : getTierName(Math.min(currentTierScore + 5, 100), false)}
-                          </div>
-                        </div>
-                      )}
+                      
                     </div>
                   </div>
                 ) : (
