@@ -272,7 +272,7 @@ function GameModeCard({ mode, topPlayer, onSeeMore }: {
         <div className={styles.playerInfo}>
           <h4>{topPlayer.minecraftName}</h4>
           <div className={styles.playerStats}>
-            {mode.id !== 'overall' && (
+            {mode.id == 'overall' && (
               <span className={`${styles.tier} ${getTierColorClass(tierScore, mode.id === 'overall')}`}>{tierName}</span>
             )}
             <span className={`${styles.region} ${getRegionColorClass(topPlayer.region)}`}>
