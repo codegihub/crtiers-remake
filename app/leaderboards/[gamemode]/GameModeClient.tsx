@@ -208,7 +208,12 @@ export default function GameModeLeaderboard() {
                     </div>
 
                     <div className={styles.playerStats}>
-                      
+                      {gamemode == 'overall' && (
+                        <div className={styles.score}>
+                          <span className={styles.scoreValue}>{score}</span>
+                          <span className={styles.scoreLabel}>points</span>
+                        </div>
+                      )}
                       
                       {gamemode !== 'overall' && (
                         <div className={`${styles.tier} ${getTierColorClass(score, gamemode === 'overall')}`}>
