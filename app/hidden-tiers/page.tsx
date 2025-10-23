@@ -9,21 +9,24 @@ const gameModeNames: { [key: string]: string } = {
   overall: 'Overall',
   bed: 'Bed PVP',
   cart: 'Minecart',
-  creeper: 'Creeper'
+  creeper: 'Creeper',
+  gun: 'Gun PVP'
 };
 
 const gameModeIcons: { [key: string]: string } = {
   overall: '🏆',
   bed: '🛏️',
   cart: '🛒',
-  creeper: '💥'
+  creeper: '💥',
+  gun: '🔫'
 };
 
 const gameModeDescriptions: { [key: string]: string } = {
   overall: 'Combined ranking across all hidden game modes',
   bed: 'Strategic bed destruction and defense gameplay',
   cart: 'Explosive minecart combat',
-  creeper: 'Survive waves of explosive creeper attacks'
+  creeper: 'Survive waves of explosive creeper attacks',
+  gun: 'Fast-paced ranged combat with custom firearms and quick reflexes'
 };
 
 export default function HiddenTiers() {
