@@ -82,7 +82,10 @@ export default function HiddenPlayersManagement() {
       minecraftName: '',
       name: '',
       region: 'NA',
-      tiers: { ...defaultTiers },
+      tiers: {
+        ...defaultTiers,
+        gun: 0
+      },
       isNew: true
     });
     setErrors([]);
