@@ -41,6 +41,7 @@ export interface HiddenPlayer {
     bed: number;
     cart: number;
     creeper: number;
+    gun: number;
     overall: number;
   };
 }
@@ -406,7 +407,7 @@ export async function searchHiddenPlayers(searchTerm: string): Promise<HiddenPla
 
 // Get all hidden game mode top players
 export async function getAllHiddenGameModeTopPlayers(): Promise<{ [gameMode: string]: HiddenPlayer | null }> {
-  const gameModes = ['overall', 'bed', 'cart', 'creeper', 'spleef'];
+  const gameModes = ['overall', 'bed', 'cart', 'creeper', 'gun'];
   const topPlayers: { [gameMode: string]: HiddenPlayer | null } = {};
   
   for (const gameMode of gameModes) {
