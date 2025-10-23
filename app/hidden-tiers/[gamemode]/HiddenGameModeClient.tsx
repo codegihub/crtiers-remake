@@ -11,6 +11,7 @@ const gameModeIcons: { [key: string]: string } = {
   bed: '🛏️',
   cart: '🛒',
   creeper: '💥',
+  gun: '🔫',
 };
 
 export default function HiddenGameModeLeaderboard() {
@@ -27,13 +28,11 @@ export default function HiddenGameModeLeaderboard() {
       try {
         setLoading(true);
         const data = await getAllHiddenPlayers();
-        
-        // Filter players who have a score in this gamemode
+
         const playersWithScore = data.filter(player => 
           player.tiers[gamemode as keyof typeof player.tiers] > 0
         );
-        
-        // Sort by the gamemode score (descending)
+
         const sortedPlayers = playersWithScore.sort((a, b) => 
           b.tiers[gamemode as keyof typeof b.tiers] - a.tiers[gamemode as keyof typeof a.tiers]
         );
@@ -104,7 +103,6 @@ export default function HiddenGameModeLeaderboard() {
   const gameModeName = gamemode.charAt(0).toUpperCase() + gamemode.slice(1);
   const gameModeIcon = gameModeIcons[gamemode];
 
-  // Get unique tiers for filter
   const tierOrder = ['SS', 'S+', 'S', 'A+', 'A', 'B+', 'B', 'C+', 'C', 'D+', 'D', 'E+', 'E', 'F+', 'F'];
   const availableTiers = Array.from(new Set(
     players.map(player => {
