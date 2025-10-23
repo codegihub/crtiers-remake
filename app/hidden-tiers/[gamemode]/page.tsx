@@ -6,6 +6,7 @@ export async function generateStaticParams(): Promise<{ gamemode: string }[]> {
     { gamemode: 'bed' },
     { gamemode: 'cart' },
     { gamemode: 'creeper' },
+    { gamemode: 'bed'}
   ];
 }
 
