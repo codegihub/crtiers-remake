@@ -20,6 +20,7 @@ const defaultTiers = {
   bed: 0,
   cart: 0,
   creeper: 0,
+  spleef: 0,
   overall: 0,
 };
 
@@ -28,7 +29,7 @@ const gameModes = [
   { id: 'bed', name: 'Bed PVP', icon: '🛏️' },
   { id: 'cart', name: 'Minecart', icon: '🛒' },
   { id: 'creeper', name: 'Creeper', icon: '💥' },
-  { id: 'gun', name: 'Gun PVP', icon: '🔫'}
+  { id: 'gun', name: 'GunPVP', icon: '🔫' },
 ];
 
 interface EditingPlayer extends HiddenPlayer {
@@ -114,7 +115,7 @@ export default function HiddenPlayersManagement() {
         const { id, ...playerData } = editingPlayer;
         const updated = await updateHiddenPlayer(id, playerData);
         if (updated) {
-          // Write changelog if any tier values changed
+          
           if (originalPlayer) {
             const changes: { gameMode: string; previousScore: number; newScore: number }[] = [];
             Object.keys(editingPlayer.tiers).forEach((key) => {
@@ -144,7 +145,7 @@ export default function HiddenPlayersManagement() {
       setOriginalPlayer(null);
       setErrors([]);
       
-      // Clear success message after 3 seconds
+     
       setTimeout(() => setSuccess(''), 3000);
     } catch (error) {
       console.error('Error saving hidden player:', error);
@@ -165,7 +166,7 @@ export default function HiddenPlayersManagement() {
         setSuccess('Hidden player deleted successfully!');
         fetchPlayers();
         
-        // Clear success message after 3 seconds
+        
         setTimeout(() => setSuccess(''), 3000);
       }
     } catch (error) {
@@ -202,7 +203,7 @@ export default function HiddenPlayersManagement() {
         [tierField]: parseInt(String(value)) || 0
       };
       
-      // Auto-calculate overall score
+      
       updatedTiers.overall = calculateOverallScore(updatedTiers);
       
       setEditingPlayer({
@@ -266,7 +267,7 @@ export default function HiddenPlayersManagement() {
         </div>
       </div>
 
-      {/* Add Hidden Player Modal */}
+      {/*  */}
       {(editingPlayer && showAddForm) && (
         <div className={styles.modal}>
           <div className={styles.modalContent}>
@@ -357,7 +358,7 @@ export default function HiddenPlayersManagement() {
         </div>
       )}
 
-      {/* Edit Hidden Player Modal */}
+      {/**/}
       {(editingPlayer && showEditModal) && (
         <div className={styles.modal}>
           <div className={styles.modalContent}>
@@ -443,7 +444,7 @@ export default function HiddenPlayersManagement() {
                             <input
                               type="number"
                               min="0"
-                              max="101"
+                              max="60"
                               value={currentScore}
                               onChange={(e) => updateEditingPlayer(`tiers.${mode.id}`, e.target.value)}
                               className={styles.tierInput}

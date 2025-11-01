@@ -65,7 +65,7 @@ export default function AdminDashboard() {
         <div className={styles.statCard}>
           <div className={styles.statIcon}>👥</div>
           <div className={styles.statValue}>{stats.totalPlayers}</div>
-          <div className={styles.statLabel}>Total Players</div>
+          <div className={styles.statLabel}>Total Players (Regular + Sub)</div>
         </div>
 
         <div className={styles.statCard}>
@@ -77,7 +77,7 @@ export default function AdminDashboard() {
         <div className={styles.statCard}>
           <div className={styles.statIcon}>🔒</div>
           <div className={styles.statValue}>{stats.totalHiddenPlayers}</div>
-          <div className={styles.statLabel}>Hidden Players</div>
+          <div className={styles.statLabel}>Sub Players</div>
         </div>
 
         
@@ -107,11 +107,11 @@ export default function AdminDashboard() {
         <div className={styles.actionCard}>
           <h3>Manage Hidden Players</h3>
           <p>
-            Manage the exclusive hidden tier list players. Control access to special game modes 
-            including Bed PVP, Minecart, and Creeper.
+            Manage the exclusive sub tier list players. Control access to special game modes 
+            including Bed PVP, Minecart, Creeper, and GunPVP.
           </p>
-          <a href="../../admin/hidden-players" className={styles.actionButton}>
-            Manage Hidden Players
+          <a href="../../admin/sub-players" className={styles.actionButton}>
+            Manage Sub Players
           </a>
         </div>
 

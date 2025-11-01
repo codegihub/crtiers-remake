@@ -10,7 +10,7 @@ const gameModeNames: { [key: string]: string } = {
   bed: 'Bed PVP',
   cart: 'Minecart',
   creeper: 'Creeper',
-  gun: 'Gun PVP'
+  gun: 'GunPVP',
 };
 
 const gameModeIcons: { [key: string]: string } = {
@@ -18,15 +18,25 @@ const gameModeIcons: { [key: string]: string } = {
   bed: '🛏️',
   cart: '🛒',
   creeper: '💥',
-  gun: '🔫'
+  gun: '🔫',
 };
 
 const gameModeDescriptions: { [key: string]: string } = {
-  overall: 'Combined ranking across all hidden game modes',
+  overall: 'Combined ranking across all sub game modes',
   bed: 'Strategic bed destruction and defense gameplay',
   cart: 'Explosive minecart combat',
   creeper: 'Survive waves of explosive creeper attacks',
-  gun: 'Fast-paced ranged combat with custom firearms and quick reflexes'
+  gun: 'Fast-paced ranged combat with custom firearms and quick reflexes',
+};
+
+// Get the icon for a hidden game mode
+const getHiddenGameModeIcon = (modeId: string) => {
+  const imageIcons = ['bed', 'cart', 'creeper', 'gun'];
+  if (imageIcons.includes(modeId)) {
+    const extension = modeId === 'gun' ? 'png' : 'svg';
+    return <img src={`/${modeId}.${extension}`} alt={gameModeNames[modeId]} className={styles.gameModeIconImg} />;
+  }
+  return gameModeIcons[modeId];
 };
 
 export default function HiddenTiers() {
@@ -74,7 +84,7 @@ export default function HiddenTiers() {
   const handleFormSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchTerm.trim()) {
-      window.location.href = `../../hidden-player/${encodeURIComponent(searchTerm.trim())}`;
+      window.location.href = `../../sub-player/${encodeURIComponent(searchTerm.trim())}`;
     }
   };
 
@@ -83,7 +93,7 @@ export default function HiddenTiers() {
       <div className={styles.page}>
         <div className={styles.loading}>
           <div className={styles.spinner}></div>
-          <p>Loading hidden tier lists...</p>
+          <p>Loading sub tier lists...</p>
         </div>
       </div>
     );
@@ -109,10 +119,10 @@ export default function HiddenTiers() {
       <main className={styles.main}>
         <section className={styles.heroSection}>
           <h1 className={styles.title}>
-            🔒 Sub <span className="gradient-text">Tier Lists</span>
+            Sub <span className="gradient-text">Tier Lists</span>
           </h1>
           <p className={styles.subtitle}>
-            Exclusive rankings for special game modes. Discover sub tiers challenges and compete in unique arenas.
+            Exclusive rankings for special game modes. Discover hidden challenges and compete in unique arenas.
           </p>
         </section>
 
@@ -121,7 +131,7 @@ export default function HiddenTiers() {
             <form onSubmit={handleFormSearch} className={styles.searchForm}>
               <input
                 type="text"
-                placeholder="Search players..."
+                placeholder="Search sub players..."
                 value={searchTerm}
                 onChange={(e) => handleSearch(e.target.value)}
                 className={styles.searchInput}
@@ -137,7 +147,7 @@ export default function HiddenTiers() {
                 {searchResults.map((player) => (
                   <a
                     key={player.id}
-                    href={`../../hidden-player/${encodeURIComponent(player.minecraftName)}`}
+                    href={`../../sub-player/${encodeURIComponent(player.minecraftName)}`}
                     className={styles.searchResultItem}
                   >
                     <img 
@@ -162,7 +172,7 @@ export default function HiddenTiers() {
         </section>
 
         <section className={styles.gameModeSection}>
-          <h2>Sub tiers Game Modes</h2>
+          <h2>Sub Game Modes</h2>
           <div className={styles.gameModeGrid}>
             {Object.keys(gameModeNames).map((gameMode) => {
               const topPlayer = topPlayers[gameMode];
@@ -171,12 +181,12 @@ export default function HiddenTiers() {
               return (
                 <a
                   key={gameMode}
-                  href={`../../hidden-tiers/${gameMode}`}
+                  href={`../../sub-tiers/${gameMode}`}
                   className={`${styles.gameModeCard} card`}
                 >
                   <div className={styles.cardHeader}>
                     <div className={styles.gameModeIcon}>
-                      {gameModeIcons[gameMode]}
+                      {getHiddenGameModeIcon(gameMode)}
                     </div>
                     <div className={styles.gameModeInfo}>
                       <h3>{gameModeNames[gameMode]}</h3>
@@ -189,7 +199,7 @@ export default function HiddenTiers() {
                   <div className={styles.topPlayerSection}>
                     {topPlayer ? (
                       <div className={styles.topPlayer}>
-                        <a href={`../../hidden-player/${encodeURIComponent(topPlayer.minecraftName)}`}>
+                        <a href={`../../sub-player/${encodeURIComponent(topPlayer.minecraftName)}`}>
                           <img 
                             src={`https://mc-heads.net/avatar/${topPlayer.minecraftName}/64`}
                             alt={`${topPlayer.minecraftName} avatar`}
@@ -227,10 +237,10 @@ export default function HiddenTiers() {
 
         <section className={styles.infoSection}>
           <div className={styles.infoCard}>
-            <h2>About Hidden Tier Lists</h2>
+            <h2>About Sub Tier Lists</h2>
             <p>
-              Hidden tier lists feature exclusive game modes that push the boundaries of traditional Minecraft PvP. 
-              These specialized arenas offer unique challenges and require different skill sets to master.
+              Sub tier lists feature exclusive game modes that push the boundaries of traditional Minecraft PvP. 
+              Thd arenas offer unique challenges and require different skill sets to master.
             </p>
             <div className={styles.infoGrid}>
               <div className={styles.infoItem}>
@@ -240,7 +250,7 @@ export default function HiddenTiers() {
               </div>
               <div className={styles.infoItem}>
                 <span className={styles.infoIcon}>⚡</span>
-                <h3>Unique Challenges</h3>
+                <h3>Unique Challese specializeenges</h3>
                 <p>Custom mechanics and specialized skill requirements</p>
               </div>
               <div className={styles.infoItem}>

@@ -14,6 +14,16 @@ const gameModeIcons: { [key: string]: string } = {
   gun: '🔫',
 };
 
+// Get the icon for a hidden game mode
+const getHiddenGameModeIcon = (modeId: string) => {
+  const imageIcons = ['bed', 'cart', 'creeper', 'gun'];
+  if (imageIcons.includes(modeId)) {
+    const extension = modeId === 'gun' ? 'png' : 'svg';
+    return <img src={`/${modeId}.${extension}`} alt={gameModeIcons[modeId]} className={styles.gameModeIconImg} />;
+  }
+  return gameModeIcons[modeId];
+};
+
 export default function HiddenGameModeLeaderboard() {
   const params = useParams();
   const gamemode = params.gamemode as string;
@@ -28,11 +38,13 @@ export default function HiddenGameModeLeaderboard() {
       try {
         setLoading(true);
         const data = await getAllHiddenPlayers();
-
+        
+        // Filter players who have a score in this gamemode
         const playersWithScore = data.filter(player => 
           player.tiers[gamemode as keyof typeof player.tiers] > 0
         );
-
+        
+        // Sort by the gamemode score (descending)
         const sortedPlayers = playersWithScore.sort((a, b) => 
           b.tiers[gamemode as keyof typeof b.tiers] - a.tiers[gamemode as keyof typeof a.tiers]
         );
@@ -40,8 +52,8 @@ export default function HiddenGameModeLeaderboard() {
         setPlayers(sortedPlayers);
         setFilteredPlayers(sortedPlayers);
       } catch (err) {
-        console.error('Error fetching hidden players:', err);
-        setError('Failed to load hidden leaderboard data');
+        console.error('Error fetching sub players:', err);
+        setError('Failed to load sub leaderboard data');
       } finally {
         setLoading(false);
       }
@@ -69,9 +81,9 @@ export default function HiddenGameModeLeaderboard() {
     return (
       <div className={styles.page}>
         <div className={styles.error}>
-          <h2>Invalid Sub Game Mode</h2>
-          <p>The sub game mode "{gamemode}" does not exist.</p>
-          <a href="../../hidden-tiers" className={styles.backLink}>← Back to Sub Tiers</a>
+          <h2>Invalid subtier Game Mode</h2>
+          <p>The subtier game mode "{gamemode}" does not exist.</p>
+          <a href="../../sub-tiers" className={styles.backLink}>← Back to Sub Tiers</a>
         </div>
       </div>
     );
@@ -82,7 +94,7 @@ export default function HiddenGameModeLeaderboard() {
       <div className={styles.page}>
         <div className={styles.loading}>
           <div className={styles.spinner}></div>
-          <p>Loading sub tiers leaderboard...</p>
+          <p>Loading subtiers leaderboard...</p>
         </div>
       </div>
     );
@@ -94,7 +106,7 @@ export default function HiddenGameModeLeaderboard() {
         <div className={styles.error}>
           <h2>Error</h2>
           <p>{error}</p>
-          <a href="../../hidden-tiers" className={styles.backLink}>← Back to Sub Tiers</a>
+          <a href="../../sub-tiers" className={styles.backLink}>← Back to Sub Tiers</a>
         </div>
       </div>
     );
@@ -103,6 +115,7 @@ export default function HiddenGameModeLeaderboard() {
   const gameModeName = gamemode.charAt(0).toUpperCase() + gamemode.slice(1);
   const gameModeIcon = gameModeIcons[gamemode];
 
+  // Get unique tiers for filter
   const tierOrder = ['SS', 'S+', 'S', 'A+', 'A', 'B+', 'B', 'C+', 'C', 'D+', 'D', 'E+', 'E', 'F+', 'F'];
   const availableTiers = Array.from(new Set(
     players.map(player => {
@@ -130,17 +143,19 @@ export default function HiddenGameModeLeaderboard() {
 
       <main className={styles.main}>
         <div className={styles.breadcrumb}>
-          <a href="../../hidden-tiers">← Back to Sub Tiers</a>
+          <a href="../../sub-tiers">← Back to Sub Tiers</a>
         </div>
 
         <div className={styles.headerSection}>
           <h1 className={styles.title}>
             <span className={styles.lockIcon}>🔒</span>
-            <span className={styles.gameIcon}>{gameModeIcon}</span>
-            Sub Tiers {gameModeName} Leaderboard
+            <span className={styles.gameIcon}>
+              {getHiddenGameModeIcon(gamemode)}
+            </span>
+             {gameModeName} Leaderboard
           </h1>
           <p className={styles.subtitle}>
-            Exclusive sub tiers rankings for {gameModeName} - Top players only
+            Exclusive sub tier rankings for {gameModeName} - Top secret players only
           </p>
         </div>
 
@@ -162,7 +177,7 @@ export default function HiddenGameModeLeaderboard() {
           
           <div className={styles.stats}>
             <span className={styles.playerCount}>
-              🔒 {filteredPlayers.length} hidden players
+               {filteredPlayers.length} Sub Tier players
             </span>
           </div>
         </div>
@@ -190,10 +205,10 @@ export default function HiddenGameModeLeaderboard() {
                       />
                       <div className={styles.playerDetails}>
                         <a 
-                          href={`../../hidden-player/${encodeURIComponent(player.minecraftName)}`}
+                          href={`../../sub-player/${encodeURIComponent(player.minecraftName)}`}
                           className={styles.playerName}
                         >
-                          🔒 {player.minecraftName}
+                           {player.minecraftName}
                         </a>
                         <div className={styles.playerSubtext}>
                           {player.name}
@@ -202,10 +217,7 @@ export default function HiddenGameModeLeaderboard() {
                     </div>
 
                     <div className={styles.playerStats}>
-                      <div className={styles.score}>
-                        <span className={styles.scoreValue}>{score}</span>
-                        <span className={styles.scoreLabel}>points</span>
-                      </div>
+                      
                       
                       {gamemode !== 'overall' && (
                         <div className={`${styles.tier} ${getTierColorClass(score, gamemode === 'overall')}`}>

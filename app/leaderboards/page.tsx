@@ -18,6 +18,15 @@ const gameModes = [
   { id: 'mace', name: 'Mace', icon: '🔨' },
 ];
 
+// Get the icon for a game mode
+const getGameModeIcon = (modeId: string) => {
+  const svgIcons = ['sword', 'axe', 'mace', 'nethop', 'pot', 'vanilla', 'uhc', 'smp'];
+  if (svgIcons.includes(modeId)) {
+    return <img src={`/${modeId}.svg`} alt={gameModes.find(m => m.id === modeId)?.name} className={styles.gameModeIconImg} />;
+  }
+  return gameModes.find(m => m.id === modeId)?.icon;
+};
+
 export default function Leaderboards() {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState<Player[]>([]);
@@ -208,7 +217,9 @@ function GameModeCard({ mode, topPlayer, onSeeMore }: {
     return (
       <div className="card">
         <div className={styles.cardHeader}>
-          <span className={styles.modeIcon}>{mode.icon}</span>
+          <span className={styles.modeIcon}>
+            {getGameModeIcon(mode.id)}
+          </span>
           <h3>{mode.name}</h3>
         </div>
         <div className={styles.noData}>
@@ -230,7 +241,9 @@ function GameModeCard({ mode, topPlayer, onSeeMore }: {
     return (
       <div className="card">
         <div className={styles.cardHeader}>
-          <span className={styles.modeIcon}>{mode.icon}</span>
+          <span className={styles.modeIcon}>
+            {getGameModeIcon(mode.id)}
+          </span>
           <h3>{mode.name}</h3>
         </div>
         <div className={styles.noData}>
@@ -252,7 +265,9 @@ function GameModeCard({ mode, topPlayer, onSeeMore }: {
   return (
     <div className="card">
       <div className={styles.cardHeader}>
-        <span className={styles.modeIcon}>{mode.icon}</span>
+        <span className={styles.modeIcon}>
+          {getGameModeIcon(mode.id)}
+        </span>
         <h3>{mode.name}</h3>
       </div>
       
@@ -278,9 +293,6 @@ function GameModeCard({ mode, topPlayer, onSeeMore }: {
             <span className={`${styles.region} ${getRegionColorClass(topPlayer.region)}`}>
               {normalizeRegion(topPlayer.region)}
             </span>
-            {mode.id == 'overall' && (
-              <span className={styles.score}>{tierScore}</span>
-            )}
             
           </div>
         </div>

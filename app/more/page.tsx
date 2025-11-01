@@ -181,49 +181,65 @@ export default function More() {
             <h2>🎮 Game Modes Explained</h2>
             <div className={styles.gameModeGrid}>
               <div className={styles.gameModeCard}>
-                <div className={styles.gameModeIcon}>🎇</div>
+                <div className={styles.gameModeIcon}>
+                  <img src="/vanilla.svg" alt="Vanilla" className={styles.gameModeIconImg} />
+                </div>
                 <h3>Vanilla</h3>
-                <p>Explosive End Crystals and Anchors.</p>
+                <p>Classic Minecraft PvP with no modifications - pure skill-based combat.</p>
               </div>
               
               <div className={styles.gameModeCard}>
-                <div className={styles.gameModeIcon}>💖</div>
+                <div className={styles.gameModeIcon}>
+                  <img src="/uhc.svg" alt="UHC" className={styles.gameModeIconImg} />
+                </div>
                 <h3>UHC</h3>
                 <p>Ultra Hardcore mode with no natural regeneration - strategic gameplay required.</p>
               </div>
               
               <div className={styles.gameModeCard}>
-                <div className={styles.gameModeIcon}>🧪</div>
+                <div className={styles.gameModeIcon}>
+                  <img src="/pot.svg" alt="Pot" className={styles.gameModeIconImg} />
+                </div>
                 <h3>Pot</h3>
                 <p>Potion-based PvP with splash potions for healing and damage.</p>
               </div>
               
               <div className={styles.gameModeCard}>
-                <div className={styles.gameModeIcon}>🔮</div>
+                <div className={styles.gameModeIcon}>
+                  <img src="/nethop.svg" alt="NethPot" className={styles.gameModeIconImg} />
+                </div>
                 <h3>NethPot</h3>
-                <p>Our signature gamemode combining Netherite combat with potion mechanics.</p>
+                <p>Our signature gamemode combining Nether combat with potion mechanics.</p>
               </div>
               
               <div className={styles.gameModeCard}>
-                <div className={styles.gameModeIcon}>🧿</div>
+                <div className={styles.gameModeIcon}>
+                  <img src="/smp.svg" alt="SMP" className={styles.gameModeIconImg} />
+                </div>
                 <h3>SMP</h3>
                 <p>Survival Multiplayer skills including building, strategy, and resource management.</p>
               </div>
               
               <div className={styles.gameModeCard}>
-                <div className={styles.gameModeIcon}>⚔️</div>
+                <div className={styles.gameModeIcon}>
+                  <img src="/sword.svg" alt="Sword" className={styles.gameModeIconImg} />
+                </div>
                 <h3>Sword</h3>
                 <p>Specialized sword combat focusing on timing and technique.</p>
               </div>
               
               <div className={styles.gameModeCard}>
-                <div className={styles.gameModeIcon}>🪓</div>
+                <div className={styles.gameModeIcon}>
+                  <img src="/axe.svg" alt="Axe" className={styles.gameModeIconImg} />
+                </div>
                 <h3>Axe</h3>
                 <p>Axe-based combat with unique mechanics and strategies.</p>
               </div>
               
               <div className={styles.gameModeCard}>
-                <div className={styles.gameModeIcon}>🔨</div>
+                <div className={styles.gameModeIcon}>
+                  <img src="/mace.svg" alt="Mace" className={styles.gameModeIconImg} />
+                </div>
                 <h3>Mace</h3>
                 <p>The newest addition featuring mace combat mechanics.</p>
               </div>
@@ -239,8 +255,8 @@ export default function More() {
                 Looking for something special? We have additional tier lists for exclusive game modes 
                 available to our community members.
               </p>
-              <a href="../../hidden-tiers" className={styles.hiddenLink}>
-                🎯 Access Hidden Tier Lists
+              <a href="../../sub-tiers" className={styles.hiddenLink}>
+                🎯 Access Sub Tier Lists
               </a>
             </div>
           </div>

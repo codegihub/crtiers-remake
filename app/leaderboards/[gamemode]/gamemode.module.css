@@ -94,6 +94,13 @@
   font-size: 3.5rem;
 }
 
+.gameModeIconImg {
+  width: 3.5rem;
+  height: 3.5rem;
+  margin-bottom: -4px;
+  object-fit: contain;
+}
+
 .subtitle {
   font-size: 1.2rem;
   color: var(--text-muted);

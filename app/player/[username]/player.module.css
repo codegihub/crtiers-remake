@@ -219,6 +219,13 @@
   font-size: 1.2rem;
 }
 
+.gameModeIconImg {
+  width: 1.2rem;
+  height: 1.2rem;
+  margin-bottom: -4px;
+  object-fit: contain;
+}
+
 .tabName {
   font-size: 0.9rem;
 }

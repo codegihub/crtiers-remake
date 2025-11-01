@@ -34,7 +34,7 @@ const gameModes = [
   { id: 'uhc', name: 'UHC', icon: '💖' },
   { id: 'pot', name: 'Pot', icon: '🧪' },
   { id: 'nethop', name: 'NethOP', icon: '🔮' },
-  { id: 'smp', name: 'SMP', icon: '🧿' },
+  { id: 'smp', name: 'Diamond SMP', icon: '🧿' },
   { id: 'sword', name: 'Sword', icon: '⚔️' },
   { id: 'axe', name: 'Axe', icon: '🪓' },
   { id: 'mace', name: 'Mace', icon: '🔨' },
@@ -441,7 +441,7 @@ export default function PlayersManagement() {
                             <input
                               type="number"
                               min="0"
-                              max="101"
+                              max="60"
                               value={currentScore}
                               onChange={(e) => updateEditingPlayer(`tiers.${mode.id}`, e.target.value)}
                               className={styles.tierInput}

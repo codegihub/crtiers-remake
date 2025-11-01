@@ -261,6 +261,13 @@
   font-size: 2rem;
 }
 
+.gameModeIconImg {
+  width: 2rem;
+  height: 2rem;
+  margin-bottom: -4px;
+  object-fit: contain;
+}
+
 .cardHeader h3 {
   font-size: 1.5rem;
   margin: 0;

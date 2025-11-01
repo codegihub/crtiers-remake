@@ -11,11 +11,20 @@ const gameModes = [
   { id: 'uhc', name: 'UHC', icon: '💖' },
   { id: 'pot', name: 'Pot', icon: '🧪' },
   { id: 'nethop', name: 'NethOP', icon: '🔮' },
-  { id: 'smp', name: 'Dia SMP', icon: '🧿' },
+  { id: 'smp', name: 'Diamond SMP', icon: '🧿' },
   { id: 'sword', name: 'Sword', icon: '⚔️' },
   { id: 'axe', name: 'Axe', icon: '🪓' },
   { id: 'mace', name: 'Mace', icon: '🔨' },
 ];
+
+// Get the icon for a game mode
+const getGameModeIcon = (modeId: string) => {
+  const svgIcons = ['sword', 'axe', 'mace', 'nethop', 'pot', 'vanilla', 'uhc', 'smp'];
+  if (svgIcons.includes(modeId)) {
+    return <img src={`/${modeId}.svg`} alt={gameModes.find(m => m.id === modeId)?.name} className={styles.gameModeIconImg} />;
+  }
+  return gameModes.find(m => m.id === modeId)?.icon;
+};
 
 interface PlayerClientProps {
   username: string;
@@ -236,7 +245,9 @@ export default function PlayerClient({ username }: PlayerClientProps) {
                       }`}
                       onClick={() => setActiveTab(mode.id)}
                     >
-                      <span className={styles.tabIcon}>{mode.icon}</span>
+                      <span className={styles.tabIcon}>
+                        {getGameModeIcon(mode.id)}
+                      </span>
                       <span className={styles.tabName}>{mode.name}</span>
                     </button>
                   ))}

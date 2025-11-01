@@ -24,7 +24,7 @@ export async function generateStaticParams(): Promise<{ username: string }[]> {
     
     return fallbackPlayers.map(username => ({ username }));
   } catch (error) {
-    console.error('Error fetching hidden players for static generation:', error);
+    console.error('Error fetching sub players for static generation:', error);
     
     // Fallback to hardcoded list if Firebase is not accessible during build
     const fallbackPlayers = [
@@ -51,7 +51,7 @@ export async function generateMetadata({ params }: { params: Promise<{ username:
     
     if (!player) {
       return {
-        title: `🔒 Hidden Player ${decodedUsername} - CrTiers`,
+        title: `🔒 Sub Player ${decodedUsername} - CrTiers`,
         description: 'Exclusive subtiers player rankings and tier system',
       };
     }
@@ -61,21 +61,21 @@ export async function generateMetadata({ params }: { params: Promise<{ username:
     const rankDescription = overallScore > 0 ? `#${globalRank} globally` : 'Unranked';
     
     return {
-      title: `🔒 ${player.minecraftName} - CrTiers Hidden`,
+      title: ` ${player.minecraftName} - CrTiers Sub Tiers`,
       description: `🔒 ${player.minecraftName} - ${rankDescription}. Exclusive subtiers player rankings and tier system.`,
 
       openGraph: {
-        title: `🔒 ${player.minecraftName} - CrTiers Hidden`,
+        title: ` ${player.minecraftName} - CrTiers Sub Tiers`,
         description: ` ${player.minecraftName} - ${rankDescription}. Exclusive subtiers player rankings and tier system.`,
         type: 'profile',
-        url: `https://crystaltiers.com/hidden-player/${encodeURIComponent(decodedUsername)}/`,
+        url: `https://crystaltiers.com/sub-player/${encodeURIComponent(decodedUsername)}/`,
         siteName: 'CrTiers',
         images: [
           {
             url: `https://mc-heads.net/avatar/${player.minecraftName}/64`,
             width: 64,
             height: 64,
-            alt: `🔒 ${player.minecraftName} Hidden Minecraft avatar`,
+            alt: ` ${player.minecraftName} Sub Tiers Minecraft avatar`,
           }
         ],
         locale: 'en_US',
@@ -83,19 +83,19 @@ export async function generateMetadata({ params }: { params: Promise<{ username:
       
       twitter: {
         card: 'summary',
-        title: `🔒 ${player.minecraftName} - CrTiers Hidden`,
+        title: ` ${player.minecraftName} - CrTiers Sub`,
         description: ` ${player.minecraftName} - ${rankDescription}. Exclusive subtiers player rankings and tier system.`,
         images: [`https://mc-heads.net/avatar/${player.minecraftName}/64`],
       },
     };
   } catch (error) {
-    console.error('Error generating metadata for hidden player:', error);
+    console.error('Error generating metadata for sub player:', error);
 
     return {
-      title: `🔒 Hidden Player ${decodedUsername} - CrTiers`,
+      title: `Sub Player ${decodedUsername} - CrTiers`,
       description: 'Exclusive subtiers player rankings and tier system',
       openGraph: {
-        title: `🔒 Hidden Player ${decodedUsername} - CrTiers`,
+        title: `Sub Player ${decodedUsername} - CrTiers`,
         description: 'Exclusive subtiers player rankings and tier system',
         type: 'website',
         siteName: 'CrTiers',

@@ -18,6 +18,15 @@ const gameModeIcons: { [key: string]: string } = {
   mace: '🔨',
 };
 
+// Get the icon for a game mode
+const getGameModeIcon = (modeId: string) => {
+  const svgIcons = ['sword', 'axe', 'mace', 'nethop', 'pot', 'vanilla', 'uhc', 'smp'];
+  if (svgIcons.includes(modeId)) {
+    return <img src={`/${modeId}.svg`} alt={gameModeIcons[modeId]} className={styles.gameModeIconImg} />;
+  }
+  return gameModeIcons[modeId];
+};
+
 export default function GameModeLeaderboard() {
   const params = useParams();
   const gamemode = params.gamemode as string;
@@ -142,8 +151,11 @@ export default function GameModeLeaderboard() {
 
         <div className={styles.headerSection}>
           <h1 className={styles.title}>
-            <span className={styles.gameIcon}>{gameModeIcon}</span>
-            {gameModeName} Leaderboard
+            <span className={styles.gameIcon}>
+              {getGameModeIcon(gamemode)}
+            </span>
+            {gamemode === 'smp' ? 'Diamond SMP ' :  gameModeName + ' '}
+             Leaderboard
           </h1>
           <p className={styles.subtitle}>
             Top players in {gameModeName} ranked by their tier points

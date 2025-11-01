@@ -10,7 +10,7 @@ const gameModes = [
   { id: 'bed', name: 'Bed PVP', icon: '🛏️' },
   { id: 'cart', name: 'Minecart', icon: '🛒' },
   { id: 'creeper', name: 'Creeper', icon: '💥' },
-  { id: 'gun', name: 'Gun PVP', icon: '🔫'}
+  { id: 'gun', name: 'GunPVP', icon: '🔫' },
 ];
 
 interface HiddenPlayerClientProps {
@@ -35,14 +35,14 @@ export default function HiddenPlayerClient({ username }: HiddenPlayerClientProps
         const playerData = await getHiddenPlayerByUsername(username);
         
         if (!playerData) {
-          setError('Hidden player not found');
+          setError('Sub player not found');
           return;
         }
         
         setPlayer(playerData);
       } catch (err) {
-        console.error('Error fetching hidden player:', err);
-        setError('Failed to load hidden player data');
+        console.error('Error fetching Sub player:', err);
+        setError('Failed to load Sub player data');
       } finally {
         setLoading(false);
       }
@@ -78,7 +78,7 @@ export default function HiddenPlayerClient({ username }: HiddenPlayerClientProps
       const results = await searchHiddenPlayers(term);
       setSearchResults(results.slice(0, 10)); // Limit to 10 results
     } catch (error) {
-      console.error('Error searching hidden players:', error);
+      console.error('Error searching sub players:', error);
       setSearchResults([]);
     } finally {
       setSearchLoading(false);
@@ -88,7 +88,7 @@ export default function HiddenPlayerClient({ username }: HiddenPlayerClientProps
   const handleFormSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchTerm.trim()) {
-      window.location.href = `../../hidden-player/${encodeURIComponent(searchTerm.trim())}`;
+      window.location.href = `../../sub-player/${encodeURIComponent(searchTerm.trim())}`;
     }
   };
 
@@ -123,7 +123,7 @@ export default function HiddenPlayerClient({ username }: HiddenPlayerClientProps
         <div className={styles.error}>
           <h2>Sub Player Not Found</h2>
           <p>The sub player "{username}" could not be found in our database.</p>
-          <a href="../../hidden-tiers" className={styles.backLink}>← Back to Hidden Tiers</a>
+          <a href="../../sub-tiers" className={styles.backLink}>← Back to Sub Tiers</a>
         </div>
       </div>
     );
@@ -151,7 +151,7 @@ export default function HiddenPlayerClient({ username }: HiddenPlayerClientProps
 
       <main className={styles.main}>
         <div className={styles.breadcrumb}>
-          <a href="../../hidden-tiers">← Back to Sub Tiers</a>
+          <a href="../../sub-tiers">← Back to Sub Tiers</a>
         </div>
 
         <section className={styles.playerSection}>
@@ -183,7 +183,7 @@ export default function HiddenPlayerClient({ username }: HiddenPlayerClientProps
                 <form onSubmit={handleFormSearch} className={styles.searchForm}>
                   <input
                     type="text"
-                    placeholder="Search hidden players..."
+                    placeholder="Search sub players..."
                     value={searchTerm}
                     onChange={(e) => handleSearch(e.target.value)}
                     className={styles.searchInput}
@@ -199,7 +199,7 @@ export default function HiddenPlayerClient({ username }: HiddenPlayerClientProps
                     {searchResults.map((searchPlayer) => (
                       <a
                         key={searchPlayer.id}
-                        href={`../../hidden-player/${encodeURIComponent(searchPlayer.minecraftName)}`}
+                        href={`../../sub-player/${encodeURIComponent(searchPlayer.minecraftName)}`}
                         className={styles.searchResultItem}
                       >
                         <img 
@@ -232,7 +232,13 @@ export default function HiddenPlayerClient({ username }: HiddenPlayerClientProps
                       }`}
                       onClick={() => setActiveTab(mode.id)}
                     >
-                      <span className={styles.tabIcon}>{mode.icon}</span>
+                      <span className={styles.tabIcon}>
+                        {mode.id === 'sword' ? (
+                          <img src="/sword.png" alt="Sword" className={styles.swordIcon} />
+                        ) : (
+                          mode.icon
+                        )}
+                      </span>
                       <span className={styles.tabName}>{mode.name}</span>
                     </button>
                   ))}

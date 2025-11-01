@@ -307,6 +307,13 @@
   margin-bottom: 1rem;
 }
 
+.gameModeIconImg {
+  width: 2.5rem;
+  height: 2.5rem;
+  margin-bottom: -4px;
+  object-fit: contain;
+}
+
 .gameModeCard h3 {
   font-size: 1.3rem;
   font-weight: 700;
